@@ -9,6 +9,7 @@ import hudson.model.TaskListener;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
 import jenkins.tasks.SimpleBuildStep;
+import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
@@ -58,6 +59,24 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
         // Since this is a dummy, we just say 'hello world' and call that a build.
 
         // This also shows how you can consult the global configuration of the builder
+        // public Descriptor<SCM> getScm(String shortClassName) {
+        //     return findDescriptor(shortClassName, SCM.all());
+        // }
+
+        // public JobPropertyDescriptor getJobProperty(String shortClassName) {
+        //     // combining these two lines triggers javac bug. See issue #610.
+        //     Descriptor d = findDescriptor(shortClassName, JobPropertyDescriptor.all());
+        //     return (JobPropertyDescriptor) d;
+        // }
+
+        // public Collection<String> getJobNames() {
+        //     List<String> names = new ArrayList<String>();
+        //     for (Job j : getAllItems(Job.class))
+        //         names.add(j.getFullName());
+        //     return names;
+        // }
+
+        listener.getLogger().println("getRootDir:" + build.getRootDir());
         if (getDescriptor().getUseFrench())
             listener.getLogger().println("Bonjour, "+name+"!");
         else
@@ -130,6 +149,7 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
         /**
          * This human readable name is used in the configuration screen.
          */
+        //在添加构建过程中显示的名称
         public String getDisplayName() {
             return "Say hello world";
         }
