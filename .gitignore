@@ -5,7 +5,9 @@
 # eclipse #
 .metadata/
 .recommenders/
-
+*.settings
+*.project
+*.classpath
 
 
 # Package Files #
