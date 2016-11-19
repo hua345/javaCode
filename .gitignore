@@ -5,9 +5,9 @@
 # eclipse #
 .metadata/
 .recommenders/
+RemoteSystemsTempFiles/
 *.settings
-*.project
-*.classpath
+*/bin/
 
 
 # Package Files #
