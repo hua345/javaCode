@@ -1,2 +1,13 @@
+# maven #
 **/target
 **/class
+
+# eclipse #
+.metadata/
+.recommenders/
+
+
+
+# Package Files #
+*.jar
+*.war
