@@ -5,8 +5,7 @@ import org.junit.Test;
 public class AppTest {
   @Test
   public void mainTest() {
-    App app = new App();
     String[] args = {};
-    app.main(args);
+    App.main(args);
   }
 }
