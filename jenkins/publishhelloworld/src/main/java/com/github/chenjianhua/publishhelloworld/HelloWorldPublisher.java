@@ -3,11 +3,15 @@ import hudson.Launcher;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.util.FormValidation;
+import hudson.model.Result;
 import hudson.model.AbstractProject;
 import hudson.model.Run;
+import hudson.model.Project;
+import hudson.model.Action;
 import hudson.model.TaskListener;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
+import hudson.tasks.BuildStepMonitor;
 import jenkins.tasks.SimpleBuildStep;
 import hudson.tasks.Notifier;
 import hudson.tasks.Publisher;
@@ -18,6 +22,10 @@ import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+
+import static hudson.model.Result.FAILURE;
+import static hudson.model.Result.SUCCESS;
+import static hudson.model.Result.UNSTABLE;
 //jenkinsci/sidebar-link-plugin
 /**
  * Sample {@link Builder}.
@@ -39,11 +47,16 @@ import java.io.IOException;
 public class HelloWorldPublisher extends Notifier implements SimpleBuildStep {
 
     private final String name;
+    private static final Result[] SUPPORTED_RESULTS = {FAILURE, UNSTABLE, SUCCESS};
 
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public HelloWorldPublisher(String name) {
         this.name = name;
+    }
+    @Override
+    public BuildStepMonitor getRequiredMonitorService() {
+        return BuildStepMonitor.NONE;
     }
 
     /**
@@ -52,7 +65,7 @@ public class HelloWorldPublisher extends Notifier implements SimpleBuildStep {
     public String getName() {
         return name;
     }
-
+    
     @Override
     public Action getProjectAction(Project project) {
         return null;
@@ -67,6 +80,13 @@ public class HelloWorldPublisher extends Notifier implements SimpleBuildStep {
             listener.getLogger().println("Bonjour, "+name+"!");
         else
             listener.getLogger().println("Hello, "+name+"!");
+        listener.getLogger().println("Begin add action.");
+        TestResult result = new TestResult(build);
+        ResultInfo info = new ResultInfo();
+        result.setResultInfo(info);
+        LinkAction action = new LinkAction(build, result);
+        build.addAction(action);
+        listener.getLogger().println("Add action success");
     }
 
     // Overridden for better type safety.
