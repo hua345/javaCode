@@ -30,3 +30,5 @@ public class TestResult {
 		this.info = info;
 	}
 }
+
+//https://wiki.jenkins-ci.org/display/JENKINS/Understanding+Jelly+Tags

@@ -1,0 +1,20 @@
+<?jelly escape-by-default='true'?>
+<j:jelly
+   xmlns:j="jelly:core"
+   xmlns:st="jelly:stapler"
+   xmlns:d="jelly:define"
+   xmlns:l="/lib/layout"
+   xmlns:t="/lib/hudson"
+   xmlns:f="/lib/form"
+   xmlns:i="jelly:fmt"
+   xmlns:p="/lib/hudson/project">
+  <l:layout title="${it.owner.fullDisplayName}">
+  	<st:include it="${it.owner}" page="sidepanel.jelly"/>
+	<l:main-panel>
+		<div>
+		<h3>HelloWorld</h3>
+		<span>name:${info.name}</span>
+		</div>
+	</l:main-panel>
+  </l:layout>
+</j:jelly>
