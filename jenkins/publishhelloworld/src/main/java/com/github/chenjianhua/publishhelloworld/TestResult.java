@@ -9,7 +9,7 @@ import hudson.model.AbstractBuild;
 public class TestResult {
 	
 	private Run<?,?> onwer;
-	private ResultInfo info;
+	private ResultInfo resultInfo;
 	
 
 	public TestResult(Run<?,?> build){
@@ -23,11 +23,11 @@ public class TestResult {
 		this.onwer = onwer;
 	}
 	public ResultInfo getResultInfo() {
-		return info;
+		return resultInfo;
 	}
 
 	public void setResultInfo(ResultInfo info) {
-		this.info = info;
+		this.resultInfo = info;
 	}
 }
 

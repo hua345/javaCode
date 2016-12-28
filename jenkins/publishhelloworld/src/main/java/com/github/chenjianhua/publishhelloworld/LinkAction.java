@@ -2,8 +2,9 @@ package com.github.chenjianhua.publishhelloworld;
 import hudson.model.Action;
 import hudson.model.AbstractBuild;
 import hudson.model.Run;
+import org.kohsuke.stapler.StaplerProxy;
 
-public class LinkAction implements Action {
+public class LinkAction implements Action,StaplerProxy {
 	private final static String PLUGIN_NAME = "publishhelloworld";
 	private final static String URL_NAME = "publishhelloworld";
 	private final static String DISPLAY_NAME = "Publish Helloworld";
@@ -44,5 +45,12 @@ public class LinkAction implements Action {
 	}
 	public void setOnwer(Run<?,?> build){
 		this.build = build;
+	}
+	
+	public Run<?,?> getBuild(){
+		return this.build;
+	}
+	public Object getTarget(){
+		return this.result;
 	}
 }

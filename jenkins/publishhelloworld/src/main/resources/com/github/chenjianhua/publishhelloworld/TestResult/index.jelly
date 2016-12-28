@@ -8,12 +8,13 @@
    xmlns:f="/lib/form"
    xmlns:i="jelly:fmt"
    xmlns:p="/lib/hudson/project">
-  <l:layout title="${it.owner.fullDisplayName}">
-  	<st:include it="${it.owner}" page="sidepanel.jelly"/>
+  <l:layout title="${it.owner.fullDisplayName}" norefresh="true">
+  	<st:include it="${it.onwer}" page="sidepanel.jelly" />
 	<l:main-panel>
 		<div>
 		<h3>HelloWorld</h3>
-		<span>name:${info.name}</span>
+		<span>name:${resultInfo.name}</span>
+		<span>age:${resultInfo.age}</span>
 		</div>
 	</l:main-panel>
   </l:layout>
