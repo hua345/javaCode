@@ -85,6 +85,9 @@ public class HelloWorldPublisher extends Notifier implements SimpleBuildStep {
         ResultInfo info = new ResultInfo();
         result.setResultInfo(info);
         LinkAction action = new LinkAction(build, result);
+        listener.getLogger().println("name:" + result.getResultInfo().getName());
+        listener.getLogger().println("age:" + result.getResultInfo().getAge());
+
         build.addAction(action);
         listener.getLogger().println("Add action success");
     }
