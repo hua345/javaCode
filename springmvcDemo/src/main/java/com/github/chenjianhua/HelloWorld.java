@@ -8,6 +8,6 @@ public class HelloWorld {
 	@RequestMapping("/helloworld")
 	public String hello(){
 		System.out.println("helloworld");
-		return "success";
+		return "demo";
 	}
 }
