@@ -12,7 +12,17 @@ public class Consumer
 	
     public static void main( String[] args ) throws Exception
     {
-    	RegisterService aa = new RegisterService();
-    	aa.produceMsg();
+        if(args.length < 1){
+            System.err.println("请输入客户端用户名: [appName]");
+            System.exit(1);
+        }
+        String appName = args[0];
+    	ListenerService listenerService = new ListenerService();
+    	listenerService.setAppName(appName);
+    	Thread thread1 = new Thread(listenerService);
+    	thread1.start();
+    	RegisterService registerService = new RegisterService();
+    	registerService.produceMsg(appName);
+
     }
 }

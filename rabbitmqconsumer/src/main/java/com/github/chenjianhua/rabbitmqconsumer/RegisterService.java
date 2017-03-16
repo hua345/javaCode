@@ -8,15 +8,14 @@ public class RegisterService {
 	private final static String REGISTER_QUEUE = "register_queue";
 	private final static String MSG_QUEUE = "msg_queue";
 	
-	public void produceMsg() throws Exception {
-        System.out.println( "Hello World!" );
+	public void produceMsg(String appName) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
         channel.queueDeclare(REGISTER_QUEUE, false, false, false, null);
-        String message = "Hello World!";
+        String message = appName;
         channel.basicPublish("", REGISTER_QUEUE, null, message.getBytes());
         System.out.println(" [x] Sent '" + message + "'");
         
