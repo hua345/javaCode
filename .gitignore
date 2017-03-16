@@ -2,6 +2,10 @@
 **/target
 **/class
 
+# nodejs #
+**/node_modules
+**/node_modules/*
+
 # eclipse #
 .metadata/
 .recommenders/
