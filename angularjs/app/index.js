@@ -1,16 +1,12 @@
-const angular = require('angular');//引入angular
-const ngModule = angular.module('app',[]);//定义一个angular模块
-const _ = require('lodash');
+//const angular = require('angular');//引入angular
+var simpleModule = angular.module('simpleModule',[]);//定义一个angular模块
+simpleModule.controller("simpleController", function($scope){
+  $scope.sumData = function(str1, str2){
+    return str1 + str2;
+  }
+});
+export default simpleModule;
+
 // const $ = require("jquery");
 // require ("bootstrap/dist/css/bootstrap.css");
 // require ("bootstrap/dist/js/bootstrap.js");
-function component () {
-  var element = document.createElement('div');
-
-  /* lodash is required for the next line to work */
-  element.innerHTML = _.join(['Hello','webpack'], ' ');
-
-  return element;
-}
-
-document.body.appendChild(component());

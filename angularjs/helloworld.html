@@ -1,4 +1,4 @@
-<html ng-app>
+<html ng-app="simpleModule">
     <head>
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
       <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"></style>
@@ -7,14 +7,18 @@
     <body>
 
       <script src="dist/bundle.js"></script>
-        Your name: <input type="text" ng-model="yourname" placeholder="World">
-        <hr>
-        Hello {{yourname || 'World'}}!
-
+      <div ng-controller="simpleController">
         <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">@</span>
-          <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+          <span class="input-group-addon" id="basic-addon1">Str1:</span>
+          <input type="text" ng-model="str1" class="form-control" aria-describedby="basic-addon1">
         </div>
-
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">Str2:</span>
+          <input type="text" ng-model="str2" class="form-control" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1"> {{ sumData(str1, str1) }}</span>
+        </div>
+      </div>
     </body>
 </html>
