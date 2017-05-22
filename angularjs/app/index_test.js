@@ -15,6 +15,6 @@ describe('simpleModule', () => {
     it("sumData 测试", function(){
       console.log("test drive");
       expect($scope.sumData(2, 3)).toBe(5);
-    })
+    });
   });
 });

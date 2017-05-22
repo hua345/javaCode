@@ -1,5 +1,13 @@
-function greeter(person: string){
-  return "Hello, " + person;
+interface Person {
+    firstName: string;
+    lastName: string;
 }
 
-console.log(greeter("fangfang"));
+function greeter(person: Person) {
+    return "Hello, " + person.firstName + " " + person.lastName;
+}
+
+
+var user = { firstName: "Jane", lastName: "User" };
+
+console.log(greeter(user));

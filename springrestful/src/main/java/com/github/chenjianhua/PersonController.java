@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.github.chenjianhua.Person;
 @Controller
-public class HelloWorld {
-	private static final Logger Log = Logger.getLogger(HelloWorld.class);
+public class PersonController {
+	private static final Logger Log = Logger.getLogger(PersonController.class);
 	@RequestMapping(value = "/hello", produces = "text/plain;charset=UTF-8")
 	public @ResponseBody
 	String hello(){
