@@ -2,11 +2,47 @@
     <head>
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
       <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"></style>
+      <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
       <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+
     </head>
     <body>
 
       <script src="dist/bundle.js"></script>
+<header class="navbar navbar-static-top bs-docs-nav ">
+    <div class="containter">
+
+        <div class="navbar-header col-sm-2">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="../" class="navbar-brand">芳芳</a>
+        </div>
+
+        <nav class="collapse navbar-collapse col-sm-2" id="bs-navbar">
+        <ul class="nav navbar-nav">
+            <li >
+                <a href="#">博客</a>
+            </li>
+            <li >
+                <a href="#">Github Trending</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="./"> fang</a>
+            </li>
+        </ul>
+        </nav>
+
+    </div>
+</header>
+
+
       <div ng-controller="simpleController">
         <div class="input-group">
           <span class="input-group-addon" id="basic-addon1">Str1:</span>
