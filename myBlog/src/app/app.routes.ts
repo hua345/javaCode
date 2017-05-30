@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppNavBarComponent } from './components/app-navbar/app.my-navbar';
 import { AppLoginFormComponent } from './components/app-loginform/app.loginform';
+import { AppRegisterComponent } from './components/app-register/app-register.component';
 import { AppPagenotfoundComponent } from './components/app-pagenotfound/app-pagenotfound.component';
 import { AppIndexComponent } from './components/app-index/app-index.component';
 
 
 const appRoutes: Routes = [
   { path: 'login', component: AppLoginFormComponent },
+  { path: 'register', component: AppRegisterComponent },
   {
     path: 'index',
     component: AppIndexComponent,
