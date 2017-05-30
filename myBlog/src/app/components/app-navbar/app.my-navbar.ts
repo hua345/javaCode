@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Logger } from './service/logger.service';
-import { User } from './model/User';
+import { Logger } from '../../service/logger.service';
+import { User } from '../../model/User';
 
 @Component({
   selector: 'app-navbar',

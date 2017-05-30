@@ -6,3 +6,7 @@
   font-weight: 500;
   color: #563d7c;
 }
+.navbar-nav>.active{
+    color: #463265;
+    background-color: #f9f9f9;
+}

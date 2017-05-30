@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Logger } from './service/logger.service';
-import { UserService } from './service/user.service';
-import { User } from './model/User';
+import { Logger } from '../../service/logger.service';
+import { UserService } from '../../service/user.service';
+import { User } from '../../model/User';
 
 @Component({
   selector: 'app-loginform',
