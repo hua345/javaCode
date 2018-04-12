@@ -1,0 +1,37 @@
+spring: 
+  profiles: 
+    active: dev
+spring:
+    profiles: dev
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource: 
+    url: jdbc:mysql://localhost:3306/db_example
+    username: springuser
+    password: 123456
+spring:
+    profiles: prod
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource: 
+    url: jdbc:mysql://localhost:3306/db_example
+    username: springuser
+    password: 123456
+myYaml:
+  simpleProp: simplePropValue
+  arrayProps: 1,2,3,4,5
+  listProp1:
+    - name: abc
+      value: abcValue
+    - name: efg
+      value: efgValue
+  listProp2:
+    - config2Value1
+    - config2Vavlue2
+  mapProps:
+    key1: value1
+    key2: value2
