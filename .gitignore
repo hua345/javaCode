@@ -1,7 +1,7 @@
 # maven #
 **/target
 **/class
-
+***/__pycache__
 # nodejs #
 **/node_modules
 **/node_modules/*
