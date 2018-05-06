@@ -1,7 +1,11 @@
 # maven #
 **/target
 **/class
-***/__pycache__
+
+*.classpath
+*.project
+
+
 # nodejs #
 **/node_modules
 **/node_modules/*
@@ -17,3 +21,10 @@ Servers/
 # Package Files #
 *.jar
 *.war
+
+# python #
+**/__pycache__
+javaCode/fenby/.classpath
+javaCode/MyBatisHello/.project
+javaCode/rabbitmqconsumer/.classpath
+javaCode/rabbitmqproducer/.classpath
