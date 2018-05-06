@@ -2,10 +2,6 @@
 **/target
 **/class
 
-*.classpath
-*.project
-
-
 # nodejs #
 **/node_modules
 **/node_modules/*
@@ -15,16 +11,13 @@
 .recommenders/
 RemoteSystemsTempFiles/
 *.settings
-*/bin/
+**/bin
 Servers/
 
 # Package Files #
 *.jar
 *.war
+*.class
 
 # python #
 **/__pycache__
-javaCode/fenby/.classpath
-javaCode/MyBatisHello/.project
-javaCode/rabbitmqconsumer/.classpath
-javaCode/rabbitmqproducer/.classpath
