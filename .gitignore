@@ -1,7 +1,8 @@
 # maven #
 **/target
 **/class
-
+**/.classpath
+**/.project
 # nodejs #
 **/node_modules
 **/node_modules/*
