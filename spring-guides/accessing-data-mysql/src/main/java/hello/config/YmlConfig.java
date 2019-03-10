@@ -1,4 +1,4 @@
-package hello;
+package hello.config;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "yaml-info")
+@ConfigurationProperties(prefix = "yaml-info") // 加载application.properties、application.yml文件绑定属性
 public class YmlConfig {
     String simpleProp;
     private String[] arrayProps;

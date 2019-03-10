@@ -1,8 +1,8 @@
-package hello;
+package hello.mapper;
 
 import org.springframework.data.repository.CrudRepository;
 
-import hello.User;
+import hello.dto.User;
 
 // This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
 // CRUD refers Create, Read, Update, Delete

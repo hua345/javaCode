@@ -7,6 +7,9 @@
 **/node_modules
 **/node_modules/*
 
+**/testJMR/
+**/.settings/
+**/.vscode/
 # eclipse #
 .metadata/
 .recommenders/
