@@ -6,7 +6,8 @@
 # nodejs #
 **/node_modules
 **/node_modules/*
-
+**/.idea/
+**.iml
 **/testJMR/
 **/.settings/
 **/.vscode/
