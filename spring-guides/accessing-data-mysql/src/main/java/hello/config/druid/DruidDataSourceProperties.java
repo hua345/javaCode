@@ -1,4 +1,4 @@
-package hello.config;
+package hello.config.druid;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
