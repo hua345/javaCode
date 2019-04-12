@@ -2,7 +2,7 @@ package hello.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import hello.common.ResponseModel;
-import hello.common.ResultCode;
+import hello.common.ResultCodeEnum;
 import hello.config.exception.MyRuntimeException;
 import hello.dto.request.AddUserInputDTO;
 import hello.dto.response.AddUserOutputDTO;
@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 /**
  * @author CHENJIANHUA001
  * @date 2019/03/18 15:28
  */
 @Slf4j
 @RestController
-@RequestMapping(path = "/demo")
+@RequestMapping(path = "/api/v1/hello/user")
 public class UserController {
 
     /**
@@ -39,7 +38,6 @@ public class UserController {
     public ResponseModel<AddUserOutputDTO> addNewUser(@RequestBody AddUserInputDTO param) {
         log.info("Handing request addNewUser begin, req: {}", JSONObject.toJSONString(param));
 
-        userService.addUser(param);
         AddUserOutputDTO addUserOutputDTO = new AddUserOutputDTO();
         addUserOutputDTO.setStatus("Saved");
         return ResponseModel.success(addUserOutputDTO);
@@ -49,7 +47,7 @@ public class UserController {
     public ResponseModel exceptionTest(@RequestParam String name) {
         log.info("Handing request exceptionTest begin, req: {}");
         if(StringUtils.isBlank(name)){
-            throw new MyRuntimeException(ResultCode.PARAMETER_CHECK_ERROR);
+            throw new MyRuntimeException(ResultCodeEnum.PARAMETER_CHECK_ERROR);
         }
         JSONObject result = new JSONObject();
         result.put("userList",userService.getAllUsers());

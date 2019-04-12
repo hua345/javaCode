@@ -3,10 +3,8 @@ package hello.config.exception;
 import com.alibaba.fastjson.JSONObject;
 
 import hello.common.ResponseModel;
-import hello.common.ResultCode;
+import hello.common.ResultCodeEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,11 +32,11 @@ public class GlobalExceptionHandler {
 			int lineNumber = element.getLineNumber();
 			errorPosition = fileName + ":" + lineNumber;
 		}
-		ResponseModel responseModel = ResponseModel.result(ResultCode.SERVER_ERROR);
+		ResponseModel responseModel = ResponseModel.result(ResultCodeEnum.SERVER_ERROR);
 		JSONObject errorObject = new JSONObject();
 		errorObject.put("errorLocation", e.toString() + "    错误位置:" + errorPosition);
 		responseModel.setData(errorObject);
-		log.error("Exception", e);
+		e.printStackTrace();
 		return responseModel;
 	}
 
@@ -50,13 +48,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseModel httpRequestMethodHandler() {
 		log.error("Catch HttpRequestMethodNotSupportedException");
-		return ResponseModel.result(ResultCode.REQUEST_METHOD_ERROR);
+		return ResponseModel.result(ResultCodeEnum.REQUEST_METHOD_ERROR);
 	}
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseModel requestParameterExceptionHandler(MissingServletRequestParameterException missingServletRequestParameterException) {
         log.error("Catch MissingServletRequestParameterException {}.", missingServletRequestParameterException.getMessage());
-        return ResponseModel.result(ResultCode.PARAMETER_CHECK_ERROR.getErrorCode(), missingServletRequestParameterException.getMessage());
+        return ResponseModel.result(ResultCodeEnum.PARAMETER_CHECK_ERROR.getErrorCode(), missingServletRequestParameterException.getMessage());
     }
 	/**
 	 * 本系统自定义错误的拦截器
@@ -65,7 +63,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(MyRuntimeException.class)
 	public ResponseModel myRuntimeExceptionHandler(MyRuntimeException myRuntimeException) {
-		log.error("Catch MyRuntimeException ; {}", myRuntimeException.getResponseResult());
+		log.error("Catch {} MyRuntimeException ; {}", myRuntimeException.getStackTrace()[0].toString(), myRuntimeException.getResponseResult());
 		return myRuntimeException.getResponseResult();
 	}
 }

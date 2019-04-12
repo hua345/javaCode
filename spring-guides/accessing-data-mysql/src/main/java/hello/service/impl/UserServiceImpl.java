@@ -1,6 +1,8 @@
 package hello.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import hello.common.ResultCodeEnum;
+import hello.config.exception.MyRuntimeException;
 import hello.dto.request.AddUserInputDTO;
 import hello.dto.response.AddUserOutputDTO;
 import hello.mapper.UserMapper;
@@ -50,6 +52,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<User> getAllUsers() {
-        return userMapper.selectAllUser();
+        List<User> aa = userMapper.selectAllUser();
+        if(aa.size() >= 2){
+            log.info("参数校验失败");
+            throw new MyRuntimeException(ResultCodeEnum.REQUEST_ERROR);
+        }
+        return aa;
     }
 }
