@@ -1,8 +1,8 @@
 package hello.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import hello.common.ResponseModel;
-import hello.common.ResultCodeEnum;
+import hello.common.ResponseVO;
+import hello.common.ResponseStatusEnum;
 import hello.config.exception.MyRuntimeException;
 import hello.dto.request.AddUserInputDTO;
 import hello.dto.response.AddUserOutputDTO;
@@ -35,30 +35,30 @@ public class UserController {
 
     @ApiOperation(value="添加用户", notes="添加用户")
     @PostMapping(path = "/add")
-    public ResponseModel<AddUserOutputDTO> addNewUser(@RequestBody AddUserInputDTO param) {
+    public ResponseVO<AddUserOutputDTO> addNewUser(@RequestBody AddUserInputDTO param) {
         log.info("Handing request addNewUser begin, req: {}", JSONObject.toJSONString(param));
 
         AddUserOutputDTO addUserOutputDTO = new AddUserOutputDTO();
         addUserOutputDTO.setStatus("Saved");
-        return ResponseModel.success(addUserOutputDTO);
+        return ResponseVO.ok(addUserOutputDTO);
     }
 
     @GetMapping(path = "/exception")
-    public ResponseModel exceptionTest(@RequestParam String name) {
+    public ResponseVO exceptionTest(@RequestParam String name) {
         log.info("Handing request exceptionTest begin, req: {}");
         if(StringUtils.isBlank(name)){
-            throw new MyRuntimeException(ResultCodeEnum.PARAMETER_CHECK_ERROR);
+            throw new MyRuntimeException(ResponseStatusEnum.PARAMETER_CHECK_ERROR);
         }
         JSONObject result = new JSONObject();
         result.put("userList",userService.getAllUsers());
-        return ResponseModel.success(result);
+        return ResponseVO.ok(result);
     }
 
     @GetMapping(path = "/all")
-    public ResponseModel getAllUsers() {
+    public ResponseVO getAllUsers() {
         log.info("Handing request getAllUsers begin, req: {}");
         JSONObject result = new JSONObject();
         result.put("userList",userService.getAllUsers());
-        return ResponseModel.success(result);
+        return ResponseVO.ok(result);
     }
 }

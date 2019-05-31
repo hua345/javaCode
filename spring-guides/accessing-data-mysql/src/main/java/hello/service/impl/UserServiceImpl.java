@@ -1,7 +1,7 @@
 package hello.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import hello.common.ResultCodeEnum;
+import hello.common.ResponseStatusEnum;
 import hello.config.exception.MyRuntimeException;
 import hello.dto.request.AddUserInputDTO;
 import hello.dto.response.AddUserOutputDTO;
@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
     public AddUserOutputDTO addUser(AddUserInputDTO param) {
         log.info("call service addUser begin, req: {}", JSONObject.toJSONString(param));
         AddUserOutputDTO result = new AddUserOutputDTO();
-
         // TODO 补充业务逻辑代码
         User n = new User();
         n.setName(param.getName());
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
         List<User> aa = userMapper.selectAllUser();
         if(aa.size() >= 2){
             log.info("参数校验失败");
-            throw new MyRuntimeException(ResultCodeEnum.REQUEST_ERROR);
+            throw new MyRuntimeException(ResponseStatusEnum.REQUEST_ERROR);
         }
         return aa;
     }
