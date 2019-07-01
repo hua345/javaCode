@@ -1,0 +1,60 @@
+[submodule "spring-guides/gs-messaging-redis"]
+	path = spring-guides/gs-messaging-redis
+	url = https://github.com/spring-guides/gs-messaging-redis.git
+[submodule "spring-guides/gs-messaging-rabbitmq"]
+	path = spring-guides/gs-messaging-rabbitmq
+	url = https://github.com/spring-guides/gs-messaging-rabbitmq.git
+[submodule "spring-guides/gs-messaging-jms"]
+	path = spring-guides/gs-messaging-jms
+	url = https://github.com/spring-guides/gs-messaging-jms.git
+[submodule "spring-guides/gs-managing-transactions"]
+	path = spring-guides/gs-managing-transactions
+	url = https://github.com/spring-guides/gs-managing-transactions.git
+[submodule "spring-guides/gs-gradle"]
+	path = spring-guides/gs-gradle
+	url = https://github.com/spring-guides/gs-gradle.git
+[submodule "spring-guides/gs-gateway"]
+	path = spring-guides/gs-gateway
+	url = https://github.com/spring-guides/gs-gateway.git
+[submodule "spring-guides/gs-maven"]
+	path = spring-guides/gs-maven
+	url = https://github.com/spring-guides/gs-maven.git
+[submodule "spring-guides/gs-async-method"]
+	path = spring-guides/gs-async-method
+	url = https://github.com/spring-guides/gs-async-method.git
+[submodule "spring-guides/gs-accessing-data-rest"]
+	path = spring-guides/gs-accessing-data-rest
+	url = https://github.com/spring-guides/gs-accessing-data-rest.git
+[submodule "spring-guides/gs-accessing-data-mysql"]
+	path = spring-guides/gs-accessing-data-mysql
+	url = https://github.com/spring-guides/gs-accessing-data-mysql.git
+[submodule "spring-guides/tut-spring-boot-oauth2"]
+	path = spring-guides/tut-spring-boot-oauth2
+	url = https://github.com/spring-guides/tut-spring-boot-oauth2.git
+[submodule "spring-guides/gs-routing-and-filtering"]
+	path = spring-guides/gs-routing-and-filtering
+	url = https://github.com/spring-guides/gs-routing-and-filtering.git
+[submodule "spring-guides/gs-caching"]
+	path = spring-guides/gs-caching
+	url = https://github.com/spring-guides/gs-caching.git
+[submodule "spring-guides/gs-testing-web"]
+	path = spring-guides/gs-testing-web
+	url = https://github.com/spring-guides/gs-testing-web.git
+[submodule "spring-guides/gs-uploading-files"]
+	path = spring-guides/gs-uploading-files
+	url = https://github.com/spring-guides/gs-uploading-files.git
+[submodule "spring-guides/gs-validating-form-input"]
+	path = spring-guides/gs-validating-form-input
+	url = https://github.com/spring-guides/gs-validating-form-input.git
+[submodule "spring-guides/gs-multi-module"]
+	path = spring-guides/gs-multi-module
+	url = https://github.com/spring-guides/gs-multi-module.git
+[submodule "spring-guides/gs-scheduling-tasks"]
+	path = spring-guides/gs-scheduling-tasks
+	url = https://github.com/spring-guides/gs-scheduling-tasks.git
+[submodule "spring-guides/gs-service-registration-and-discovery"]
+	path = spring-guides/gs-service-registration-and-discovery
+	url = https://github.com/spring-guides/gs-service-registration-and-discovery.git
+[submodule "spring-guides/gs-spring-boot"]
+	path = spring-guides/gs-spring-boot
+	url = https://github.com/spring-guides/gs-spring-boot.git
