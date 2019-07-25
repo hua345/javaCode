@@ -61,3 +61,6 @@
 [submodule "spring-guides/gs-circuit-breaker"]
 	path = spring-guides/gs-circuit-breaker
 	url = https://github.com/spring-guides/gs-circuit-breaker.git
+[submodule "springboot-learning-example"]
+	path = springboot-learning-example
+	url = https://github.com/JeffLi1993/springboot-learning-example
