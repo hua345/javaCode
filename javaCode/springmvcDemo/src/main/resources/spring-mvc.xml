@@ -16,26 +16,15 @@
                         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
                         http://www.springframework.org/schema/tx 
                         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
-   
-    <!-- 配置扫描的包 -->
+
+	<!-- 自动扫描包，实现支持注解的IOC -->
 	<context:component-scan base-package="com.github.chenjianhua" />
+	<!-- Spring MVC不处理静态资源 -->
+	<mvc:default-servlet-handler />
 
-	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-		<property name="supportedMediaTypes">
-			<list>
-				<value>text/html;charset=UTF-8</value>
-			</list>
-		</property>
-	</bean>
+	<!-- 支持mvc注解驱动 -->
+	<mvc:annotation-driven />
 
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				<ref bean="mappingJacksonHttpMessageConverter" />
-			</list>
-		</property>
-	</bean>
-	
 	<!-- 视图解析器 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
 		  p:prefix="/" p:suffix=".jsp" />
