@@ -3,6 +3,9 @@
 **/class
 **/.classpath
 **/.project
+**/.mvn
+**/mvnw
+**/mvnw.cmd
 # nodejs #
 **/node_modules
 **/node_modules/*
