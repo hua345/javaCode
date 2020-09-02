@@ -1,15 +1,18 @@
 package com.github.chenjianhua.springbootelasticsearch;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.chenjianhua.springbootelasticsearch.model.Book;
+import com.github.chenjianhua.springbootelasticsearch.model.JdProduct;
+import com.github.chenjianhua.springbootelasticsearch.util.HtmlParseUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -19,20 +22,17 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 import java.util.Date;
+import java.util.List;
 
 /**
- * https://www.elastic.co/guide/en/elasticsearch/client/java-api/index.html
- * https://www.elastic.co/guide/en/elasticsearch/client/java-api/current/java-query-dsl.html
- * https://www.elastic.co/guide/en/elasticsearch/client/java-api/7.8/java-full-text-queries.html
- * https://www.elastic.co/guide/en/elasticsearch/client/java-api/7.8/java-term-level-queries.html
+ * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/7.9/java-rest-high.html
+ * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/7.9/java-rest-high-search.html
  */
 @Slf4j
 @SpringBootTest
@@ -40,6 +40,56 @@ class SpringbootElasticsearchApplicationTests {
 
     @Autowired
     RestHighLevelClient restHighLevelClient;
+
+    @Test
+    public void testJdProduct() throws Exception {
+        List<JdProduct> products = HtmlParseUtils.listGoods("牛奶");
+        log.info(products.toString());
+    }
+
+// PUT jd-product
+//{
+//  "mappings": {
+//    "properties": {
+//      "sku": {
+//        "type": "keyword"
+//      },
+//      "productName": {
+//        "type": "text",
+//        "analyzer": "ik_max_word",
+//        "search_analyzer": "ik_smart"
+//      },
+//      "shopName":{
+//        "type": "keyword"
+//      },
+//      "price": {
+//        "type": "scaled_float",
+//        "scaling_factor": 100
+//      }
+//    }
+//  }
+//}
+//批量插入数据
+@Test
+public void testBulkRequest() throws Exception {
+    List<JdProduct> products = HtmlParseUtils.listGoods("牛奶");
+    BulkRequest bulkRequest = new BulkRequest();
+    bulkRequest.timeout("1m");
+    ObjectMapper mapper = new ObjectMapper();
+
+    products.stream().forEach(item ->{
+        try {
+            bulkRequest.add(
+                    new IndexRequest("jd-product").id(item.getSku())
+                            .source(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(item), XContentType.JSON));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    });
+
+    BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+    log.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(bulk));
+}
 
     @Test
     public void createDocument() throws Exception {
@@ -60,17 +110,20 @@ class SpringbootElasticsearchApplicationTests {
         log.info(index.status().toString());
     }
 
+    /**
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/7.9/java-rest-high-search.html
+     */
     @Test
     public void testSearch() throws Exception {
         // 通过id获取文档
-        final GetRequest request = new GetRequest("book_index3", "1");
+        final GetRequest request = new GetRequest("jd-product", "8139349");
         final GetResponse response = restHighLevelClient.get(request, RequestOptions.DEFAULT);
         log.info(response.toString());
         // 判断文档是否存在
         log.info("文档是否存在:{}", restHighLevelClient.exists(request, RequestOptions.DEFAULT));
 
         //1、创建查询请求，规定查询的索引
-        SearchRequest searchRequest = new SearchRequest("book_index3");
+        SearchRequest searchRequest = new SearchRequest("jd-product");
         //2、创建条件构造
         SearchSourceBuilder builder = new SearchSourceBuilder();
         //3、DSL查询语言对应的是QueryBuilders.*
@@ -79,14 +132,14 @@ class SpringbootElasticsearchApplicationTests {
         // 短语查询:QueryBuilders.termQuery("bookName", "算法");
         // QueryBuilders.termsQuery("bookName", "算法","爱");
         // QueryBuilders.rangeQuery("price").from(5).to(10)
-        MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("bookName", "算法");
+        MatchQueryBuilder termQueryBuilder = QueryBuilders.matchQuery("productName", "伊利");
         builder.query(termQueryBuilder);
         //分页
         builder.from(0);
         builder.size(10);
         // 排序
         // builder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
-        builder.sort(new FieldSortBuilder("bookDate").order(SortOrder.DESC));
+        builder.sort(new FieldSortBuilder("price").order(SortOrder.DESC));
         //4、将构造好的条件放入请求中
         searchRequest.source(builder);
 
