@@ -103,6 +103,9 @@ public class IdLeafRedisServiceImpl implements IdLeafServiceFactory {
 //        RedisAtomicLong entityIdCounter = new RedisAtomicLong(bizTag, stringRedisTemplate.getConnectionFactory());
 //        Long increment = entityIdCounter.getAndIncrement();
         Long increment = stringRedisTemplate.opsForValue().increment(bizTag);
+        if(increment <= 0){
+            increment = stringRedisTemplate.opsForValue().increment(bizTag);
+        }
         LeafAlloc leafAlloc = new LeafAlloc();
         leafAlloc.setBizTag(bizTag);
         leafAlloc.setMaxId(increment * DEFAULT_STEP);
