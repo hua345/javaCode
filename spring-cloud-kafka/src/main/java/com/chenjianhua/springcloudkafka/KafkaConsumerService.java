@@ -14,6 +14,6 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     @KafkaListener(topics = {KafkaConstants.DEFAULT_TOPIC}, groupId = KafkaConstants.DEFAULT_GROUP_ID)
     public void consumer01(ConsumerRecord<Integer, String> integerStringConsumerRecords) {
-        log.info("consumer01:{}", integerStringConsumerRecords.value());
+        log.info("consumer01:{}", integerStringConsumerRecords.toString());
     }
 }
