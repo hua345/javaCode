@@ -11,9 +11,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class KafkaConsumer {
-    @KafkaListener(topics = {KafkaConstants.DEFAULT_TOPIC}, groupId = KafkaConstants.DEFAULT_GROUP_ID)
+public class KafkaConsumerService {
+    @KafkaListener(topics = {KafkaConstants.DEFAULT_TOPIC}, groupId = KafkaConstants.DEFAULT_GROUP_ID, clientIdPrefix = KafkaConstants.DEFAULT_TOPIC + "01")
     public void consumer01(ConsumerRecord<Integer, String> integerStringConsumerRecords) {
         log.info("consumer01:{}", integerStringConsumerRecords.toString());
+    }
+
+    @KafkaListener(topics = {KafkaConstants.DEFAULT_TOPIC}, groupId = KafkaConstants.DEFAULT_GROUP_ID, clientIdPrefix = KafkaConstants.DEFAULT_TOPIC + "02")
+    public void consumer02(ConsumerRecord<Integer, String> integerStringConsumerRecords) {
+        log.info("consumer02:{}", integerStringConsumerRecords.toString());
     }
 }
