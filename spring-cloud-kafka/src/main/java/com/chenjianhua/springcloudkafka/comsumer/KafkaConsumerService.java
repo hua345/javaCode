@@ -1,5 +1,6 @@
-package com.chenjianhua.springcloudkafka;
+package com.chenjianhua.springcloudkafka.comsumer;
 
+import com.chenjianhua.springcloudkafka.KafkaConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;

@@ -28,18 +28,18 @@ public class KafkaProducerService {
         future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
             @Override
             public void onSuccess(SendResult<String, String> stringStringSendResult) {
-                log.info("发送异步kafka消息成功");
+                log.info("发送kafka topic:{}异步消息成功", topic);
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-                log.info("发送异步kafka消息失败");
+                log.info("发送kafka topic:{}异步消息:{}失败", topic, msg);
             }
         });
     }
 
     public void asyncSend(String topic, String msg) {
-        asyncSend(topic, msg);
+        asyncSend(topic, null, msg);
     }
 
     public boolean syncSend(String topic, String key, String msg) {
@@ -48,13 +48,12 @@ public class KafkaProducerService {
             kafkaTemplate.send(producerRecord).get(5, TimeUnit.SECONDS);
             return true;
         } catch (Exception e) {
-            log.info("发送kafka同步消息失败");
+            log.info("发送kafka topic:{}同步消息:{}失败", topic, msg);
             return false;
         }
-
     }
 
     public boolean syncSend(String topic, String msg) {
-        return syncSend(topic, msg);
+        return syncSend(topic, null, msg);
     }
 }
