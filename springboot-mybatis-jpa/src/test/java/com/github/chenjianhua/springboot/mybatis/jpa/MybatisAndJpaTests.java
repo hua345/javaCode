@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @author chenjianhua
@@ -41,6 +42,7 @@ public class MybatisAndJpaTests {
         Book result = bookService.mybatisFindById(book.getId());
         log.info("mybatis查询结果book:{}", JsonUtil.toJSONString(result));
     }
+
     @Test
     public void jpaTest() {
         Book book = new Book();
@@ -49,8 +51,8 @@ public class MybatisAndJpaTests {
         book.setCreateTime(LocalDateTime.now());
         book.setUpdateTime(LocalDateTime.now());
         log.info("jpa保存book:{}", JsonUtil.toJSONString(book));
-        bookService.mybatisSave(book);
-        Book result = bookService.mybatisFindById(book.getId());
+        bookService.jpaSave(book);
+        Optional<Book> result = bookService.jpaFindById(book.getId());
         log.info("jpa查询结果book:{}", JsonUtil.toJSONString(result));
     }
 }
