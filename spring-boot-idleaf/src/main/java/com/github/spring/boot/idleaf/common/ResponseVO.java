@@ -1,12 +1,12 @@
 package com.github.spring.boot.idleaf.common;
 
-import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
 
+import com.github.spring.boot.idleaf.utils.JsonUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.http.HttpStatus;
+
 /**
  * @author chenjianhua
  * @date 2020-09-01 16:46:26
@@ -43,6 +43,6 @@ public class ResponseVO<T> implements Serializable {
 
     @Override
     public String toString() {
-        return JSONObject.toJSONString(this);
+        return JsonUtil.toJSONString(this);
     }
 }
