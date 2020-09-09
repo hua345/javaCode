@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MyThreadTest {
 
     @Test
-    public void myThreadTest() {
+    public void callableTest() {
         MyCallable myCallable = new MyCallable();
         Future<String> future = ThreadPoolUtil.getInstance().submit(myCallable);
         try {
@@ -28,27 +28,5 @@ public class MyThreadTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Test
-    public void AtomicTest() throws Exception {
-        int threadCount = 20;
-        int incrementNum = 10000;
-        AtomicInteger count = new AtomicInteger();
-        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-        for (int i = 0; i < threadCount; i++) {
-            ThreadPoolUtil.getInstance().submit(new Runnable() {
-                @Override
-                public void run() {
-                    for (int j = 0; j < incrementNum; j++) {
-                        count.incrementAndGet();
-                    }
-                    countDownLatch.countDown();
-                }
-            });
-        }
-        countDownLatch.await();
-        assertEquals(count.get(), threadCount * incrementNum);
-        System.out.println(count.get());
     }
 }
