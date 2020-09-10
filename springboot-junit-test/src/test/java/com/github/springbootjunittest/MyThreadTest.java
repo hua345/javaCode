@@ -20,10 +20,11 @@ public class MyThreadTest {
 
     @Test
     public void callableTest() {
-        MyCallable myCallable = new MyCallable();
+        String name = "fang";
+        MyCallable myCallable = new MyCallable(name);
         Future<String> future = ThreadPoolUtil.getInstance().submit(myCallable);
         try {
-            System.out.println("result: " + future.get());
+            assertEquals(MyCallable.Hello + name, future.get());
             System.out.println(Thread.currentThread().getName() + " End. Time = " + DateUtil.getCurrentDate());
         } catch (Exception e) {
             e.printStackTrace();
