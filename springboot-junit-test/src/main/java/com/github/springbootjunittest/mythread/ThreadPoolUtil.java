@@ -11,6 +11,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Slf4j
 public class ThreadPoolUtil {
+    /**
+     * 核心线程用完以后，多余的线程任务会先放到任务队列中
+     * 当任务队列满了以后，再有任务才会去创建非核心线程来运行线程任务。
+     */
     public static class MyDiscardPolicy implements RejectedExecutionHandler {
         public MyDiscardPolicy() {
         }

@@ -34,7 +34,7 @@ public class LockSupportTest {
         }, "LockSupport-Thread");
         t.start();
         TimeUnit.MILLISECONDS.sleep(1000);
-        log.info("老婆喊我起床");
+        log.info("芳芳喊我起床");
         LockSupport.unpark(t);
     }
 
@@ -57,7 +57,7 @@ public class LockSupportTest {
             }
         }, "LockSupport-Thread");
         t.start();
-        log.info("约老婆明天去玩");
+        log.info("约芳芳明天去玩");
         LockSupport.unpark(t);
         countDownLatch.await();
     }

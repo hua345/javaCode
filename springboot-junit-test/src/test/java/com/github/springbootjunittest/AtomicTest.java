@@ -1,6 +1,7 @@
 package com.github.springbootjunittest;
 
 import com.github.springbootjunittest.mythread.ThreadPoolUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StopWatch;
 
@@ -9,22 +10,44 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicStampedReference;
 import java.util.concurrent.atomic.LongAdder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author chenjianhua
  * @date 2020/9/9 21:17
  */
+@Slf4j
 public class AtomicTest {
+    /**
+     * volatile 解决多线程内存不可见问题。对于一写多读，是可以解决变量同步问题，
+     * 但是如果多写，同样无法解决线程安全问题。
+     */
     private static int threadCount = 20;
     private static int incrementNum = 100000;
-    StopWatch stopWatch = new StopWatch();
+    private volatile int num = 1;
+
+    @Test
+    public void VolatileTest() throws Exception {
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+        for (int i = 0; i < threadCount; i++) {
+            ThreadPoolUtil.getInstance().submit(new Runnable() {
+                @Override
+                public void run() {
+                    for (int j = 0; j < incrementNum; j++) {
+                        num++;
+                    }
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        countDownLatch.await();
+        assertTrue((threadCount * incrementNum) > num);
+    }
 
     @Test
     public void AtomicTest() throws Exception {
         AtomicInteger count = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-        stopWatch.start("AtomicInteger");
         for (int i = 0; i < threadCount; i++) {
             ThreadPoolUtil.getInstance().submit(new Runnable() {
                 @Override
@@ -37,16 +60,13 @@ public class AtomicTest {
             });
         }
         countDownLatch.await();
-        stopWatch.stop();
         assertEquals(threadCount * incrementNum, count.get());
-        System.out.printf("AtomicInteger自增次数:%d 耗时:%dms", threadCount * incrementNum, stopWatch.getTotalTimeMillis());
     }
 
     @Test
     public void LongAdderTest() throws Exception {
         LongAdder longAdder = new LongAdder();
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-        stopWatch.start("LongAdder");
         for (int i = 0; i < threadCount; i++) {
             ThreadPoolUtil.getInstance().submit(new Runnable() {
                 @Override
@@ -59,17 +79,7 @@ public class AtomicTest {
             });
         }
         countDownLatch.await();
-        stopWatch.stop();
         assertEquals(threadCount * incrementNum, longAdder.sum());
-        System.out.printf("LongAdder自增次数:%d 耗时:%dms", threadCount * incrementNum, stopWatch.getTotalTimeMillis());
-    }
-
-    public void printCurrentCas(AtomicStampedReference<String> asr) {
-        System.out.println(Thread.currentThread().getName() + "当前变量值=" + asr.getReference() + "当前版本戳=" + asr.getStamp());
-    }
-
-    public void printCasResult(AtomicStampedReference<String> asr, boolean result) {
-        System.out.println(Thread.currentThread().getName() + "当前变量值=" + asr.getReference() + "当前版本戳=" + asr.getStamp() + "更新成功?" + result);
     }
 
     @Test
@@ -123,6 +133,6 @@ public class AtomicTest {
         }
         countDownLatch.await();
         assertEquals(asr.getReference(), asr.getStamp());
-        System.out.println("执行次数:" + threadCount * incrementNum + ",成功次数:" + asr.getReference());
+        assertTrue((threadCount * incrementNum) > asr.getReference());
     }
 }
