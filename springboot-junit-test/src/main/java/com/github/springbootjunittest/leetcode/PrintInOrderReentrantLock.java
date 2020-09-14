@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author chenjianhua
  * @date 2020/9/14
  */
-public class PrintInOrderReentrantLock implements PrintInOrderInterface {
+public class PrintInOrderReentrantLock implements PrintInOrderInterface1114 {
     private ReentrantLock lock = new ReentrantLock();
     private Condition condition = lock.newCondition();
     private int count = 1;

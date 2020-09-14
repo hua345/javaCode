@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author chenjianhua
  * @date 2020/9/14
  */
-public class PrintInOrderCAS implements PrintInOrderInterface {
+public class PrintInOrderCAS implements PrintInOrderInterface1114 {
     private static AtomicInteger order = new AtomicInteger(0);
 
     public PrintInOrderCAS() {

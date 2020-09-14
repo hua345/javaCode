@@ -1,18 +1,15 @@
 package com.github.springbootjunittest.leetcode;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 /**
  * @author chenjianhua
  * @date 2020/9/14
  */
-public class PrintInOrderSync implements PrintInOrderInterface {
+public class PrintInOrderSynchronized implements PrintInOrderInterface1114 {
     private boolean firstFinished;
     private boolean secondFinished;
     private Object lock = new Object();
 
-    public PrintInOrderSync() {
+    public PrintInOrderSynchronized() {
     }
 
     @Override

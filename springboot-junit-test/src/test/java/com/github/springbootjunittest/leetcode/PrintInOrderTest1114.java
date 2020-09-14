@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @date 2020/9/14
  */
 @Slf4j
-public class PrintInOrderTest {
+public class PrintInOrderTest1114 {
 
     private final static String FIRST = "first";
     private final static String SECOND = "second";
     private final static String THIRD = "third";
 
-    public void test(PrintInOrderInterface printInOrder) throws Exception {
+    public void test(PrintInOrderInterface1114 printInOrder) throws Exception {
         CountDownLatch countDownLatch = new CountDownLatch(3);
         BlockingQueue<String> blockingQueue = new LinkedBlockingQueue(4);
         ThreadPoolUtil.getInstance().submit(new Runnable() {
@@ -94,7 +94,7 @@ public class PrintInOrderTest {
 
     @Test
     public void PrintInOrderSyncTest() throws Exception {
-        PrintInOrderSync printInOrderSync = new PrintInOrderSync();
+        PrintInOrderSynchronized printInOrderSync = new PrintInOrderSynchronized();
         test(printInOrderSync);
     }
 

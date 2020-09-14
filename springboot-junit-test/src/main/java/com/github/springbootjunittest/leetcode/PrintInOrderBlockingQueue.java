@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @author chenjianhua
  * @date 2020/9/14
  */
-public class PrintInOrderBlockingQueue implements PrintInOrderInterface {
+public class PrintInOrderBlockingQueue implements PrintInOrderInterface1114 {
     private BlockingQueue<Integer> one;
     private BlockingQueue<Integer> two;
 

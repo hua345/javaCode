@@ -6,7 +6,7 @@ import java.util.concurrent.Semaphore;
  * @author chenjianhua
  * @date 2020/9/14
  */
-public class PrintInOrderSemaphore implements PrintInOrderInterface {
+public class PrintInOrderSemaphore implements PrintInOrderInterface1114 {
     private Semaphore s2;
     private Semaphore s3;
 
