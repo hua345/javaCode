@@ -57,6 +57,9 @@ public class JsonUtil {
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         //大小写脱敏 默认为false  需要改为true
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES,false);
+        // 默认小写驼峰命名
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
+
 
     }
 
