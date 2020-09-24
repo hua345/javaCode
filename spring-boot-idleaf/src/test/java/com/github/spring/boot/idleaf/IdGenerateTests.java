@@ -38,7 +38,7 @@ public class IdGenerateTests {
     public void SnowFlakeTest() {
         log.info("雪花算法起始时间:{}", DateUtil.formatDateTime(SnowFlake.START_STMP, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS));
         Long startMS = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < num * 2; i++) {
             SnowFlakeUtil.getNextId();
         }
         Long endMS = System.currentTimeMillis();

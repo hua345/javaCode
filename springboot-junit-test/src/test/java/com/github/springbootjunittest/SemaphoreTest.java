@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author chenjianhua
@@ -23,7 +20,7 @@ public class SemaphoreTest {
         AtomicInteger count = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         // 资源数目
-        Semaphore semaphore = new Semaphore(3);
+        Semaphore semaphore = new Semaphore(1);
         for (int i = 0; i < threadCount; i++) {
             ThreadPoolUtil.getInstance().submit(new SemaphoreTask(semaphore, countDownLatch, i));
         }

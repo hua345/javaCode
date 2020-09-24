@@ -105,30 +105,8 @@ public class IdLeafMysqlService implements IdLeafService {
             try {
                 final Segment segment = buffer.getCurrent();
                 // 加载另外一个id段
-                if (!buffer.isNextReady() && (segment.getAvailableIdRange() < 0.8 * segment.getStep()) && buffer.getThreadRunning().compareAndSet(false, true)) {
-                    service.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            Segment next = buffer.getSegments()[buffer.nextPos()];
-                            boolean updateOk = false;
-                            try {
-                                updateLeafFromDb(buffer.getKey(), next);
-                                updateOk = true;
-                                logger.info("update segment {} from db {}", buffer.getKey(), next);
-                            } catch (Exception e) {
-                                logger.warn(buffer.getKey() + " updateSegmentFromDb exception", e);
-                            } finally {
-                                if (updateOk) {
-                                    buffer.wLock().lock();
-                                    buffer.setNextReady(true);
-                                    buffer.getThreadRunning().set(false);
-                                    buffer.wLock().unlock();
-                                } else {
-                                    buffer.getThreadRunning().set(false);
-                                }
-                            }
-                        }
-                    });
+                if (!buffer.isNextReady() && (segment.getAvailableIdRange() < 0.8 * segment.getStep())) {
+                    loadNextBuffer(buffer);
                 }
                 long value = segment.getCurrentId().getAndIncrement();
                 if (value < segment.getMax()) {
@@ -137,7 +115,7 @@ public class IdLeafMysqlService implements IdLeafService {
             } finally {
                 buffer.rLock().unlock();
             }
-            waitAndSleep(buffer);
+            waitLoadNextBuffer(buffer);
             buffer.wLock().lock();
             try {
                 final Segment segment = buffer.getCurrent();
@@ -158,13 +136,38 @@ public class IdLeafMysqlService implements IdLeafService {
         }
     }
 
-    private void waitAndSleep(SegmentBuffer buffer) {
-        while (buffer.getThreadRunning().get()) {
+    private void loadNextBuffer(final SegmentBuffer buffer) {
+        if (buffer.getThreadRunning().compareAndSet(false, true)) {
+            service.execute(() -> {
+                Segment next = buffer.getSegments()[buffer.nextPos()];
+                boolean updateOk = false;
+                try {
+                    updateLeafFromDb(buffer.getKey(), next);
+                    updateOk = true;
+                    logger.info("update segment {} from db {}", buffer.getKey(), next);
+                } catch (Exception e) {
+                    logger.warn(buffer.getKey() + " updateSegmentFromDb exception", e);
+                } finally {
+                    if (updateOk) {
+                        buffer.wLock().lock();
+                        buffer.setNextReady(true);
+                        buffer.getThreadRunning().set(false);
+                        buffer.wLock().unlock();
+                        buffer.getQueue().add(1);
+                    } else {
+                        buffer.getThreadRunning().set(false);
+                    }
+                }
+            });
+        }
+    }
+
+    private void waitLoadNextBuffer(final SegmentBuffer buffer) {
+        if (buffer.getThreadRunning().get()) {
             try {
-                TimeUnit.MILLISECONDS.sleep(6);
+                buffer.getQueue().take();
             } catch (InterruptedException e) {
-                logger.warn("Thread {} Interrupted", Thread.currentThread().getName());
-                break;
+                Thread.currentThread().interrupt();
             }
         }
     }

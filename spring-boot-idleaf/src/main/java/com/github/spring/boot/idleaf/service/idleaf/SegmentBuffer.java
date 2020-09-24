@@ -1,6 +1,13 @@
 package com.github.spring.boot.idleaf.service.idleaf;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Arrays;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -10,6 +17,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author chenjianhua
  * @date 2020-09-01 16:46:26
  */
+@Getter
+@Setter
 public class SegmentBuffer {
     private String key;
     /**
@@ -29,6 +38,7 @@ public class SegmentBuffer {
      */
     private final AtomicBoolean threadRunning;
     private final ReadWriteLock lock;
+    private final BlockingQueue<Integer> queue;
 
     private volatile int step;
     private volatile long updateTimestamp;
@@ -39,14 +49,7 @@ public class SegmentBuffer {
         nextReady = false;
         threadRunning = new AtomicBoolean(false);
         lock = new ReentrantReadWriteLock();
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
+        queue = new LinkedBlockingQueue<Integer>(1);
     }
 
     public Segment[] getSegments() {
@@ -57,24 +60,12 @@ public class SegmentBuffer {
         return segments[currentPos];
     }
 
-    public int getCurrentPos() {
-        return currentPos;
-    }
-
     public int nextPos() {
         return (currentPos + 1) % 2;
     }
 
     public void switchPos() {
         currentPos = nextPos();
-    }
-
-    public boolean isNextReady() {
-        return nextReady;
-    }
-
-    public void setNextReady(boolean nextReady) {
-        this.nextReady = nextReady;
     }
 
     public AtomicBoolean getThreadRunning() {
@@ -87,21 +78,6 @@ public class SegmentBuffer {
 
     public Lock wLock() {
         return lock.writeLock();
-    }
-
-    public int getStep() {
-        return step;
-    }
-
-    public void setStep(int step) {
-        this.step = step;
-    }
-    public long getUpdateTimestamp() {
-        return updateTimestamp;
-    }
-
-    public void setUpdateTimestamp(long updateTimestamp) {
-        this.updateTimestamp = updateTimestamp;
     }
 
     @Override
