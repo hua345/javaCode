@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -20,8 +19,8 @@ import java.util.concurrent.*;
  * @date 2020-09-01 16:46:26
  */
 @Service
-public class IdLeafRedisServiceImpl implements IdLeafServiceFactory {
-    private static final Logger logger = LoggerFactory.getLogger(IdLeafRedisServiceImpl.class);
+public class IdLeafRedisService implements IdLeafService {
+    private static final Logger logger = LoggerFactory.getLogger(IdLeafRedisService.class);
 
     private Map<String, SegmentBuffer> leafMap = new ConcurrentHashMap<String, SegmentBuffer>();
 

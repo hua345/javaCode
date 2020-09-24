@@ -18,8 +18,8 @@ import java.util.concurrent.*;
  * @date 2020-09-01 16:46:26
  */
 @Service
-public class IdLeafMysqlServiceImpl implements IdLeafServiceFactory {
-    private static final Logger logger = LoggerFactory.getLogger(IdLeafMysqlServiceImpl.class);
+public class IdLeafMysqlService implements IdLeafService {
+    private static final Logger logger = LoggerFactory.getLogger(IdLeafMysqlService.class);
 
     private Map<String, SegmentBuffer> leafMap = new ConcurrentHashMap<String, SegmentBuffer>();
 

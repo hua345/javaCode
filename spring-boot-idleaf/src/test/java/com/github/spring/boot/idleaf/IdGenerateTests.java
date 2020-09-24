@@ -1,11 +1,9 @@
 package com.github.spring.boot.idleaf;
 
-import com.github.spring.boot.idleaf.service.idleaf.IdLeafMysqlServiceImpl;
-import com.github.spring.boot.idleaf.service.idleaf.IdLeafRedisServiceImpl;
-import com.github.spring.boot.idleaf.utils.DateFormatEnum;
-import com.github.spring.boot.idleaf.utils.DateUtil;
-import com.github.spring.boot.idleaf.utils.SnowFlake;
-import com.github.spring.boot.idleaf.utils.SnowFlakeUtil;
+import com.github.spring.boot.idleaf.service.idleaf.IdLeafMysqlService;
+import com.github.spring.boot.idleaf.service.idleaf.IdLeafRedisService;
+import com.github.spring.boot.idleaf.utils.*;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,10 +27,12 @@ public class IdGenerateTests {
     private static final Logger log = LoggerFactory.getLogger(IdGenerateTests.class);
 
     @Autowired
-    private IdLeafMysqlServiceImpl leaf;
+    private IdLeafMysqlService leaf;
 
     @Autowired
-    private IdLeafRedisServiceImpl redisLeaf;
+    private IdLeafRedisService redisLeaf;
+
+    private final static Integer num = 100000;
 
     @Test
     public void SnowFlakeTest() {
@@ -47,65 +47,57 @@ public class IdGenerateTests {
 
     @Test
     public void testMysqlLeaf() throws Exception {
-        ExecutorService executorService = new ThreadPoolExecutor(2, 2,
-                0, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(512), // 使用有界队列，避免OOM
-                new ThreadPoolExecutor.DiscardPolicy());
         CountDownLatch latch = new CountDownLatch(2);
-        Long startMS = System.currentTimeMillis();
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100000; i++) {
-                    leaf.getIdByBizTag("leaf-segment-test");
-                }
-                latch.countDown();
+        Long beginId = leaf.getIdByBizTag("leaf-segment-test");
+        ThreadPoolUtil.getInstance().submit(() -> {
+            Long id = 0L;
+            for (int i = 0; i < 100000; i++) {
+                Long currentId = leaf.getIdByBizTag("leaf-segment-test");
+                Assert.assertTrue(currentId > id);
+                id = currentId;
             }
+            latch.countDown();
         });
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100000; i++) {
-                    redisLeaf.getIdByBizTag("leaf-segment-test");
-                }
-                latch.countDown();
+        ThreadPoolUtil.getInstance().submit(() -> {
+            Long id = 0L;
+            for (int i = 0; i < 100000; i++) {
+                Long currentId = leaf.getIdByBizTag("leaf-segment-test");
+                Assert.assertTrue(currentId > id);
+                id = currentId;
             }
+            latch.countDown();
         });
         latch.await();
-        Long endMS = System.currentTimeMillis();
-        log.info("mysql leaf算法生成20万id耗时：{}ms", endMS - startMS);
-        executorService.shutdown();
+        Long endId = leaf.getIdByBizTag("leaf-segment-test");
+        Long expectedId = beginId + num * 2 + 1;
+        Assert.assertEquals(expectedId, endId);
     }
 
     @Test
     public void testRedisLeaf() throws Exception {
-        ExecutorService executorService = new ThreadPoolExecutor(2, 2,
-                0, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(512), // 使用有界队列，避免OOM
-                new ThreadPoolExecutor.DiscardPolicy());
         CountDownLatch latch = new CountDownLatch(2);
-        Long startMS = System.currentTimeMillis();
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100000; i++) {
-                    redisLeaf.getIdByBizTag("leaf-segment-test");
-                }
-                latch.countDown();
+        Long beginId = redisLeaf.getIdByBizTag("leaf-segment-test");
+        ThreadPoolUtil.getInstance().submit(() -> {
+            Long id = beginId;
+            for (int i = 0; i < num; i++) {
+                Long currentId = redisLeaf.getIdByBizTag("leaf-segment-test");
+                Assert.assertTrue(currentId > id);
+                id = currentId;
             }
+            latch.countDown();
         });
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100000; i++) {
-                    redisLeaf.getIdByBizTag("leaf-segment-test");
-                }
-                latch.countDown();
+        ThreadPoolUtil.getInstance().submit(() -> {
+            Long id = beginId;
+            for (int i = 0; i < num; i++) {
+                Long currentId = redisLeaf.getIdByBizTag("leaf-segment-test");
+                Assert.assertTrue(currentId > id);
+                id = currentId;
             }
+            latch.countDown();
         });
         latch.await();
-        Long endMS = System.currentTimeMillis();
-        log.info("redis leaf算法生成20万id耗时：{}ms", endMS - startMS);
-        executorService.shutdown();
+        Long endId = redisLeaf.getIdByBizTag("leaf-segment-test");
+        Long expectedId = beginId + num * 2 + 1;
+        Assert.assertEquals(expectedId, endId);
     }
 }
