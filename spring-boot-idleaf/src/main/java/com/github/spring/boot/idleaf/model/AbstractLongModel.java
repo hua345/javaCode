@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -19,11 +18,12 @@ import java.util.Date;
 @Setter
 @Getter
 @MappedSuperclass
-public class AbstractLeafModel implements Serializable {
+public class AbstractLongModel implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "leafId")
-    @GenericGenerator(name = "leafId", strategy = "com.github.spring.boot.idleaf.model")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
+
     /**
      * 创建人
      */

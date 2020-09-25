@@ -13,7 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Set;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.IntStream;
 
 /**
@@ -33,7 +36,7 @@ public class IdGenerateTests {
     @Autowired
     private IdLeafRedisService redisLeaf;
 
-    private final static Integer num = 3000;
+    private final static Integer num = 2000;
 
     private final static Integer threadNum = 10;
 
@@ -50,15 +53,15 @@ public class IdGenerateTests {
 
     @Test
     public void testMysqlLeaf() throws Exception {
-        CountDownLatch latch = new CountDownLatch(2);
+        CountDownLatch latch = new CountDownLatch(threadNum);
         Long beginId = leaf.getIdByBizTag("leaf-segment-test");
         IntStream.range(0, threadNum).forEach(i -> {
             ThreadPoolUtil.getInstance().submit(() -> {
                 Long id = 0L;
                 for (int j = 0; j < num; j++) {
-                    try{
+                    try {
                         TimeUnit.MILLISECONDS.sleep(1);
-                    }catch (Exception e){
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     Long currentId = leaf.getIdByBizTag("leaf-segment-test");
@@ -76,15 +79,15 @@ public class IdGenerateTests {
 
     @Test
     public void testRedisLeaf() throws Exception {
-        CountDownLatch latch = new CountDownLatch(2);
+        CountDownLatch latch = new CountDownLatch(threadNum);
         Long beginId = redisLeaf.getIdByBizTag("leaf-segment-test");
         IntStream.range(0, threadNum).forEach(i -> {
             ThreadPoolUtil.getInstance().submit(() -> {
                 Long id = beginId;
                 for (int j = 0; j < num; j++) {
-                    try{
+                    try {
                         TimeUnit.MILLISECONDS.sleep(1);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     Long currentId = redisLeaf.getIdByBizTag("leaf-segment-test");
@@ -99,4 +102,5 @@ public class IdGenerateTests {
         Long expectedId = beginId + num * threadNum + 1;
         Assert.assertEquals(expectedId, endId);
     }
+
 }
