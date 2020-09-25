@@ -1,4 +1,4 @@
-package com.github.spring.boot.idleaf.service.idleaf;
+package com.github.spring.boot.idleaf.model;
 
 import com.github.spring.boot.idleaf.utils.SnowFlakeUtil;
 import org.hibernate.MappingException;

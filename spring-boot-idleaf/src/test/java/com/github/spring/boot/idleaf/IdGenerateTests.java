@@ -14,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
 /**
  * @author chenjianhua
@@ -32,7 +33,9 @@ public class IdGenerateTests {
     @Autowired
     private IdLeafRedisService redisLeaf;
 
-    private final static Integer num = 100000;
+    private final static Integer num = 3000;
+
+    private final static Integer threadNum = 10;
 
     @Test
     public void SnowFlakeTest() {
@@ -49,27 +52,25 @@ public class IdGenerateTests {
     public void testMysqlLeaf() throws Exception {
         CountDownLatch latch = new CountDownLatch(2);
         Long beginId = leaf.getIdByBizTag("leaf-segment-test");
-        ThreadPoolUtil.getInstance().submit(() -> {
-            Long id = 0L;
-            for (int i = 0; i < 100000; i++) {
-                Long currentId = leaf.getIdByBizTag("leaf-segment-test");
-                Assert.assertTrue(currentId > id);
-                id = currentId;
-            }
-            latch.countDown();
-        });
-        ThreadPoolUtil.getInstance().submit(() -> {
-            Long id = 0L;
-            for (int i = 0; i < 100000; i++) {
-                Long currentId = leaf.getIdByBizTag("leaf-segment-test");
-                Assert.assertTrue(currentId > id);
-                id = currentId;
-            }
-            latch.countDown();
+        IntStream.range(0, threadNum).forEach(i -> {
+            ThreadPoolUtil.getInstance().submit(() -> {
+                Long id = 0L;
+                for (int j = 0; j < num; j++) {
+                    try{
+                        TimeUnit.MILLISECONDS.sleep(1);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    Long currentId = leaf.getIdByBizTag("leaf-segment-test");
+                    Assert.assertTrue(currentId > id);
+                    id = currentId;
+                }
+                latch.countDown();
+            });
         });
         latch.await();
         Long endId = leaf.getIdByBizTag("leaf-segment-test");
-        Long expectedId = beginId + num * 2 + 1;
+        Long expectedId = beginId + num * threadNum + 1;
         Assert.assertEquals(expectedId, endId);
     }
 
@@ -77,27 +78,25 @@ public class IdGenerateTests {
     public void testRedisLeaf() throws Exception {
         CountDownLatch latch = new CountDownLatch(2);
         Long beginId = redisLeaf.getIdByBizTag("leaf-segment-test");
-        ThreadPoolUtil.getInstance().submit(() -> {
-            Long id = beginId;
-            for (int i = 0; i < num; i++) {
-                Long currentId = redisLeaf.getIdByBizTag("leaf-segment-test");
-                Assert.assertTrue(currentId > id);
-                id = currentId;
-            }
-            latch.countDown();
-        });
-        ThreadPoolUtil.getInstance().submit(() -> {
-            Long id = beginId;
-            for (int i = 0; i < num; i++) {
-                Long currentId = redisLeaf.getIdByBizTag("leaf-segment-test");
-                Assert.assertTrue(currentId > id);
-                id = currentId;
-            }
-            latch.countDown();
+        IntStream.range(0, threadNum).forEach(i -> {
+            ThreadPoolUtil.getInstance().submit(() -> {
+                Long id = beginId;
+                for (int j = 0; j < num; j++) {
+                    try{
+                        TimeUnit.MILLISECONDS.sleep(1);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    Long currentId = redisLeaf.getIdByBizTag("leaf-segment-test");
+                    Assert.assertTrue(currentId > id);
+                    id = currentId;
+                }
+                latch.countDown();
+            });
         });
         latch.await();
         Long endId = redisLeaf.getIdByBizTag("leaf-segment-test");
-        Long expectedId = beginId + num * 2 + 1;
+        Long expectedId = beginId + num * threadNum + 1;
         Assert.assertEquals(expectedId, endId);
     }
 }

@@ -15,5 +15,5 @@ public interface IdLeafService {
 	 * @param bizTag
 	 * @return
 	 */
-	public Long getIdByBizTag(String bizTag) throws InterruptedException;
+	public Long getIdByBizTag(String bizTag);
 }

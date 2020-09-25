@@ -28,7 +28,7 @@ public class IdLeafRedisService implements IdLeafService {
 
     private final static String ID_LEAF_PREFIX = "idLeaf:";
 
-    private final static Integer DEFAULT_STEP = 1000;
+    private final static Integer DEFAULT_STEP = 100;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -164,7 +164,6 @@ public class IdLeafRedisService implements IdLeafService {
                     if (updateOk) {
                         buffer.wLock().lock();
                         buffer.setNextReady(true);
-                        buffer.getThreadRunning().set(false);
                         buffer.wLock().unlock();
                         buffer.getQueue().add(1);
                     } else {
@@ -179,6 +178,7 @@ public class IdLeafRedisService implements IdLeafService {
         if (buffer.getThreadRunning().get()) {
             try {
                 buffer.getQueue().take();
+                buffer.getThreadRunning().set(false);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

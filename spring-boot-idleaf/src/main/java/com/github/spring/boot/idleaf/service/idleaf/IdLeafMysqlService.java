@@ -151,7 +151,6 @@ public class IdLeafMysqlService implements IdLeafService {
                     if (updateOk) {
                         buffer.wLock().lock();
                         buffer.setNextReady(true);
-                        buffer.getThreadRunning().set(false);
                         buffer.wLock().unlock();
                         buffer.getQueue().add(1);
                     } else {
@@ -166,6 +165,7 @@ public class IdLeafMysqlService implements IdLeafService {
         if (buffer.getThreadRunning().get()) {
             try {
                 buffer.getQueue().take();
+                buffer.getThreadRunning().set(false);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -40,7 +39,7 @@ public class RedisLockTest {
     private final static String prefixName = "lock:";
     private final static String testName = "fang";
     private final static String testNameValue = "fang";
-    private final static Integer testNum = 100;
+    private final static Integer threadNum = 100;
     private final static Long ttlSecond = 10L;
 
     @Test
@@ -73,9 +72,9 @@ public class RedisLockTest {
      */
     @Test
     public void RedisLockTest() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(testNum);
+        CountDownLatch latch = new CountDownLatch(threadNum);
         AtomicInteger result = new AtomicInteger();
-        IntStream.range(0, testNum).forEach(i ->
+        IntStream.range(0, threadNum).forEach(i ->
                 ThreadPoolUtil.getInstance().submit(() -> {
                     RedisServer.RedisSession redisSession = redisServer.tryLock(prefixName + testName + i, ttlSecond);
                     if (redisSession.getLockStatus()) {
@@ -99,9 +98,9 @@ public class RedisLockTest {
      */
     @Test
     public void RedisLockTest2() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(testNum);
+        CountDownLatch latch = new CountDownLatch(threadNum);
         AtomicInteger result = new AtomicInteger();
-        IntStream.range(0, testNum).forEach(i ->
+        IntStream.range(0, threadNum).forEach(i ->
                 ThreadPoolUtil.getInstance().submit(() -> {
                     RedisServer.RedisSession redisSession = redisServer.tryLock(prefixName + testName + i, ttlSecond);
                     if (redisSession.getLockStatus()) {
@@ -117,17 +116,17 @@ public class RedisLockTest {
                 })
         );
         latch.await();
-        Assert.assertEquals(testNum.intValue(), result.intValue());
+        Assert.assertEquals(threadNum.intValue(), result.intValue());
     }
 
     /**
-     * 测试key一样时锁情况
+     * 测试key相同2到5次时锁情况
      */
     @Test
     public void RedisLockTest3() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(testNum * 2);
+        CountDownLatch latch = new CountDownLatch(threadNum * 2);
         AtomicInteger result = new AtomicInteger();
-        IntStream.range(0, testNum).forEach(i -> {
+        IntStream.range(0, threadNum).forEach(i -> {
             IntStream.range(0, 2).forEach(j -> {
                 ThreadPoolUtil.getInstance().submit(() -> {
                     RedisServer.RedisSession redisSession = redisServer.tryLock(prefixName + testName + i, ttlSecond);
@@ -145,6 +144,6 @@ public class RedisLockTest {
             });
         });
         latch.await();
-        log.info("result:{}", result);
+        Assert.assertEquals(threadNum.intValue() * 2, result.intValue());
     }
 }
