@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.chenjianhua.springbootelasticsearch.model.Book;
 import com.github.chenjianhua.springbootelasticsearch.model.JdProduct;
 import com.github.chenjianhua.springbootelasticsearch.util.HtmlParseUtils;
+import com.github.chenjianhua.springbootelasticsearch.util.OkHttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.GetRequest;
@@ -26,6 +28,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
@@ -47,7 +50,8 @@ class SpringbootElasticsearchApplicationTests {
         log.info(products.toString());
     }
 
-// PUT jd-product
+
+    // PUT jd-product
 //{
 //  "mappings": {
 //    "properties": {
@@ -70,26 +74,26 @@ class SpringbootElasticsearchApplicationTests {
 //  }
 //}
 //批量插入数据
-@Test
-public void testBulkRequest() throws Exception {
-    List<JdProduct> products = HtmlParseUtils.listGoods("牛奶");
-    BulkRequest bulkRequest = new BulkRequest();
-    bulkRequest.timeout("1m");
-    ObjectMapper mapper = new ObjectMapper();
+    @Test
+    public void testBulkRequest() throws Exception {
+        List<JdProduct> products = HtmlParseUtils.listGoods("牛奶");
+        BulkRequest bulkRequest = new BulkRequest();
+        bulkRequest.timeout("1m");
+        ObjectMapper mapper = new ObjectMapper();
 
-    products.stream().forEach(item ->{
-        try {
-            bulkRequest.add(
-                    new IndexRequest("jd-product").id(item.getSku())
-                            .source(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(item), XContentType.JSON));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    });
+        products.stream().forEach(item -> {
+            try {
+                bulkRequest.add(
+                        new IndexRequest("jd-product").id(item.getSku())
+                                .source(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(item), XContentType.JSON));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
 
-    BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
-    log.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(bulk));
-}
+        BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+        log.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(bulk));
+    }
 
     @Test
     public void createDocument() throws Exception {

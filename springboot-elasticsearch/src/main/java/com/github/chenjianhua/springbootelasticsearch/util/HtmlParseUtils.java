@@ -6,13 +6,14 @@ package com.github.chenjianhua.springbootelasticsearch.util;
  */
 
 import com.github.chenjianhua.springbootelasticsearch.model.JdProduct;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,11 @@ import java.util.List;
  * @createdDate : 2020/5/31
  * @updatedDate
  */
+@Slf4j
 public class HtmlParseUtils {
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+
 
     /**
      * 爬取京东商城搜索数据
