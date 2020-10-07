@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class OKHttpClientConfig {
     private final static int CONNECT_TIMEOUT_MILLISECOND = 500;
-    private final static int READ_TIMEOUT_SECOND = 3;
+    private final static int READ_TIMEOUT_SECOND = 5;
     private final static int WRITE_TIMEOUT_SECOND = 1;
 
     private final static int MAX_IDLE_CONNECTIONS = 100;

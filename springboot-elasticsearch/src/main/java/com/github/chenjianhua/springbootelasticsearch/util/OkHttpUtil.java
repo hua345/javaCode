@@ -15,7 +15,7 @@ public class OkHttpUtil {
         okHttpClient = client;
     }
 
-    public static Response get(String url) throws IOException {
+    public static Response getSync(String url) throws IOException {
         RequestBody body = RequestBody.create("{}", JSON);
         final Request request = new Request.Builder()
                 .url(url)
