@@ -39,7 +39,7 @@ public class HttpTest {
     }
 
     @Test
-    public void testOkHttp3() throws Exception {
+    public void testOkHttpThreadPool() throws Exception {
         CountDownLatch latch = new CountDownLatch(threadNum);
         IntStream.range(0, threadNum).forEach(i -> {
             ThreadPoolUtil.getInstance().submit(() -> {

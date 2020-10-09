@@ -27,29 +27,31 @@ import java.util.List;
 public class HtmlParseUtils {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-
-
     /**
      * 爬取京东商城搜索数据
      */
-    public static List<JdProduct> listGoods(String productName) throws IOException {
+    public static List<JdProduct> listJdGoods(String productName) throws IOException {
         String url = "https://search.jd.com/Search?keyword=" + productName;
-        Document document = Jsoup.parse(new URL(url), 30000);
-        Element element = document.getElementById("J_goodsList");
-        Elements li = element.getElementsByTag("li");
+        Response response = OkHttpUtil.getSync(url);
         List<JdProduct> list = new ArrayList<>();
-        for (Element item : li) {
-            String sku = item.attr("data-sku");
-            String price = item.getElementsByClass("p-price").first().getElementsByTag("i").text();
-            String title = item.getElementsByClass("p-name").eq(0).text();
-            String shopName = item.getElementsByClass("p-shop").first().getElementsByTag("a").text();
-            JdProduct product = new JdProduct();
-            product.setSku(sku);
-            product.setPrice(price);
-            product.setProductName(title);
-            product.setShopName(shopName);
-            list.add(product);
+        if (response.isSuccessful()) {
+            Document document = Jsoup.parse(response.body().string());
+            Element element = document.getElementById("J_goodsList");
+            Elements li = element.getElementsByTag("li");
+            for (Element item : li) {
+                String sku = item.attr("data-sku");
+                String price = item.getElementsByClass("p-price").first().getElementsByTag("i").text();
+                String title = item.getElementsByClass("p-name").eq(0).text();
+                String shopName = item.getElementsByClass("p-shop").first().getElementsByTag("a").text();
+                JdProduct product = new JdProduct();
+                product.setSku(sku);
+                product.setPrice(price);
+                product.setProductName(title);
+                product.setShopName(shopName);
+                list.add(product);
+            }
         }
         return list;
     }
+
 }
