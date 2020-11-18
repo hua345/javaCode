@@ -1,8 +1,8 @@
 package com.github.chenjianhua.springboot.mybatis.jpa.config.exception;
 
-import com.github.chenjianhua.springboot.mybatis.jpa.common.ResponseVO;
-import com.github.chenjianhua.springboot.mybatis.jpa.common.ResponseStatusEnum;
-import com.github.chenjianhua.springboot.mybatis.jpa.utils.ResponseUtil;
+import com.github.common.resp.ResponseStatusEnum;
+import com.github.common.resp.ResponseVO;
+import com.github.common.util.ResponseUtil;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

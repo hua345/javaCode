@@ -1,11 +1,10 @@
 package com.github.chenjianhua.springboot.mybatis.jpa;
 
-import com.github.chenjianhua.springboot.mybatis.jpa.service.idleaf.IdLeafMysqlServiceImpl;
-import com.github.chenjianhua.springboot.mybatis.jpa.service.idleaf.IdLeafRedisServiceImpl;
-import com.github.chenjianhua.springboot.mybatis.jpa.utils.DateFormatEnum;
-import com.github.chenjianhua.springboot.mybatis.jpa.utils.DateUtil;
-import com.github.chenjianhua.springboot.mybatis.jpa.utils.SnowFlake;
-import com.github.chenjianhua.springboot.mybatis.jpa.utils.SnowFlakeUtil;
+import com.github.common.util.DateFormatEnum;
+import com.github.common.util.DateUtil;
+import com.github.id.leaf.IdLeafRedisService;
+import com.github.id.util.SnowFlake;
+import com.github.id.util.SnowFlakeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,10 +28,7 @@ public class IdGenerateTests {
     private static final Logger log = LoggerFactory.getLogger(IdGenerateTests.class);
 
     @Autowired
-    private IdLeafMysqlServiceImpl leaf;
-
-    @Autowired
-    private IdLeafRedisServiceImpl redisLeaf;
+    private IdLeafRedisService redisLeaf;
 
     @Test
     public void SnowFlakeTest() {
@@ -43,38 +39,6 @@ public class IdGenerateTests {
         }
         Long endMS = System.currentTimeMillis();
         log.info("雪花算法生成100万id耗时：{}ms", endMS - startMS);
-    }
-
-    @Test
-    public void testMysqlLeaf() throws Exception {
-        ExecutorService executorService = new ThreadPoolExecutor(2, 2,
-                0, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(512), // 使用有界队列，避免OOM
-                new ThreadPoolExecutor.DiscardPolicy());
-        CountDownLatch latch = new CountDownLatch(2);
-        Long startMS = System.currentTimeMillis();
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100000; i++) {
-                    leaf.getIdByBizTag("leaf-segment-test");
-                }
-                latch.countDown();
-            }
-        });
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100000; i++) {
-                    redisLeaf.getIdByBizTag("leaf-segment-test");
-                }
-                latch.countDown();
-            }
-        });
-        latch.await();
-        Long endMS = System.currentTimeMillis();
-        log.info("mysql leaf算法生成20万id耗时：{}ms", endMS - startMS);
-        executorService.shutdown();
     }
 
     @Test

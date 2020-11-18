@@ -1,4 +1,4 @@
-package com.github.chenjianhua.springboot.mybatis.jpa.repository;
+package com.github.id.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

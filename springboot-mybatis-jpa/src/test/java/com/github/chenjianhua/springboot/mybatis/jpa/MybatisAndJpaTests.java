@@ -2,8 +2,8 @@ package com.github.chenjianhua.springboot.mybatis.jpa;
 
 import com.github.chenjianhua.springboot.mybatis.jpa.model.Book;
 import com.github.chenjianhua.springboot.mybatis.jpa.service.BookService;
-import com.github.chenjianhua.springboot.mybatis.jpa.service.idleaf.IdLeafRedisServiceImpl;
-import com.github.chenjianhua.springboot.mybatis.jpa.utils.JsonUtil;
+import com.github.common.util.JsonUtil;
+import com.github.id.leaf.IdLeafRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -25,7 +26,7 @@ import java.util.Optional;
 @ActiveProfiles("dev")
 public class MybatisAndJpaTests {
     @Autowired
-    private IdLeafRedisServiceImpl idLeafRedisService;
+    private IdLeafRedisService idLeafRedisService;
 
     @Autowired
     private BookService bookService;
@@ -33,10 +34,10 @@ public class MybatisAndJpaTests {
     @Test
     public void MybatisTest() {
         Book book = new Book();
-        book.setId(idLeafRedisService.getIdByBizTag("book"));
+        book.setId(idLeafRedisService.getIdByBizTag("Book"));
         book.setBookName("刻意练习");
-        book.setCreateTime(LocalDateTime.now());
-        book.setUpdateTime(LocalDateTime.now());
+        book.setCreateTime(new Date());
+        book.setUpdateTime(new Date());
         log.info("mybatis保存book:{}", JsonUtil.toJSONString(book));
         bookService.mybatisSave(book);
         Book result = bookService.mybatisFindById(book.getId());
@@ -46,10 +47,9 @@ public class MybatisAndJpaTests {
     @Test
     public void jpaTest() {
         Book book = new Book();
-        book.setId(idLeafRedisService.getIdByBizTag("book"));
         book.setBookName("哈佛幸福课");
-        book.setCreateTime(LocalDateTime.now());
-        book.setUpdateTime(LocalDateTime.now());
+        book.setCreateTime(new Date());
+        book.setUpdateTime(new Date());
         log.info("jpa保存book:{}", JsonUtil.toJSONString(book));
         bookService.jpaSave(book);
         Optional<Book> result = bookService.jpaFindById(book.getId());

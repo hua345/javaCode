@@ -1,17 +1,16 @@
-package com.github.id.leaf.model;
+package com.github.id.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.id.config.Constants;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 
 /**
  * @author chenjianhua
@@ -20,14 +19,12 @@ import java.util.Date;
 @Setter
 @Getter
 @MappedSuperclass
-public class AbstractLeafModel implements Serializable {
-    /**
-     * 保存前设置一下Id
-     */
+public class AbstractLongModel implements Serializable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = Constants.leafId)
-    @GenericGenerator(name = Constants.leafId, strategy = Constants.LeafClassName)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
+
     /**
      * 创建人
      */
