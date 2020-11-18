@@ -1,8 +1,12 @@
 package com.github.spring.boot.idleaf;
 
-import com.github.spring.boot.idleaf.service.idleaf.IdLeafMysqlService;
-import com.github.spring.boot.idleaf.service.idleaf.IdLeafRedisService;
-import com.github.spring.boot.idleaf.utils.*;
+
+import com.github.common.util.DateFormatEnum;
+import com.github.common.util.DateUtil;
+import com.github.common.util.ThreadPoolUtil;
+import com.github.id.leaf.IdLeafRedisService;
+import com.github.id.util.SnowFlake;
+import com.github.id.util.SnowFlakeUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Set;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.IntStream;
 
 /**
@@ -29,9 +30,6 @@ import java.util.stream.IntStream;
 public class IdGenerateTests {
 
     private static final Logger log = LoggerFactory.getLogger(IdGenerateTests.class);
-
-    @Autowired
-    private IdLeafMysqlService leaf;
 
     @Autowired
     private IdLeafRedisService redisLeaf;
@@ -49,32 +47,6 @@ public class IdGenerateTests {
         }
         Long endMS = System.currentTimeMillis();
         log.info("雪花算法生成100万id耗时：{}ms", endMS - startMS);
-    }
-
-    @Test
-    public void testMysqlLeaf() throws Exception {
-        CountDownLatch latch = new CountDownLatch(threadNum);
-        Long beginId = leaf.getIdByBizTag("leaf-segment-test");
-        IntStream.range(0, threadNum).forEach(i -> {
-            ThreadPoolUtil.getInstance().submit(() -> {
-                Long id = 0L;
-                for (int j = 0; j < num; j++) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Long currentId = leaf.getIdByBizTag("leaf-segment-test");
-                    Assert.assertTrue(currentId > id);
-                    id = currentId;
-                }
-                latch.countDown();
-            });
-        });
-        latch.await();
-        Long endId = leaf.getIdByBizTag("leaf-segment-test");
-        Long expectedId = beginId + num * threadNum + 1;
-        Assert.assertEquals(expectedId, endId);
     }
 
     @Test

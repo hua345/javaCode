@@ -1,7 +1,7 @@
 package com.github.spring.boot.idleaf;
 
+import com.github.common.util.ThreadPoolUtil;
 import com.github.spring.boot.idleaf.service.idleaf.RedisServer;
-import com.github.spring.boot.idleaf.utils.ThreadPoolUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;

@@ -16,7 +16,7 @@ import java.sql.SQLException;
 
 /**
  * @author chenjianhua
- * @date 2020-09-01 16:46:26
+ * @date 2020-09-07 15:41:49
  */
 @Configuration
 @EnableConfigurationProperties({DruidDataSourceProperties.class})

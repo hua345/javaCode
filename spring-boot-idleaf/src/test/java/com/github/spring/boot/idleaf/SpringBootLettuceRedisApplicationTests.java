@@ -1,7 +1,7 @@
 package com.github.spring.boot.idleaf;
 
 
-import com.github.spring.boot.idleaf.utils.ThreadPoolUtil;
+import com.github.common.util.ThreadPoolUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

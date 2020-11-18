@@ -1,7 +1,6 @@
 package com.github.spring.boot.idleaf.service.idleaf;
 
-import com.github.spring.boot.idleaf.utils.JsonUtil;
-import com.github.spring.boot.idleaf.utils.UUIDUtil;
+import com.github.id.util.UUIDUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
