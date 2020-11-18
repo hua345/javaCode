@@ -1,16 +1,15 @@
-package com.github.spring.boot.idleaf.service.idleaf;
+package com.github.id.leaf;
 
-import com.github.spring.boot.idleaf.mapper.LeafAllocMapper;
-import com.github.spring.boot.idleaf.model.LeafAlloc;
-import com.github.spring.boot.idleaf.utils.SnowFlakeUtil;
+
+import com.github.id.config.IdLeafAutoProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -18,15 +17,19 @@ import java.util.concurrent.*;
  * @date 2020-09-01 16:46:26
  */
 @Service
-public class IdLeafMysqlService implements IdLeafService {
-    private static final Logger logger = LoggerFactory.getLogger(IdLeafMysqlService.class);
+public class IdLeafRedisService implements IdLeafService {
+    private static final Logger logger = LoggerFactory.getLogger(IdLeafRedisService.class);
 
     private Map<String, SegmentBuffer> leafMap = new ConcurrentHashMap<String, SegmentBuffer>();
 
     private ExecutorService service = new ThreadPoolExecutor(3, 10, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new IdLeafThreadFactory());
 
+    private final static String ID_LEAF_PREFIX = "idLeaf:";
+
+    private Integer DEFAULT_STEP = 1000;
+
     @Autowired
-    private LeafAllocMapper leafAllocMapper;
+    private StringRedisTemplate stringRedisTemplate;
 
     public static class IdLeafThreadFactory implements ThreadFactory {
 
@@ -42,14 +45,9 @@ public class IdLeafMysqlService implements IdLeafService {
         }
     }
 
-    public void initAllLeafFromDb() {
-        List<LeafAlloc> leafAllocs = leafAllocMapper.selectAllLeafAlloc();
-        if (StringUtils.isEmpty(leafAllocs)) {
-            return;
-        }
-        leafAllocs.stream().forEach(item -> {
-            initLeafFromDb(item.getBizTag());
-        });
+    @Autowired
+    public IdLeafRedisService(IdLeafAutoProperties idLeafAutoProperties) {
+        this.DEFAULT_STEP = idLeafAutoProperties.getStep();
     }
 
     @Override
@@ -95,8 +93,17 @@ public class IdLeafMysqlService implements IdLeafService {
 
     @Transactional(rollbackFor = Exception.class)
     public LeafAlloc updateMaxIdAndGetLeafAlloc(String bizTag) {
-        leafAllocMapper.updateMaxId(bizTag);
-        return leafAllocMapper.selectByPrimaryKey(bizTag);
+//        RedisAtomicLong entityIdCounter = new RedisAtomicLong(bizTag, stringRedisTemplate.getConnectionFactory());
+//        Long increment = entityIdCounter.getAndIncrement();
+        Long increment = stringRedisTemplate.opsForValue().increment(ID_LEAF_PREFIX + bizTag);
+        if (increment <= 0) {
+            increment = stringRedisTemplate.opsForValue().increment(ID_LEAF_PREFIX + bizTag);
+        }
+        LeafAlloc leafAlloc = new LeafAlloc();
+        leafAlloc.setBizTag(bizTag);
+        leafAlloc.setMaxId(increment * DEFAULT_STEP);
+        leafAlloc.setStep(DEFAULT_STEP);
+        return leafAlloc;
     }
 
     public Long getIdFromSegmentBuffer(final SegmentBuffer buffer) {
@@ -128,7 +135,7 @@ public class IdLeafMysqlService implements IdLeafService {
                     buffer.setNextReady(false);
                 } else {
                     logger.error("leaf生成id异常:{}，使用雪花算法生成!", buffer);
-                    return SnowFlakeUtil.getNextId();
+                    loadNextBuffer(buffer);
                 }
             } finally {
                 buffer.wLock().unlock();
