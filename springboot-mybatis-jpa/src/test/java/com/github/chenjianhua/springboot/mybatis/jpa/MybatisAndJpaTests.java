@@ -54,5 +54,9 @@ public class MybatisAndJpaTests {
         bookService.jpaSave(book);
         Optional<Book> result = bookService.jpaFindById(book.getId());
         log.info("jpa查询结果book:{}", JsonUtil.toJSONString(result));
+        result.get().setBookName(result.get().getBookName() + "version");
+        bookService.jpaSave(result.get());
+        result = bookService.jpaFindById(book.getId());
+        log.info("jpa修改结果book:{}", JsonUtil.toJSONString(result));
     }
 }

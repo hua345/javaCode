@@ -15,14 +15,14 @@ import java.util.Date;
 
 /**
  * @author chenjianhua
- * @date 2020/11/18
+ * @date 2020/11/19
  * 标注为@MappedSuperclass的类将不是一个完整的实体类，他将不会映射到数据库表，但是他的属性都将映射到其子类的数据库字段中。
  * 标注为@MappedSuperclass的类不能再标注@Entity或@Table注解，也无需实现序列化接口。
  */
-@Setter
 @Getter
+@Setter
 @MappedSuperclass
-public class AbstractLeafModel implements Serializable {
+public class AbstractLeafVersionModel implements Serializable {
     /**
      * 使用leaf叶子算法根据表名自动生成Id
      */
@@ -30,7 +30,12 @@ public class AbstractLeafModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = Constants.leafId)
     @GenericGenerator(name = Constants.leafId, strategy = Constants.LeafClassName)
     private Long id;
-
+    /**
+     * @Version是jpa里提供的一个注解，其作用是用于实现乐观锁
+     * 当乐观锁更新失败的时候，会抛出异常org.springframework.orm.ObjectOptimisticLockingFailureException
+     */
+    @Version
+    private Integer version;
     /**
      * 创建人
      */
@@ -63,4 +68,5 @@ public class AbstractLeafModel implements Serializable {
      */
     @JsonIgnore
     protected Boolean deleted = false;
+
 }

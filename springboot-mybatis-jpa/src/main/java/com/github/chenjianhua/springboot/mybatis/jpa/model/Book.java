@@ -1,6 +1,6 @@
 package com.github.chenjianhua.springboot.mybatis.jpa.model;
 
-import com.github.id.model.AbstractLeafModel;
+import com.github.id.model.AbstractLeafVersionModel;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table
-public class Book extends AbstractLeafModel {
+public class Book extends AbstractLeafVersionModel {
 
     private String bookName;
 }
