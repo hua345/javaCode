@@ -1,5 +1,7 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.github.common.util.holder.SpringContextHolder,\
   com.github.common.config.i18n.Internationalization,\
+  com.github.common.config.ResponseHandler,\
+  com.github.common.enums.EnumConverterFactoryConfig,\
   com.github.common.config.exception.GlobalExceptionHandler,\
   com.github.common.util.JsonUtil

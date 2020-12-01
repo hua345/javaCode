@@ -22,8 +22,8 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.github.chenjianhua.springboot.mybatis.jpa.controller"))
-                .paths(StringUtils.equals("dev", env) ? PathSelectors.any() : PathSelectors.none())
+                .apis(RequestHandlerSelectors.basePackage("com.github.chenjianhua.springboot.mybatis.jpa.web"))
+                .paths(PathSelectors.any())
                 .build();
     }
 
