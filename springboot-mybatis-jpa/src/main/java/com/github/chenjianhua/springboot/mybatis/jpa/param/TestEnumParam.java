@@ -1,7 +1,7 @@
 package com.github.chenjianhua.springboot.mybatis.jpa.param;
 
-import com.github.chenjianhua.springboot.mybatis.jpa.enums.SexEnum;
-import com.github.chenjianhua.springboot.mybatis.jpa.enums.FruitEnum;
+import com.github.common.enums.FruitEnum;
+import com.github.common.enums.SexEnum;
 import lombok.Data;
 
 /**
@@ -13,5 +13,5 @@ public class TestEnumParam {
 
     private FruitEnum fruit;
 
-    private SexEnum fruit2;
+    private SexEnum sex;
 }

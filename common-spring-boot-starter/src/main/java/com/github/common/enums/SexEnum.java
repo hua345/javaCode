@@ -1,5 +1,6 @@
-package com.github.chenjianhua.springboot.mybatis.jpa.enums;
+package com.github.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
@@ -16,7 +17,8 @@ public enum SexEnum implements BaseEnum<Integer> {
     Female(2, "女");
 
     /**
-     * 一个类只能用一个,当加上@JsonValue注解时，序列化是只返回这一个字段的值,swagger也返回@JsonValue的内容
+     * @JsonValue: 在序列化时，只序列化 @JsonValue 注解标注的值,swagger也返回@JsonValue的内容
+     * @JsonCreator: 在反序列化时，调用 @JsonCreator 标注的构造器或者工厂方法来创建对象
      */
     @JsonValue
     public Map<String, Object> getEnumValue() {
@@ -34,6 +36,7 @@ public enum SexEnum implements BaseEnum<Integer> {
         this.description = description;
     }
 
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static SexEnum findByType(Integer type) {
         SexEnum[] arr = SexEnum.values();
         for (SexEnum item : arr) {

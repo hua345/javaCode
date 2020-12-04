@@ -52,7 +52,7 @@ public class ThreadPoolUtil {
             synchronized (ThreadPoolUtil.class) {
                 if (null == threadPool) {
                     ThreadFactory namedThreadFactory = new MyNameThreadFactory("my-threadPool-");
-                    threadPool = new ThreadPoolExecutor(12, 16,
+                    threadPool = new ThreadPoolExecutor(16, 32,
                             0, TimeUnit.SECONDS,
                             new ArrayBlockingQueue<>(512),
                             namedThreadFactory,
