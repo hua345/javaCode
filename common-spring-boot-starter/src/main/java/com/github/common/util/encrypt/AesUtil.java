@@ -14,6 +14,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -30,34 +31,45 @@ public class AesUtil {
     private static final Integer AES_KEY_LENGTH = 16;
     private static final String KEY_ALGORITHM = "AES";
     // 默认的加密算法
-    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
+    private static final String DEFAULT_CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
 
     private static final String utf8CharSet = StandardCharsets.UTF_8.name();
 
     public static void main(String[] args) throws Exception {
         //加密字符串
         String message = "helloWorld";
-        String aesKey = AesUtil.generateRandomKeyWithBase64();
-        log.info("aesKey:{}", aesKey);
-        String encodedRequestJson = AesUtil.encryptToBase64(message, aesKey);
+        String uuid = UuidUtil.getUUID32();
+        log.info("uuid:{}", uuid);
+        String encodedRequestJson = AesUtil.encryptToBase64(message, uuid);
         log.info("{} AES encode: {}", message, encodedRequestJson);
-        String messageDe = AesUtil.decryptFromBase64(encodedRequestJson, aesKey);
+        String messageDe = AesUtil.decryptFromBase64(encodedRequestJson, uuid);
         log.info("AES decode: {}", messageDe);
         // 对于Java中AES的默认模式是：AES/ECB/PKCS5Padding
         // 如果使用CryptoJS，请调整为：padding: CryptoJS.pad.Pkcs7,new AES("AES/ECB/PKCS7Padding")
-        byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
-        log.info("aesKey:{}", new String(key));
 
-        SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key);
-        String encrypt = aes.encryptBase64(message, StandardCharsets.UTF_8);
-        log.info("{} AES encode: {}", message, encrypt);
-        String decrypt = aes.decryptStr(encrypt, StandardCharsets.UTF_8);
-        log.info("AES decode: {}", decrypt);
+        AES aesObj = new AES(Mode.CBC, Padding.PKCS5Padding, uuid.getBytes(),
+                uuid.substring(0, 16).getBytes());
+        String encryptData = aesObj.encryptBase64(message, StandardCharsets.UTF_8);
+        log.info("encryptData: {}", encryptData);
+        String decryptData = aesObj.decryptStr(encryptData, StandardCharsets.UTF_8);
+        log.info("origin message:{}", decryptData);
 
-        AES aesObj = new AES(Mode.CBC, Padding.PKCS5Padding, "1234567812345678".getBytes(),
-                "1234567812345678".getBytes());
-        String aa = aesObj.decryptStr("FefVUnvDJpbXnUvrGAEezg==", StandardCharsets.UTF_8);
-        log.info("aa:{}", aa);
+        String strCmd = "cmd /c node F:\\Code\\Code\\common-spring-boot-starter\\src\\main\\java\\com\\github\\common\\util\\encrypt\\cryptojsTest.js " + message + " " + uuid;
+        try {
+            Process ps = Runtime.getRuntime().exec(strCmd);
+            InputStream is = ps.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                log.info(line);
+            }
+            ps.waitFor();
+            is.close();
+            reader.close();
+            ps.destroy();
+        } catch (Exception e) {
+            System.out.println("Error!");
+        }
     }
 
     /**
@@ -73,15 +85,15 @@ public class AesUtil {
             throw new RuntimeException("AES data or Key is empty");
         }
         try {
-            SecretKeySpec secretKey = new SecretKeySpec(Base64.getDecoder().decode(key), KEY_ALGORITHM);
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), KEY_ALGORITHM);
             byte[] enCodeFormat = secretKey.getEncoded();
             SecretKeySpec seckey = new SecretKeySpec(enCodeFormat, KEY_ALGORITHM);
             // 创建密码器
             Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
             //使用CBC模式，需要一个向量iv，可增加加密算法的强度
-            IvParameterSpec iv = new IvParameterSpec(Base64.getDecoder().decode(key));
+            IvParameterSpec iv = new IvParameterSpec(key.substring(0, 16).getBytes());
             // 初始化,暂时不用IV模式
-            cipher.init(Cipher.ENCRYPT_MODE, seckey);
+            cipher.init(Cipher.ENCRYPT_MODE, seckey, iv);
             return Base64.getEncoder().encodeToString(cipher.doFinal(data.getBytes(utf8CharSet)));
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,15 +114,15 @@ public class AesUtil {
             throw new RuntimeException("AES data or Key is empty");
         }
         try {
-            SecretKeySpec secretKey = new SecretKeySpec(Base64.getDecoder().decode(key), "AES");
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
             byte[] enCodeFormat = secretKey.getEncoded();
             SecretKeySpec seckey = new SecretKeySpec(enCodeFormat, KEY_ALGORITHM);
             // 创建密码器
             Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
             //使用CBC模式，需要一个向量iv，可增加加密算法的强度
-            IvParameterSpec iv = new IvParameterSpec(Base64.getDecoder().decode(key));
+            IvParameterSpec iv = new IvParameterSpec(key.substring(0, 16).getBytes());
             // 初始化,暂时不用IV模式
-            cipher.init(Cipher.DECRYPT_MODE, seckey);
+            cipher.init(Cipher.DECRYPT_MODE, seckey, iv);
             return new String(cipher.doFinal(Base64.getDecoder().decode(data)), utf8CharSet);
         } catch (Exception e) {
             e.printStackTrace();
