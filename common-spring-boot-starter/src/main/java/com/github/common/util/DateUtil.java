@@ -2,10 +2,13 @@ package com.github.common.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author chenjianhua
@@ -50,6 +53,7 @@ public final class DateUtil {
         Date from = Date.from(instant1);
         return from;
     }
+
     /**
      * 解析日期
      * 默认:yyyy-MM-dd HH:mm:ss
@@ -203,8 +207,53 @@ public final class DateUtil {
         return getEndOfDay(LocalDate.now());
     }
 
+    public static ZonedDateTime TimeStampToLocalDateTime(long timeStamp) {
+        Instant instant = Instant.ofEpochMilli(timeStamp);
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+        return zonedDateTime;
+    }
+
+    public static ZonedDateTime UTCtoLocalDateTime(String utc) {
+        if (!StringUtils.hasText(utc)) {
+            return null;
+        }
+        Instant instant = Instant.parse(utc);
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+        return zonedDateTime;
+    }
+
+    public static String formatUTC(String utc, DateFormatEnum pattern) {
+        ZonedDateTime zonedDateTime = UTCtoLocalDateTime(utc);
+        if (Objects.isNull(zonedDateTime)) {
+            return null;
+        }
+        return formatDateTime(zonedDateTime.toLocalDateTime(), pattern);
+    }
+
+    public static ZonedDateTime isoOrTucToZonedDateTime(String isoStr) {
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(isoStr, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        return zonedDateTime.toInstant().atZone(ZoneId.systemDefault());
+    }
+
+    public static String formatIso(String utc, DateFormatEnum pattern) {
+        ZonedDateTime zonedDateTime = isoOrTucToZonedDateTime(utc);
+        if (Objects.isNull(zonedDateTime)) {
+            return null;
+        }
+        return formatDateTime(zonedDateTime.toLocalDateTime(), pattern);
+    }
+
     public static void main(String[] args) {
-        System.out.println(getNowDate());
-        System.out.println(formatDateTime(new Date()));
+        log.info(getNowDate());
+        log.info(formatDateTime(new Date()));
+
+        ZonedDateTime zonedDateTime = isoOrTucToZonedDateTime("2020-12-17T03:26:37.553Z");
+        log.info("zonedDateTime:{}", zonedDateTime);
+        log.info("formatUTC:{}", formatIso("2020-12-17T03:26:37.553Z", DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS));
+        zonedDateTime = isoOrTucToZonedDateTime("2020-12-17T09:53:47+08:00");
+        log.info("localDateTime:{}", zonedDateTime);
+        log.info("formatUTC:{}", formatIso("2020-12-17T09:53:47+08:00", DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS));
+        log.info("localDateTime:{}", TimeStampToLocalDateTime(1608180749000L));
+        log.info("localDateTime:{}", TimeStampToLocalDateTime(1608180749000L).toInstant().atZone(ZoneId.of("UTC")));
     }
 }
