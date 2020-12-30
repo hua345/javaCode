@@ -20,7 +20,7 @@ public class SemaphoreTest {
         AtomicInteger count = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(threadCount);
         // 资源数目
-        Semaphore semaphore = new Semaphore(1);
+        Semaphore semaphore = new Semaphore(2);
         for (int i = 0; i < threadCount; i++) {
             ThreadPoolUtil.getInstance().submit(new SemaphoreTask(semaphore, countDownLatch, i));
         }

@@ -23,6 +23,11 @@ public class MyRuntimeException extends RuntimeException {
         this.code = responseStatusEnum.getErrorCode();
     }
 
+    public MyRuntimeException(String message) {
+        super(message);
+        this.code = ResponseStatusEnum.SUCCESS.getErrorCode();
+    }
+
     public ResponseVO getResponseResult() {
         return new ResponseVO(this.code, this.getMessage());
     }

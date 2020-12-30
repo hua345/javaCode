@@ -54,6 +54,11 @@ public final class DateUtil {
         return from;
     }
 
+    public static Date localDateTime2Date(LocalDateTime localDateTime) {
+        ZoneId zone = ZoneId.systemDefault();
+        return Date.from(localDateTime.atZone(zone).toInstant());
+    }
+
     /**
      * 解析日期
      * 默认:yyyy-MM-dd HH:mm:ss
