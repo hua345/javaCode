@@ -4,6 +4,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
 import com.github.chenjianhua.springbootexcel.TestExportParam;
 import com.github.chenjianhua.springbootexcel.bo.BeginAndEndTimeBo;
+import com.github.chenjianhua.springbootexcel.enums.ExcelExportStatusEnum;
 import com.github.chenjianhua.springbootexcel.enums.MyExcelTypeEnum;
 import com.github.chenjianhua.springbootexcel.excel.ExcelExportTask;
 import com.github.chenjianhua.springbootexcel.excel.ExcelStrategyHandler;
@@ -28,11 +29,8 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -41,8 +39,8 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class TestAsyncStrategy extends AbstractExcelStrategy {
-    private static final String EXCEL_FILE_NAME = "异步测试数据";
+public class TestStrategy extends AbstractExcelStrategy {
+    private static final String EXCEL_FILE_NAME = "测试数据";
 
     private static final String SHEET_NAME = "sheet";
 
@@ -53,8 +51,8 @@ public class TestAsyncStrategy extends AbstractExcelStrategy {
     private TestService testService;
 
     @Autowired
-    public TestAsyncStrategy(ExcelStrategyHandler exportStrategyHandler) {
-        super(null, MyExcelTypeEnum.TEST_ASYNC_EXPORT, exportStrategyHandler);
+    public TestStrategy(ExcelStrategyHandler exportStrategyHandler) {
+        super(null, MyExcelTypeEnum.TEST_EXPORT, exportStrategyHandler);
     }
 
     private static BigDecimal getDiffSecond(long startTimeMillis) {
@@ -91,7 +89,7 @@ public class TestAsyncStrategy extends AbstractExcelStrategy {
             Long currentDataSize = 0L;
             Integer currentSheetNum = 1;
             Sheet currentSheet = createExcelSheet(currentSheetNum);
-            List<BeginAndEndTimeBo> beginAndEndTimeBos = ExcelExportUtil.split(exportCount, param.getStartTradeTime(), param.getEndTradeTime());
+            List<BeginAndEndTimeBo> beginAndEndTimeBos = ExcelExportUtil.split(task.getTaskNumber(), exportCount, param.getStartTradeTime(), param.getEndTradeTime());
             for (int index = 0; index < beginAndEndTimeBos.size(); index++) {
                 BeginAndEndTimeBo beginAndEndTimeBo = beginAndEndTimeBos.get(index);
                 param.setStartTradeTime(DateUtil.localDateTime2Date(beginAndEndTimeBo.getStartLocalDateTime()));
@@ -109,7 +107,7 @@ public class TestAsyncStrategy extends AbstractExcelStrategy {
 
                 ExcelExportHis excelExportHis = excelExportHisService.findByTaskNumber(task.getTaskNumber());
                 if (excelExportHis != null) {
-                    excelExportHis.setStatus(1);
+                    excelExportHis.setExportStatus(ExcelExportStatusEnum.DOING.getType());
                     int currentProgress = ((index + 1) * 100) / beginAndEndTimeBos.size();
                     excelExportHis.setProgress((index + 1) / beginAndEndTimeBos.size());
                     excelExportHis.setRemark("正在写入excel文件");

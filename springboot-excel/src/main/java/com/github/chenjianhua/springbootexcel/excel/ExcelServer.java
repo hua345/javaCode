@@ -44,10 +44,9 @@ public class ExcelServer implements ApplicationRunner {
     public String export(ExcelExportTask task) throws IOException {
         ExcelExportHis param = new ExcelExportHis();
         param.setTaskNumber(task.getTaskNumber());
-        param.setType(task.getExcelExportType().getType());
+        param.setExportType(task.getExcelExportType().getType());
         param.setProgress(0);
-        param.setType(task.getExcelExportType().getType());
-        param.setStatus(0);
+        param.setExportStatus(ExcelExportStatusEnum.DEFAULT.getType());
         excelExportHisService.save(param);
 
         try {
@@ -68,7 +67,7 @@ public class ExcelServer implements ApplicationRunner {
                 return callback.getFilePath();
             }
         } catch (Exception e) {
-            param.setStatus(ExcelExportStatusEnum.FAIL.getType());
+            param.setExportStatus(ExcelExportStatusEnum.FAIL.getType());
             excelExportHisService.save(param);
             log.error("导出失败：{}", e);
             throw new MyRuntimeException("导出失败");
@@ -108,11 +107,11 @@ public class ExcelServer implements ApplicationRunner {
             excelExportHis.setFileName(callback.getFileName());
             excelExportHis.setProgress(100);
             excelExportHis.setRemark(ExcelExportStatusEnum.SUCCESS.getDescription());
-            excelExportHis.setStatus(ExcelExportStatusEnum.SUCCESS.getType());
+            excelExportHis.setExportStatus(ExcelExportStatusEnum.SUCCESS.getType());
         } else {
             excelExportHis.setProgress(100);
             excelExportHis.setRemark(callback.getMsg());
-            excelExportHis.setStatus(ExcelExportStatusEnum.FAIL.getType());
+            excelExportHis.setExportStatus(ExcelExportStatusEnum.FAIL.getType());
         }
         excelExportHisService.save(excelExportHis);
         log.info("{}导出完成", callback.getTaskNumber());

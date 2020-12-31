@@ -1,5 +1,6 @@
 package com.github.chenjianhua.springbootexcel.excel;
 
+import com.github.chenjianhua.springbootexcel.enums.ExcelExportStatusEnum;
 import com.github.chenjianhua.springbootexcel.enums.MyExcelTypeEnum;
 import com.github.chenjianhua.springbootexcel.excel.strategy.AbstractExcelStrategy;
 import com.github.chenjianhua.springbootexcel.excel.strategy.ExportStrategy;
@@ -38,7 +39,7 @@ public class ExcelStrategyHandler {
             return callback;
         }
         ExcelExportHis excelExportHis = excelExportHisService.findByTaskNumber(task.getTaskNumber());
-        excelExportHis.setStatus(1);
+        excelExportHis.setExportStatus(ExcelExportStatusEnum.DOING.getType());
         excelExportHis.setRemark("正在获取导出数据");
         excelExportHisService.save(excelExportHis);
         File file = null;
@@ -59,7 +60,7 @@ public class ExcelStrategyHandler {
             return callback;
         }
         //上传文件
-        excelExportHis.setStatus(1);
+        excelExportHis.setExportStatus(ExcelExportStatusEnum.DOING.getType());
         excelExportHis.setProgress(80);
         excelExportHis.setRemark("正在获取导出数据");
         excelExportHisService.save(excelExportHis);

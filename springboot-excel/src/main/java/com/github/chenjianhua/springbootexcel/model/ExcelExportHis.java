@@ -24,7 +24,7 @@ public class ExcelExportHis extends AbstractLongModel {
     /**
      * 导出类型
      */
-    private String type;
+    private String exportType;
     /**
      * 导出任务号
      */
@@ -44,7 +44,7 @@ public class ExcelExportHis extends AbstractLongModel {
     /**
      * 状态;处理状态
      */
-    private Integer status;
+    private Integer exportStatus;
     /**
      * 进度
      */

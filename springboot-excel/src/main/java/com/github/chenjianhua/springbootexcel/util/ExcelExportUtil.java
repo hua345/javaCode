@@ -4,6 +4,7 @@ import com.github.chenjianhua.springbootexcel.bo.BeginAndEndTimeBo;
 import com.github.common.util.DateFormatEnum;
 import com.github.common.util.DateUtil;
 import com.github.common.util.JsonUtil;
+import com.github.common.util.encrypt.UuidUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -40,7 +41,7 @@ public class ExcelExportUtil {
         }
     }
 
-    public static List<BeginAndEndTimeBo> split(Long exportCount, Date startTradeTime, Date endTradeTime) {
+    public static List<BeginAndEndTimeBo> split(String taskNumber, Long exportCount, Date startTradeTime, Date endTradeTime) {
         // 开始时间和结束时间至少有一个不为空
         LocalDateTime endLocalDateTime = null;
         if (Objects.isNull(endTradeTime)) {
@@ -73,25 +74,26 @@ public class ExcelExportUtil {
                 break;
             }
         }
-        log.info("导出时间范围:{} ~ {},exportCount:{},分割次数:{},时间段大小:{},总天数:{},间隔天数:{}", DateUtil.formatDateTime(startTradeTime, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS), DateUtil.formatDateTime(endLocalDateTime, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS), exportCount, splitNum, beginAndEndTimeBoList.size(), days, step);
+        log.info("[{}]导出时间范围:{} ~ {},exportCount:{},分割次数:{},时间段大小:{},总天数:{},间隔天数:{}", taskNumber, DateUtil.formatDateTime(startTradeTime, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS), DateUtil.formatDateTime(endLocalDateTime, DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS), exportCount, splitNum, beginAndEndTimeBoList.size(), days, step);
         return beginAndEndTimeBoList;
     }
 
     public static void main(String[] args) {
         log.info("currentSheetNum:{}", currentSheetNum(61 * 10000L));
         log.info("currentSheetNum:{}", currentSheetNum(1000L));
+        String taskNumber = UuidUtil.getUUID32();
 
         LocalDateTime startLocalDateTime = LocalDateTime.of(2020, 1, 02, 00, 00, 00);
         LocalDateTime endLocalDateTime = LocalDateTime.of(2020, 12, 01, 23, 59, 59);
-        List<BeginAndEndTimeBo> beginAndEndTimeBos = split(106 * 1000L, DateUtil.localDateTime2Date(startLocalDateTime), DateUtil.localDateTime2Date(endLocalDateTime));
+        List<BeginAndEndTimeBo> beginAndEndTimeBos = split(taskNumber, 106 * 1000L, DateUtil.localDateTime2Date(startLocalDateTime), DateUtil.localDateTime2Date(endLocalDateTime));
         beginAndEndTimeBos.stream().forEach(item -> log.info(JsonUtil.toJSONString(item)));
-        beginAndEndTimeBos = split(106 * 1000L, DateUtil.localDateTime2Date(startLocalDateTime), null);
+        beginAndEndTimeBos = split(taskNumber, 106 * 1000L, DateUtil.localDateTime2Date(startLocalDateTime), null);
         beginAndEndTimeBos.stream().forEach(item -> log.info(JsonUtil.toJSONString(item)));
 
         /***********************************************************************************************************/
         startLocalDateTime = LocalDateTime.of(2020, 8, 01, 00, 00, 00);
         endLocalDateTime = LocalDateTime.of(2020, 12, 23, 23, 59, 59);
-        beginAndEndTimeBos = split(1036L, DateUtil.localDateTime2Date(startLocalDateTime), DateUtil.localDateTime2Date(endLocalDateTime));
+        beginAndEndTimeBos = split(taskNumber, 1036L, DateUtil.localDateTime2Date(startLocalDateTime), DateUtil.localDateTime2Date(endLocalDateTime));
         beginAndEndTimeBos.stream().forEach(item -> log.info(JsonUtil.toJSONString(item)));
     }
 }
