@@ -6,6 +6,7 @@ import com.github.chenjianhua.springbootexcel.excel.strategy.AbstractExcelStrate
 import com.github.chenjianhua.springbootexcel.excel.strategy.ExportStrategy;
 import com.github.chenjianhua.springbootexcel.model.ExcelExportHis;
 import com.github.chenjianhua.springbootexcel.service.ExcelExportHisService;
+import com.github.chenjianhua.springbootexcel.util.TestFileUtil;
 import com.github.common.config.exception.MyRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -64,7 +65,7 @@ public class ExcelStrategyHandler {
         excelExportHis.setProgress(80);
         excelExportHis.setRemark("正在获取导出数据");
         excelExportHisService.save(excelExportHis);
-
+        TestFileUtil.testUploadFile(file);
         log.info("上传文件:{}", file.getName());
         callback.setFileName(file.getName());
         callback.setFilePath(file.getName());

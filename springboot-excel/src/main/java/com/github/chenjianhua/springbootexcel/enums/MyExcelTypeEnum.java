@@ -14,7 +14,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MyExcelTypeEnum implements BaseEnum<String> {
 
-    TEST_EXPORT("TEST_EXPORT", 0, "异步测试导出");
+    TEST_EXPORT("TEST_EXPORT", 0, "测试导出"),
+    TEST_CURRENT_EXPORT("TEST_CURRENT_EXPORT", 0, "异步测试导出");
+
 
 
     String type;
