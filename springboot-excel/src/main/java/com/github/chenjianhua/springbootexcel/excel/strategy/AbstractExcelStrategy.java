@@ -1,13 +1,13 @@
 package com.github.chenjianhua.springbootexcel.excel.strategy;
 
 
+import com.alibaba.excel.ExcelWriter;
 import com.github.chenjianhua.springbootexcel.enums.MyExcelTypeEnum;
 import com.github.chenjianhua.springbootexcel.excel.ExcelExportTask;
 import com.github.chenjianhua.springbootexcel.excel.ExcelStrategyHandler;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
 
 /**
  * @author haiping.huang
@@ -28,8 +28,7 @@ public abstract class AbstractExcelStrategy implements ExportStrategy {
     }
 
     @Override
-    public File export(ExcelExportTask task) {
-        return null;
+    public void export(ExcelExportTask task, ExcelWriter excelWriter) {
     }
 }
 

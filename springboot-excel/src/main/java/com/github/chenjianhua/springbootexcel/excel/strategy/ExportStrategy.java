@@ -1,5 +1,6 @@
 package com.github.chenjianhua.springbootexcel.excel.strategy;
 
+import com.alibaba.excel.ExcelWriter;
 import com.github.chenjianhua.springbootexcel.excel.ExcelExportTask;
 
 import java.io.File;
@@ -10,6 +11,6 @@ import java.io.File;
  */
 @FunctionalInterface
 public interface ExportStrategy {
-    File export(ExcelExportTask task);
+    void export(ExcelExportTask task, ExcelWriter excelWriter);
 }
 

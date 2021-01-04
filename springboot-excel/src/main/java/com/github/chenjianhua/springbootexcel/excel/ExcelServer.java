@@ -42,6 +42,7 @@ public class ExcelServer implements ApplicationRunner {
     private Semaphore semaphore = new Semaphore(15);
 
     public String export(ExcelExportTask task) throws IOException {
+        exportStrategyHandler.checkExportType(task);
         ExcelExportHis param = new ExcelExportHis();
         param.setTaskNumber(task.getTaskNumber());
         param.setExportType(task.getExcelExportType().getType());
@@ -53,12 +54,7 @@ public class ExcelServer implements ApplicationRunner {
             semaphore.acquire();
             // 如果是异步导出任务或者当前正在执行的导出任务达到最大值
             if (task.isAsync()) {
-                exportExcelCompletionService.submit(() -> {
-                    try {
-                        return exportStrategyHandler.export(task);
-                    } finally {
-                    }
-                });
+                exportExcelCompletionService.submit(() -> exportStrategyHandler.export(task));
                 return null;
             } else {
                 ExportCallback callback = exportStrategyHandler.export(task);
