@@ -72,7 +72,7 @@ public class TestCurrentStrategy extends AbstractExcelStrategy {
             }).collect(Collectors.toList());
             // 检查是否切换Sheet
             currentDataSize = currentDataSize + rows.size();
-            checkSheet(currentDataSize, currentSheet);
+            currentSheet = checkSheet(currentDataSize, currentSheet);
             // 处理导出进度
             processHandle(excelExportHis, beginAndEndTimeBos, index);
             excelWriter.write(rows, currentSheet);
@@ -96,12 +96,13 @@ public class TestCurrentStrategy extends AbstractExcelStrategy {
     /**
      * 检查是否切换Sheet
      */
-    private void checkSheet(Long currentDataSize, WriteSheet currentSheet) {
+    private WriteSheet checkSheet(Long currentDataSize, WriteSheet currentSheet) {
         Integer sheetNum = ExcelExportUtil.currentSheetNum(currentDataSize);
         if (!sheetNum.equals(currentSheet.getSheetNo())) {
             currentSheet = ExcelSheetUtil.createExcelSheet(sheetNum);
             log.info("新增Excel Sheet页:{}", currentSheet.getSheetName());
         }
+        return currentSheet;
     }
 
 }
