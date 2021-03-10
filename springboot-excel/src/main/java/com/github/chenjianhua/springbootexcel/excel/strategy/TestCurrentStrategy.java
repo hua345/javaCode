@@ -46,7 +46,6 @@ public class TestCurrentStrategy extends AbstractExcelStrategy {
         super(null, MyExcelTypeEnum.TEST_CURRENT_EXPORT, exportStrategyHandler);
     }
 
-
     @Override
     public void export(ExcelExportTask task, ExcelWriter excelWriter) {
         TestExportParam param = JsonUtil.toBean(JsonUtil.toJSONString(task.getExportArg()), TestExportParam.class);
@@ -55,7 +54,7 @@ public class TestCurrentStrategy extends AbstractExcelStrategy {
         Long exportCount = testService.countData(param);
         log.info("[{}]导出{}数据量：{},开始转换。", task.getTaskNumber(), this.excelExportType.getDescription(), exportCount);
         Long currentDataSize = 0L;
-        WriteSheet currentSheet = ExcelSheetUtil.initExcelSheet();
+        WriteSheet currentSheet = ExcelSheetUtil.initExcelSheet(TestCurrentModel.class);
         List<BeginAndEndTimeBo> beginAndEndTimeBos = ExcelExportUtil.split(task.getTaskNumber(), exportCount, param.getStartTradeTime(), param.getEndTradeTime());
         for (int index = 0; index < beginAndEndTimeBos.size(); index++) {
             BeginAndEndTimeBo beginAndEndTimeBo = beginAndEndTimeBos.get(index);
@@ -99,7 +98,7 @@ public class TestCurrentStrategy extends AbstractExcelStrategy {
     private WriteSheet checkSheet(Long currentDataSize, WriteSheet currentSheet) {
         Integer sheetNum = ExcelExportUtil.currentSheetNum(currentDataSize);
         if (!sheetNum.equals(currentSheet.getSheetNo())) {
-            currentSheet = ExcelSheetUtil.createExcelSheet(sheetNum);
+            currentSheet = ExcelSheetUtil.createExcelSheet(sheetNum, TestCurrentModel.class);
             log.info("新增Excel Sheet页:{}", currentSheet.getSheetName());
         }
         return currentSheet;
