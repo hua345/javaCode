@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -46,8 +47,12 @@ public class TestDynamicStrategy extends AbstractExcelStrategy {
     @Override
     public void export(ExcelExportTask task, ExcelWriter excelWriter) {
         TestExportParam param = JsonUtil.toBean(JsonUtil.toJSONString(task.getExportArg()), TestExportParam.class);
-        List<TableFieldInfoBo> tableFieldInfoBos = testService.findTableFieldInfoBo();
-        List<TableFieldInfoBo> sortedTableFieldInfoBos = tableFieldInfoBos.stream().filter(item -> item.getDisplayStatus()).sorted(Comparator.comparing(TableFieldInfoBo::getIndex)).collect(Collectors.toList());
+//        List<TableFieldInfoBo> tableFieldInfoBos = testService.findTableFieldInfoBo();
+        List<TableFieldInfoBo> tableFieldInfoBos = param.getExportFields();
+        if(CollectionUtils.isEmpty(tableFieldInfoBos)){
+            return;
+        }
+        List<TableFieldInfoBo> sortedTableFieldInfoBos = tableFieldInfoBos.stream().filter(item -> Objects.nonNull(item.getDisplayStatus()) && item.getDisplayStatus()).sorted(Comparator.comparing(TableFieldInfoBo::getIndex)).collect(Collectors.toList());
         // 动态设置表头
         List<List<String>> tableHead = sortedTableFieldInfoBos.stream().map(item -> {
             List<String> columnHead = new ArrayList<>(4);
