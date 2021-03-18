@@ -13,4 +13,3 @@ import java.io.File;
 public interface ExportStrategy {
     void export(ExcelExportTask task, ExcelWriter excelWriter);
 }
-

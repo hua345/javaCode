@@ -3,6 +3,7 @@ package com.github.common.util;
 import com.github.common.util.holder.ServletContextHolder;
 import com.github.common.util.holder.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,9 @@ import java.util.Locale;
 @Slf4j
 @Component
 public class I18nMessageUtil {
+
+    @Autowired
+    private MessageSource messageSource;
 
     private I18nMessageUtil() { /* no instance */ }
 

@@ -1,5 +1,6 @@
 package com.github.chenjianhua.springbootexcel.model;
 
+import com.github.chenjianhua.springbootexcel.enums.ExcelExportStatusEnum;
 import com.github.id.model.AbstractLongModel;
 import lombok.Getter;
 import lombok.Setter;

@@ -30,7 +30,6 @@ public class ExcelServer implements ApplicationRunner {
 
     private final CompletionService<ExportCallback> exportExcelCompletionService = new ExecutorCompletionService<>(executor);
 
-
     @Resource
     private ExcelStrategyHandler exportStrategyHandler;
 

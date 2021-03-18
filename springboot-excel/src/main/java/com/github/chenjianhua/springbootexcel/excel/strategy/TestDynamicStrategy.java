@@ -16,15 +16,18 @@ import com.github.chenjianhua.springbootexcel.service.ExcelExportHisService;
 import com.github.chenjianhua.springbootexcel.service.TestService;
 import com.github.chenjianhua.springbootexcel.util.ExcelExportUtil;
 import com.github.chenjianhua.springbootexcel.util.ExcelSheetUtil;
+import com.github.chenjianhua.springbootexcel.util.ReflectUtil;
 import com.github.common.util.DateUtil;
 import com.github.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.TableStyle;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,9 +50,8 @@ public class TestDynamicStrategy extends AbstractExcelStrategy {
     @Override
     public void export(ExcelExportTask task, ExcelWriter excelWriter) {
         TestExportParam param = JsonUtil.toBean(JsonUtil.toJSONString(task.getExportArg()), TestExportParam.class);
-//        List<TableFieldInfoBo> tableFieldInfoBos = testService.findTableFieldInfoBo();
         List<TableFieldInfoBo> tableFieldInfoBos = param.getExportFields();
-        if(CollectionUtils.isEmpty(tableFieldInfoBos)){
+        if (CollectionUtils.isEmpty(tableFieldInfoBos)) {
             return;
         }
         List<TableFieldInfoBo> sortedTableFieldInfoBos = tableFieldInfoBos.stream().filter(item -> Objects.nonNull(item.getDisplayStatus()) && item.getDisplayStatus()).sorted(Comparator.comparing(TableFieldInfoBo::getIndex)).collect(Collectors.toList());
@@ -60,17 +62,15 @@ public class TestDynamicStrategy extends AbstractExcelStrategy {
             return columnHead;
         }).collect(Collectors.toList());
         WriteSheet currentSheet = ExcelSheetUtil.initExcelSheet(tableHead);
-
         List<TestModel> list = testService.findSimpleTestData(param);
         if (null == list) {
             list = Collections.emptyList();
         }
         // 动态设置行数据
         List<List<Object>> rows = list.stream().map(item -> {
-            Map dataMap = JsonUtil.toBean(JsonUtil.toJSONString(item), HashMap.class);
             List<Object> valueData = new LinkedList<>();
             sortedTableFieldInfoBos.stream().forEach(fieldItem -> {
-                valueData.add(dataMap.getOrDefault(fieldItem.getFieldCode(), null));
+                valueData.add(ReflectUtil.getObjectValue(item, fieldItem));
             });
             return valueData;
         }).collect(Collectors.toList());

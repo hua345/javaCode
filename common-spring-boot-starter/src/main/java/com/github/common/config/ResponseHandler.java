@@ -16,8 +16,6 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -39,8 +37,6 @@ public class ResponseHandler implements ResponseBodyAdvice<Object> {
 		return clazz != ResponseVO.class
 				&& clazz != File.class
 				&& clazz != OutputStream.class
-				&& clazz != Mono.class
-				&& clazz != Flux.class
 				&& clazz != ResponseEntity.class
 				&& clazz != DeferredResult.class;
 	}
