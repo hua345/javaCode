@@ -1,4 +1,4 @@
-package com.github.common.util;
+package com.github.chenjianhua.common.json.util;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
