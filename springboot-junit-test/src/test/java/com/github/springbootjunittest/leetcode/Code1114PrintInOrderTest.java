@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @date 2020/9/14
  */
 @Slf4j
-public class PrintInOrderTest1114 {
+public class Code1114PrintInOrderTest {
 
     private final static String FIRST = "first";
     private final static String SECOND = "second";

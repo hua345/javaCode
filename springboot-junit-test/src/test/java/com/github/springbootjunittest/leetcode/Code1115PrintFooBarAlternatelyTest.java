@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @date 2020/9/14
  */
 @Slf4j
-public class PrintFooBarAlternatelyTest1115 {
+public class Code1115PrintFooBarAlternatelyTest {
     private final static String Love = "love";
     private final static String Fang = "fang";
 

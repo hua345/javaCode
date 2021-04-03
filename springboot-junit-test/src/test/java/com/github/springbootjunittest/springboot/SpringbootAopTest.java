@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 
 @SpringBootTest
-class SpringbootAopTests {
+class SpringbootAopTest {
 
     @Resource
     private DemoMethodService demoMethodService;

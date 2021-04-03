@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class BlockingQueueTest {
     private static int producerThreadCount = 2;
     private static int consumerThreadCount = 6;
-    private static int productNum = 100;
+    private static int productNum = 10;
     private static String Apple = "苹果";
 
     @Test

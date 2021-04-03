@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = SpringbootJunitTestApplication.class)
 @AutoConfigureMockMvc
-class SpringbootControllerTests {
+class SpringbootControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
