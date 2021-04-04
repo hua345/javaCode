@@ -35,9 +35,4 @@ public class BookConfig {
     public BookAnnotation bookAnnotation() {
         return new BookAnnotation("非暴力沟通");
     }
-
-    @Bean
-    public MyBeanPostProcessor getMyBeanPostProcessor(){
-        return new MyBeanPostProcessor();
-    }
 }
