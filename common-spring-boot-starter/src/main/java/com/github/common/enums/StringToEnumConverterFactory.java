@@ -1,6 +1,6 @@
 package com.github.common.enums;
 
-import com.github.common.util.JsonUtil;
+import com.github.chenjianhua.common.json.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
@@ -28,12 +28,12 @@ public class StringToEnumConverterFactory implements ConverterFactory<String, Ba
 
         @Override
         public T convert(String type) {
-            if(StringUtils.isEmpty(type)){
+            if (StringUtils.isEmpty(type)) {
                 return null;
             }
             log.info("字符串[{}]转枚举", type);
             //判断传过来的枚举字符串是不是 BaseEntryCommon类型
-            if(type.contains("{") || type.contains("}")){
+            if (type.contains("{") || type.contains("}")) {
                 BaseEntryEnum commonEnum = JsonUtil.toBean(type, BaseEntryEnum.class);
                 type = String.valueOf(commonEnum.getType());
             }

@@ -15,6 +15,6 @@ public class ApplicationReadyEventListener implements ApplicationListener<Applic
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        log.info("系统启动成功......");
+        log.info("收到 ApplicationReadyEvent 事件");
     }
 }

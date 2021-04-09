@@ -1,8 +1,8 @@
 package com.github.common.config;
 
 
+import com.github.chenjianhua.common.json.util.JsonUtil;
 import com.github.common.resp.ResponseVO;
-import com.github.common.util.JsonUtil;
 import com.github.common.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

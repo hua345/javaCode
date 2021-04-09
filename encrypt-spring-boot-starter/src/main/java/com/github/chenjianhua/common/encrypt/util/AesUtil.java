@@ -1,11 +1,5 @@
-package com.github.common.util.encrypt;
+package com.github.chenjianhua.common.encrypt.util;
 
-import cn.hutool.crypto.Mode;
-import cn.hutool.crypto.Padding;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.symmetric.AES;
-import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
-import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -44,15 +38,6 @@ public class AesUtil {
         log.info("{} AES encode: {}", message, encodedRequestJson);
         String messageDe = AesUtil.decryptFromBase64(encodedRequestJson, uuid);
         log.info("AES decode: {}", messageDe);
-        // 对于Java中AES的默认模式是：AES/ECB/PKCS5Padding
-        // 如果使用CryptoJS，请调整为：padding: CryptoJS.pad.Pkcs7,new AES("AES/ECB/PKCS7Padding")
-
-        AES aesObj = new AES(Mode.CBC, Padding.PKCS5Padding, uuid.getBytes(),
-                uuid.substring(0, 16).getBytes());
-        String encryptData = aesObj.encryptBase64(message, StandardCharsets.UTF_8);
-        log.info("encryptData: {}", encryptData);
-        String decryptData = aesObj.decryptStr(encryptData, StandardCharsets.UTF_8);
-        log.info("origin message:{}", decryptData);
 
         String strCmd = "cmd /c node F:\\Code\\Code\\common-spring-boot-starter\\src\\main\\java\\com\\github\\common\\util\\encrypt\\cryptojsTest.js " + message + " " + uuid;
         try {
@@ -68,7 +53,7 @@ public class AesUtil {
             reader.close();
             ps.destroy();
         } catch (Exception e) {
-            System.out.println("Error!");
+            e.printStackTrace();
         }
     }
 
@@ -80,8 +65,8 @@ public class AesUtil {
      * @return
      */
     public static String encryptToBase64(String data, String key) {
-        if (StringUtils.isEmpty(data) ||
-                StringUtils.isEmpty(key)) {
+        if (!StringUtils.hasText(data) ||
+                !StringUtils.hasText(key)) {
             throw new RuntimeException("AES data or Key is empty");
         }
         try {
@@ -109,8 +94,8 @@ public class AesUtil {
      * @return
      */
     public static String decryptFromBase64(String data, String key) {
-        if (StringUtils.isEmpty(data) ||
-                StringUtils.isEmpty(key)) {
+        if (!StringUtils.hasText(data) ||
+                !StringUtils.hasText(key)) {
             throw new RuntimeException("AES data or Key is empty");
         }
         try {

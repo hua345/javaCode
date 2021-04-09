@@ -1,7 +1,7 @@
 package com.github.common.resp;
 
 
-import com.github.common.util.JsonUtil;
+import com.github.chenjianhua.common.json.util.JsonUtil;
 import lombok.Getter;
 import lombok.Setter;
 

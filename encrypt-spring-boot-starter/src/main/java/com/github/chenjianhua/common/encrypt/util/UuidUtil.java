@@ -1,4 +1,4 @@
-package com.github.common.util.encrypt;
+package com.github.chenjianhua.common.encrypt.util;
 
 import java.util.UUID;
 

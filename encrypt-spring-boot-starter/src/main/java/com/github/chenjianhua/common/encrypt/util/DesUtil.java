@@ -1,4 +1,4 @@
-package com.github.common.util.encrypt;
+package com.github.chenjianhua.common.encrypt.util;
 
 
 import javax.crypto.Cipher;
@@ -6,26 +6,17 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+/**
+ * @author chenjianhua
+ * @date 2020/12/07
+ */
 public class DesUtil {
-    public static void main(String[] args) {
-        //加密字符串
-        String message = "helloWorld";
-        String aesKey = UuidUtil.getUUID8();
-        System.out.println("message: " + message);
-        System.out.println("aesKey: " + aesKey);
-        String encryptStr = encryptDES(message, aesKey);
-        System.out.println("encryptStr: " + encryptStr);
-        String decryptStr = decryptDES(encryptStr, aesKey);
-        System.out.println("encryptStr: " + decryptStr);
-    }
-
-
     /**
      * 加密 这个iv偏移量是数组！！
      */
     private static byte[] iv = {1, 2, 3, 4, 5, 6, 7, 8};
 
-    public static String encryptDES(String encryptString, String encryptKey) {
+    public static String encryptDes(String encryptString, String encryptKey) {
         try {
             IvParameterSpec zeroIv = new IvParameterSpec(iv);
             SecretKeySpec key = new SecretKeySpec(encryptKey.getBytes(), "DES");
@@ -43,7 +34,7 @@ public class DesUtil {
     /**
      * 解密
      */
-    public static String decryptDES(String decryptString, String decryptKey) {
+    public static String decryptDes(String decryptString, String decryptKey) {
         try {
             byte[] byteMi = Base64.getDecoder().decode(decryptString);
             IvParameterSpec zeroIv = new IvParameterSpec(iv);

@@ -1,6 +1,5 @@
-package com.github.common.util.encrypt;
+package com.github.chenjianhua.common.encrypt.util;
 
-import cn.hutool.crypto.digest.DigestUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigInteger;
@@ -28,15 +27,6 @@ public class Sha256Md5Util {
             log.error("加密异常：", e);
             return null;
         }
-    }
-
-
-    public static void main(String[] args) {
-        String password = "123456";
-        String md5Hex = DigestUtil.md5Hex(password);
-        String shaValue = sha256Encode(md5Hex);
-        log.info("{} md5:{}", password, md5Hex);
-        log.info("{} SHA256(md5):{}", password, shaValue);
     }
 }
 

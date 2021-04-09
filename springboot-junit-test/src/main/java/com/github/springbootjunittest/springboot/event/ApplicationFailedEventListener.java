@@ -14,6 +14,6 @@ import org.springframework.stereotype.Component;
 public class ApplicationFailedEventListener implements ApplicationListener<ApplicationFailedEvent> {
     @Override
     public void onApplicationEvent(ApplicationFailedEvent event) {
-        log.info("系统启动失败......");
+        log.info("收到 ApplicationFailedEvent 事件");
     }
 }

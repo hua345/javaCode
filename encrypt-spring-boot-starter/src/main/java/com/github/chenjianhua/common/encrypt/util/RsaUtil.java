@@ -1,4 +1,4 @@
-package com.github.common.util.encrypt;
+package com.github.chenjianhua.common.encrypt.util;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,29 +25,12 @@ public class RsaUtil {
     private final static int KEY_SIZE = 2048;
 
     /**
-     * 用于封装随机产生的公钥与私钥
-     */
-    private static Map<Integer, String> keyMap = new HashMap<>(8);
-
-    public static void main(String[] args) throws Exception {
-        //生成公钥和私钥
-        genKeyPair();
-        log.info("生成公钥: {}", keyMap.get(0));
-        log.info("生成私钥:{}", keyMap.get(1));
-        //加密字符串
-        String message = "helloWorld";
-        String messageEn = encryptToBase64Str(message, keyMap.get(0));
-        log.info("RSA({}): {}", message, messageEn);
-        String messageDe = decryptBase64Str(messageEn, keyMap.get(1));
-        log.info("Parse RSA: {}", messageDe);
-    }
-
-    /**
      * 随机生成密钥对
-     *
+     * 0表示公钥
+     * 1表示私钥
      * @throws NoSuchAlgorithmException
      */
-    public static void genKeyPair() throws NoSuchAlgorithmException {
+    public static Map<Integer, String> genKeyPair() throws NoSuchAlgorithmException {
         // KeyPairGenerator类用于生成公钥和私钥对，基于RSA算法生成对象
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
         // 初始化密钥对生成器，密钥大小为96-1024位
@@ -62,10 +45,16 @@ public class RsaUtil {
         // 得到私钥字符串
         String privateKeyString = Base64.getEncoder().encodeToString((privateKey.getEncoded()));
         // 将公钥和私钥保存到Map
+        /**
+         * 用于封装随机产生的公钥与私钥
+         */
+        Map<Integer, String> keyMap = new HashMap<>(8);
+
         //0表示公钥
         keyMap.put(0, publicKeyString);
         //1表示私钥
         keyMap.put(1, privateKeyString);
+        return keyMap;
     }
 
     /**

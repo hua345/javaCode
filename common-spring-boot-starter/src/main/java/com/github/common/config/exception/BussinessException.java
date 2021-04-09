@@ -9,21 +9,21 @@ import lombok.Getter;
  * @date 2020-09-07 15:41:49
  */
 @Getter
-public class MyRuntimeException extends RuntimeException {
+public class BussinessException extends RuntimeException {
 
     private Integer code;
 
-    public MyRuntimeException(Integer code, String message) {
+    public BussinessException(Integer code, String message) {
         super(message);
         this.code = code;
     }
 
-    public MyRuntimeException(ResponseStatusEnum responseStatusEnum) {
+    public BussinessException(ResponseStatusEnum responseStatusEnum) {
         super(responseStatusEnum.getI18nKey());
         this.code = responseStatusEnum.getErrorCode();
     }
 
-    public MyRuntimeException(String message) {
+    public BussinessException(String message) {
         super(message);
         this.code = ResponseStatusEnum.SUCCESS.getErrorCode();
     }

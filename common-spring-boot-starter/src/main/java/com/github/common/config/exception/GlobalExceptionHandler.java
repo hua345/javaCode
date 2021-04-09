@@ -2,9 +2,9 @@ package com.github.common.config.exception;
 
 
 
+import com.github.chenjianhua.common.json.util.JsonUtil;
 import com.github.common.resp.ResponseStatusEnum;
 import com.github.common.resp.ResponseVO;
-import com.github.common.util.JsonUtil;
 import com.github.common.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -64,13 +64,13 @@ public class GlobalExceptionHandler {
 	/**
 	 * 所有业务异常统一处理入口 （默认 HttpStatus.OK = 200）
 	 *
-	 * @param myRuntimeException 业务异常
+	 * @param bussinessException 业务异常
 	 * @return 全局统一返回体
 	 */
-	@ExceptionHandler(MyRuntimeException.class)
-	public ResponseVO myRuntimeExceptionHandler(MyRuntimeException myRuntimeException) {
-		log.error("Catch {} MyRuntimeException ; {}", myRuntimeException.getStackTrace()[0].toString(), myRuntimeException.getResponseResult());
-		return myRuntimeException.getResponseResult();
+	@ExceptionHandler(BussinessException.class)
+	public ResponseVO myRuntimeExceptionHandler(BussinessException bussinessException) {
+		log.error("Catch {} MyRuntimeException ; {}", bussinessException.getStackTrace()[0].toString(), bussinessException.getResponseResult());
+		return bussinessException.getResponseResult();
 	}
 
 	/**

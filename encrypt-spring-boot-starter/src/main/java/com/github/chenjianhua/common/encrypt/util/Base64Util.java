@@ -1,4 +1,4 @@
-package com.github.common.util.encrypt;
+package com.github.chenjianhua.common.encrypt.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -19,7 +19,7 @@ public class Base64Util {
      * Base64加密
      */
     public static String encryptToBase64Str(String originStr) {
-        if (StringUtils.isEmpty(originStr)) {
+        if (!StringUtils.hasText(originStr)) {
             return null;
         }
         return base64Encoder.encodeToString(originStr.getBytes(StandardCharsets.UTF_8));
@@ -30,12 +30,5 @@ public class Base64Util {
      */
     public static String decryptBase64Str(String encryptStr) {
         return new String(base64Decoder.decode(encryptStr), StandardCharsets.UTF_8);
-    }
-
-    public static void main(String[] args) throws Exception {
-        String originStr = "123456";
-        String base64Str = Base64Util.encryptToBase64Str(originStr);
-        log.info("base64 btoa({}): {}", originStr, base64Str);
-        log.info("base64 atob({}): {}", base64Str, Base64Util.decryptBase64Str(base64Str));
     }
 }
