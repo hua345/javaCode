@@ -13,6 +13,9 @@ import java.util.Map;
  */
 @Getter
 public enum SexEnum implements BaseEnum<Integer> {
+    /**
+     * 性别,测试的枚举
+     */
     Male(1, "男"),
     Female(2, "女");
 

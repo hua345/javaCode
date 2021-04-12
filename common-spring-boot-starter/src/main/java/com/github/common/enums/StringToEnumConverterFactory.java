@@ -13,6 +13,9 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class StringToEnumConverterFactory implements ConverterFactory<String, BaseEnum> {
 
+    private static final String ENUM_STR_PREFIX = "{";
+    private static final String ENUM_STR_SUFFIX = "}";
+
     @Override
     public <T extends BaseEnum> Converter<String, T> getConverter(Class<T> clazz) {
         return new StringToEnum<>(clazz);
@@ -28,12 +31,12 @@ public class StringToEnumConverterFactory implements ConverterFactory<String, Ba
 
         @Override
         public T convert(String type) {
-            if (StringUtils.isEmpty(type)) {
+            if (!StringUtils.hasText(type)) {
                 return null;
             }
             log.info("字符串[{}]转枚举", type);
             //判断传过来的枚举字符串是不是 BaseEntryCommon类型
-            if (type.contains("{") || type.contains("}")) {
+            if (type.contains(ENUM_STR_PREFIX) || type.contains(ENUM_STR_SUFFIX)) {
                 BaseEntryEnum commonEnum = JsonUtil.toBean(type, BaseEntryEnum.class);
                 type = String.valueOf(commonEnum.getType());
             }

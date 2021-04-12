@@ -6,10 +6,19 @@ package com.github.common.enums;
  */
 public interface BaseEnum<T> {
     /**
-     * 索引或类型
+     * 获取枚举的类型
+     *
+     * @return 枚举的类型
      */
     T getType();
 
+    /**
+     * 通过类型查询枚举
+     *
+     * @param type 枚举的类型
+     * @param <T>  枚举的类型
+     * @return 枚举值
+     */
     static <T> BaseEnum findByType(T type) {
         return null;
     }

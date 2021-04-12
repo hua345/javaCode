@@ -82,7 +82,7 @@ public class JsonUtil {
     /**
      * 将java对象转换成json字符串
      */
-    public static String toJSONString(Object obj) {
+    public static String toJsonString(Object obj) {
         try {
             ObjectMapper objectMapper = getInstance();
             String json = objectMapper.writeValueAsString(obj);
@@ -96,7 +96,7 @@ public class JsonUtil {
     /**
      * 将java对象转换成json字符串
      */
-    public static String toPrettyJSONString(Object obj) {
+    public static String toPrettyJsonString(Object obj) {
         try {
             ObjectMapper objectMapper = getInstance();
             String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
@@ -187,6 +187,6 @@ public class JsonUtil {
         TestA testA = new TestA();
         testA.localDateTime = LocalDateTime.now();
         testA.localDate = LocalDate.now();
-        log.info("localDateTime测试:{}", JsonUtil.toJSONString(testA));
+        log.info("localDateTime测试:{}", JsonUtil.toJsonString(testA));
     }
 }

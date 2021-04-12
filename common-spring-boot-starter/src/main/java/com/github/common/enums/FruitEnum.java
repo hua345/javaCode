@@ -12,6 +12,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum FruitEnum implements BaseEnum<Integer> {
+    /**
+     * 水果,测试的枚举
+     */
     Apple(1, "苹果"),
     banana(2, "香蕉");
 

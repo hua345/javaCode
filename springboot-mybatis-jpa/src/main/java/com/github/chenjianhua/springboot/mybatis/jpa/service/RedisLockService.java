@@ -23,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisLockService {
 
-    private final static int DefaultRetryCount = 5;
-    private final static int DefaultRetryTimeout = 300;
-    private final static String luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+    private final static int DEFAULT_RETRY_COUNT = 5;
+    private final static int DEFAULT_RETRY_TIMEOUT = 300;
+    private final static String LUA_SCRIPT = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
     /**
      * redisLock前缀
      */
@@ -94,14 +94,14 @@ public class RedisLockService {
     public RedisSession tryLock(String key, long ttlSecond) {
         String value = UUIDUtil.getUUID32();
 
-        for (int i = 0; i < DefaultRetryCount; i++) {
+        for (int i = 0; i < DEFAULT_RETRY_COUNT; i++) {
             RedisSession redisSession = tryLock(key, value, ttlSecond);
             if (redisSession.getLockStatus()) {
                 return redisSession;
             }
-            log.info("{}获取锁失败，睡眠{}ms", Thread.currentThread().getName(), DefaultRetryTimeout);
+            log.info("{}获取锁失败，睡眠{}ms", Thread.currentThread().getName(), DEFAULT_RETRY_TIMEOUT);
             try {
-                TimeUnit.MILLISECONDS.sleep(DefaultRetryTimeout);
+                TimeUnit.MILLISECONDS.sleep(DEFAULT_RETRY_TIMEOUT);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -132,7 +132,7 @@ public class RedisLockService {
     public void releaseLock(RedisSession redisSession) {
         if (null != redisSession && redisSession.getLockStatus()) {
             DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
-            redisScript.setScriptText(luaScript);
+            redisScript.setScriptText(LUA_SCRIPT);
             redisScript.setResultType(Long.class);
             redisTemplate.execute(redisScript, Collections.singletonList(redisSession.getKey()), redisSession.getValue());
         }

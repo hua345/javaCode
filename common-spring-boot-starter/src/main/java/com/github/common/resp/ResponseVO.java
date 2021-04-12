@@ -43,6 +43,6 @@ public class ResponseVO<T> implements Serializable {
 
     @Override
     public String toString() {
-        return JsonUtil.toJSONString(this);
+        return JsonUtil.toJsonString(this);
     }
 }

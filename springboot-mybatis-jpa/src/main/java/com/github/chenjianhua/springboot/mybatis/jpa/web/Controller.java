@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
     @PostMapping("/fruit")
     public TestEnumParam testEnum(@RequestBody TestEnumParam param) {
-        log.info("param :{}", JsonUtil.toJSONString(param));
+        log.info("param :{}", JsonUtil.toJsonString(param));
         return param;
     }
+
     @PostMapping("/fruit2")
     public SexEnum testEnum2(@RequestParam SexEnum param) {
-        log.info("param :{}", JsonUtil.toJSONString(param));
+        log.info("param :{}", JsonUtil.toJsonString(param));
         return param;
     }
 }

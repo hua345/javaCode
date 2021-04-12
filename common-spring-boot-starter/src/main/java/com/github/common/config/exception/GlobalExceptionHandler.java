@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BindException.class)
 	@ResponseBody
 	public ResponseVO bindExceptionHandler(BindException e) {
-		log.info("BindException Handler--- ERROR: {}", JsonUtil.toJSONString(e.getBindingResult().getAllErrors()));
+		log.info("BindException Handler--- ERROR: {}", JsonUtil.toJsonString(e.getBindingResult().getAllErrors()));
 		String message = e.getBindingResult().getAllErrors()
 				.stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 				.collect(Collectors.joining());

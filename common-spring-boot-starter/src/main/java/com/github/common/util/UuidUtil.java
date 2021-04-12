@@ -12,11 +12,11 @@ public class UuidUtil {
      *
      * @return
      */
-    public static String getUUID32() {
+    public static String getUuid32() {
         return UUID.randomUUID().toString().replace("-", "").toLowerCase();
     }
 
-    public static String getUUID8() {
-        return getUUID32().substring(0, 8);
+    public static String getUuid8() {
+        return getUuid32().substring(0, 8);
     }
 }

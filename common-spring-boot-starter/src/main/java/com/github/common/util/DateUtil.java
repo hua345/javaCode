@@ -212,13 +212,13 @@ public final class DateUtil {
         return getEndOfDay(LocalDate.now());
     }
 
-    public static ZonedDateTime TimeStampToLocalDateTime(long timeStamp) {
+    public static ZonedDateTime timeStampToLocalDateTime(long timeStamp) {
         Instant instant = Instant.ofEpochMilli(timeStamp);
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
         return zonedDateTime;
     }
 
-    public static ZonedDateTime UTCtoLocalDateTime(String utc) {
+    public static ZonedDateTime utcToLocalDateTime(String utc) {
         if (!StringUtils.hasText(utc)) {
             return null;
         }
@@ -227,8 +227,8 @@ public final class DateUtil {
         return zonedDateTime;
     }
 
-    public static String formatUTC(String utc, DateFormatEnum pattern) {
-        ZonedDateTime zonedDateTime = UTCtoLocalDateTime(utc);
+    public static String formatUtc(String utc, DateFormatEnum pattern) {
+        ZonedDateTime zonedDateTime = utcToLocalDateTime(utc);
         if (Objects.isNull(zonedDateTime)) {
             return null;
         }
@@ -258,7 +258,7 @@ public final class DateUtil {
         zonedDateTime = isoOrTucToZonedDateTime("2020-12-17T09:53:47+08:00");
         log.info("localDateTime:{}", zonedDateTime);
         log.info("formatUTC:{}", formatIso("2020-12-17T09:53:47+08:00", DateFormatEnum.DATE_YYYY_MM_DD_HH_MM_SS));
-        log.info("localDateTime:{}", TimeStampToLocalDateTime(1608180749000L));
-        log.info("localDateTime:{}", TimeStampToLocalDateTime(1608180749000L).toInstant().atZone(ZoneId.of("UTC")));
+        log.info("localDateTime:{}", timeStampToLocalDateTime(1608180749000L));
+        log.info("localDateTime:{}", timeStampToLocalDateTime(1608180749000L).toInstant().atZone(ZoneId.of("UTC")));
     }
 }
