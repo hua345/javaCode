@@ -1,4 +1,4 @@
-package com.github.id.util;
+package com.github.chenjianhua.common.id.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

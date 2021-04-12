@@ -1,9 +1,8 @@
-package com.github.id.service;
+package com.github.chenjianhua.common.id.service;
 
 
-import com.github.common.config.exception.MyRuntimeException;
-import com.github.id.model.AbstractLongModel;
-import com.github.id.repository.BaseLongRepository;
+import com.github.chenjianhua.common.id.model.AbstractLongModel;
+import com.github.chenjianhua.common.id.repository.BaseLongRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -63,7 +62,7 @@ public abstract class AbstractLongService<M extends AbstractLongModel> {
     public M logicDelete(Long id) {
         Optional<M> optionalData = findById(id);
         if (!optionalData.isPresent()) {
-            throw new MyRuntimeException("实体ID" + id + " 不存在");
+            throw new RuntimeException("实体ID" + id + " 不存在");
         }
         optionalData.get().setDeleted(true);
         return save(optionalData.get());

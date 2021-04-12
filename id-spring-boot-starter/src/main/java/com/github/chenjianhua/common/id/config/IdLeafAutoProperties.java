@@ -1,4 +1,4 @@
-package com.github.id.config;
+package com.github.chenjianhua.common.id.config;
 
 import lombok.Getter;
 import lombok.Setter;

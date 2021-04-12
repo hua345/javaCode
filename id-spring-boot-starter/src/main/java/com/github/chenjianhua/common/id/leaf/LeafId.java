@@ -1,6 +1,6 @@
-package com.github.id.leaf;
+package com.github.chenjianhua.common.id.leaf;
 
-import com.github.id.util.ApplicationContextUtil;
+import com.github.chenjianhua.common.id.util.ApplicationContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -15,7 +15,6 @@ import java.io.Serializable;
 @Slf4j
 public class LeafId implements IdentifierGenerator {
     private volatile static IdLeafService idLeafService;
-
 
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object object) throws MappingException {

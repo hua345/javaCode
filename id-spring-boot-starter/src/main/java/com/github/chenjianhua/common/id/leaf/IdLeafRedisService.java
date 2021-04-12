@@ -1,7 +1,7 @@
-package com.github.id.leaf;
+package com.github.chenjianhua.common.id.leaf;
 
 
-import com.github.id.config.IdLeafAutoProperties;
+import com.github.chenjianhua.common.id.config.IdLeafAutoProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

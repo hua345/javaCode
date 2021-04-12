@@ -1,4 +1,4 @@
-package com.github.id.repository;
+package com.github.chenjianhua.common.id.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

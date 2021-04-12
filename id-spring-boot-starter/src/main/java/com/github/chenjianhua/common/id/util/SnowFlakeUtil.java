@@ -1,11 +1,16 @@
-package com.github.id.util;
+package com.github.chenjianhua.common.id.util;
 
+import com.github.chenjianhua.common.json.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 
 /**
  * @author chenjianhua
@@ -47,9 +52,14 @@ public class SnowFlakeUtil implements ApplicationRunner {
         return snowFlakeInstance.nextId();
     }
 
-//    public static void main(String[] args) {
-//        for (int i = 0; i < (1 << 12); i++) {
-//            System.out.println(SnowFlakeUtil.getNextId());
-//        }
-//    }
+    public static void main(String[] args) {
+        Date startDate = new Date(SnowFlake.START_TIME_STAMP);
+        log.info(JsonUtil.toJSONString(startDate));
+        LocalDateTime d2 = LocalDateTime.of(2020, 8, 15, 0, 0, 0);
+        log.info("2020-08-15时间戳:{}", d2.toInstant(ZoneOffset.of("+8")).toEpochMilli());
+
+        for (int i = 0; i < 10; i++) {
+            log.info("id:{}", SnowFlakeUtil.getNextId());
+        }
+    }
 }

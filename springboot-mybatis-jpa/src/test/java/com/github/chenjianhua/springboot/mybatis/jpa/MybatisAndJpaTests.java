@@ -1,9 +1,9 @@
 package com.github.chenjianhua.springboot.mybatis.jpa;
 
+import com.github.chenjianhua.common.id.leaf.IdLeafRedisService;
+import com.github.chenjianhua.common.json.util.JsonUtil;
 import com.github.chenjianhua.springboot.mybatis.jpa.model.Book;
 import com.github.chenjianhua.springboot.mybatis.jpa.service.BookService;
-import com.github.common.util.JsonUtil;
-import com.github.id.leaf.IdLeafRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +36,8 @@ public class MybatisAndJpaTests {
         Book book = new Book();
         book.setId(idLeafRedisService.getIdByBizTag("Book"));
         book.setBookName("刻意练习");
-        book.setCreateTime(new Date());
-        book.setUpdateTime(new Date());
+        book.setCreateTime(LocalDateTime.now());
+        book.setUpdateTime(LocalDateTime.now());
         log.info("mybatis保存book:{}", JsonUtil.toJSONString(book));
         bookService.mybatisSave(book);
         Book result = bookService.mybatisFindById(book.getId());
@@ -48,8 +48,8 @@ public class MybatisAndJpaTests {
     public void jpaTest() {
         Book book = new Book();
         book.setBookName("哈佛幸福课");
-        book.setCreateTime(new Date());
-        book.setUpdateTime(new Date());
+        book.setCreateTime(LocalDateTime.now());
+        book.setUpdateTime(LocalDateTime.now());
         log.info("jpa保存book:{}", JsonUtil.toJSONString(book));
         bookService.jpaSave(book);
         Optional<Book> result = bookService.jpaFindById(book.getId());

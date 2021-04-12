@@ -1,4 +1,4 @@
-package com.github.id.leaf;
+package com.github.chenjianhua.common.id.leaf;
 
 import lombok.Getter;
 import lombok.Setter;

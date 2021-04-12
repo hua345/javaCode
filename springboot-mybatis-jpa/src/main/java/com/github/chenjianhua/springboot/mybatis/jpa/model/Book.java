@@ -1,6 +1,6 @@
 package com.github.chenjianhua.springboot.mybatis.jpa.model;
 
-import com.github.id.model.AbstractLeafVersionModel;
+import com.github.chenjianhua.common.id.model.AbstractLeafVersionModel;
 import lombok.Data;
 
 import javax.persistence.Entity;

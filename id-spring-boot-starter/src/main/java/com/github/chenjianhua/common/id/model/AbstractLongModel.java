@@ -1,4 +1,4 @@
-package com.github.id.model;
+package com.github.chenjianhua.common.id.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,7 +44,6 @@ public class AbstractLongModel implements Serializable {
      * 创建时间
      */
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false, nullable = false)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date createAt;
@@ -54,7 +53,6 @@ public class AbstractLongModel implements Serializable {
      */
     @UpdateTimestamp
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date updateAt;
     /**

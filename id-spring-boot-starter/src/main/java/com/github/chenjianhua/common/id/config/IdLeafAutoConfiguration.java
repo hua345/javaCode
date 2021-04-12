@@ -1,6 +1,6 @@
-package com.github.id.config;
+package com.github.chenjianhua.common.id.config;
 
-import com.github.id.leaf.IdLeafRedisService;
+import com.github.chenjianhua.common.id.leaf.IdLeafRedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -23,6 +23,5 @@ public class IdLeafAutoConfiguration {
         IdLeafRedisService bookService = new IdLeafRedisService(idLeafAutoProperties);
         return bookService;
     }
-
 }
 

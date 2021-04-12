@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.github.id.leaf;
+package com.github.chenjianhua.common.id.leaf;
 
 /**
  * @author chenjianhua

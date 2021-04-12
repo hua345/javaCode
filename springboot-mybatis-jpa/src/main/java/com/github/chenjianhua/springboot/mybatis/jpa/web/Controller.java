@@ -1,8 +1,8 @@
 package com.github.chenjianhua.springboot.mybatis.jpa.web;
 
+import com.github.chenjianhua.common.json.util.JsonUtil;
 import com.github.chenjianhua.springboot.mybatis.jpa.param.TestEnumParam;
 import com.github.common.enums.SexEnum;
-import com.github.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

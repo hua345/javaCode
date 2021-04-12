@@ -1,4 +1,7 @@
-package com.github.id.util;
+package com.github.chenjianhua.common.id.util;
+
+import com.github.chenjianhua.common.json.util.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -7,28 +10,26 @@ import java.util.Date;
 /**
  * @author chenjianhua
  * @date 2020-09-01 16:46:26
- */
-
-/**
  * 分布式系统中，有一些需要使用全局唯一ID的场景，这种时候为了防止ID冲突可以使用36位的UUID，但是UUID有一些缺点，首先他相对比较长，另外UUID一般是无序的。
- *
+ * <p>
  * SnowFlake算法用来生成64位的ID，刚好可以用long整型存储，能够用于分布式系统中生产唯一的ID， 并且生成的ID有大致的顺序。
  * snowflake的结构如下(每部分用-分开):
  * 0 - 41位时间戳 - 5位数据中心标识 - 5位机器标识 - 12位序列号
  * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
  * 第一位为未使用，接下来的41位为毫秒级时间(41位的长度可以使用69年)，然后是5位datacenterId和5位workerId(10位的长度最多支持部署1024个节点） ，
  * 最后12位是毫秒内的计数（12位的计数顺序号支持每个节点每毫秒产生4096个ID序号）
- *
+ * <p>
  * 一共加起来刚好64位，为一个Long型。(转换成字符串长度为18)
  * snowflake生成的ID整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞（由datacenter和workerId作区分），并且效率较高。
  * 据说：snowflake每秒能够产生26万个ID。
  */
+@Slf4j
 public class SnowFlake {
 
     /**
      * 起始的时间戳,2020-08-15
      */
-    public final static long START_STMP = 1597420800000L;
+    public final static long START_TIME_STAMP = 1597420800000L;
 
     /**
      * 每一部分占用的位数
@@ -62,7 +63,8 @@ public class SnowFlake {
     //上一次时间戳
     private long lastStmp = -1L;
 
-    private SnowFlake(){}
+    private SnowFlake() {
+    }
 
     public SnowFlake(long datacenterId, long machineId) {
         if (datacenterId > MAX_DATACENTER_NUM || datacenterId < 0) {
@@ -100,7 +102,7 @@ public class SnowFlake {
 
         lastStmp = currStmp;
 
-        return (currStmp - START_STMP) << TIMESTMP_LEFT //时间戳部分
+        return (currStmp - START_TIME_STAMP) << TIMESTMP_LEFT //时间戳部分
                 | datacenterId << DATACENTER_LEFT       //数据中心部分
                 | machineId << MACHINE_LEFT             //机器标识部分
                 | sequence;                             //序列号部分
@@ -116,17 +118,5 @@ public class SnowFlake {
 
     private long getNewstmp() {
         return System.currentTimeMillis();
-    }
-
-    public static void main(String[] args) {
-        Date startDate =  new Date(START_STMP);
-        System.out.println(startDate.toLocaleString());
-        LocalDateTime d2 = LocalDateTime.of(2020, 8, 15,0,0,0);
-        System.out.println(d2.toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        SnowFlake snowFlake = new SnowFlake(2, 3);
-
-        for (int i = 0; i < 10; i++) {
-            System.out.println(snowFlake.nextId());
-        }
     }
 }
