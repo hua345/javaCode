@@ -1,7 +1,7 @@
-package com.github.spring.boot.idleaf;
+package com.github.chenjianhua.springboot.mybatis.jpa;
 
+import com.github.chenjianhua.springboot.mybatis.jpa.service.RedisLockService;
 import com.github.common.util.ThreadPoolUtil;
-import com.github.spring.boot.idleaf.service.idleaf.RedisServer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +29,8 @@ import java.util.stream.IntStream;
 @SpringBootTest
 public class RedisLockTest {
     @Autowired
-    private RedisServer redisServer;
+    private RedisLockService redisLockService;
+
     @Autowired
     private RedisTemplate<String, Serializable> redisCacheTemplate;
     @Autowired
@@ -76,7 +77,7 @@ public class RedisLockTest {
         AtomicInteger result = new AtomicInteger();
         IntStream.range(0, threadNum).forEach(i ->
                 ThreadPoolUtil.getInstance().submit(() -> {
-                    RedisServer.RedisSession redisSession = redisServer.tryLock(prefixName + testName + i, ttlSecond);
+                    RedisLockService.RedisSession redisSession = redisLockService.tryLock(prefixName + testName + i, ttlSecond);
                     if (redisSession.getLockStatus()) {
                         try {
                             TimeUnit.MILLISECONDS.sleep(200);
@@ -84,13 +85,13 @@ public class RedisLockTest {
                             e.printStackTrace();
                         }
                         result.getAndIncrement();
-                        redisServer.releaseLock(redisSession);
+                        redisLockService.releaseLock(redisSession);
                     }
                     latch.countDown();
                 })
         );
         latch.await();
-        log.info("result:{}", result);
+        Assert.assertEquals(threadNum.intValue(), result.intValue());
     }
 
     /**
@@ -102,7 +103,7 @@ public class RedisLockTest {
         AtomicInteger result = new AtomicInteger();
         IntStream.range(0, threadNum).forEach(i ->
                 ThreadPoolUtil.getInstance().submit(() -> {
-                    RedisServer.RedisSession redisSession = redisServer.tryLock(prefixName + testName + i, ttlSecond);
+                    RedisLockService.RedisSession redisSession = redisLockService.tryLock(prefixName + testName + i, ttlSecond);
                     if (redisSession.getLockStatus()) {
                         try {
                             TimeUnit.MILLISECONDS.sleep(200);
@@ -110,7 +111,7 @@ public class RedisLockTest {
                             e.printStackTrace();
                         }
                         result.getAndIncrement();
-                        redisServer.releaseLock(redisSession);
+                        redisLockService.releaseLock(redisSession);
                     }
                     latch.countDown();
                 })
@@ -129,7 +130,7 @@ public class RedisLockTest {
         IntStream.range(0, threadNum).forEach(i -> {
             IntStream.range(0, 2).forEach(j -> {
                 ThreadPoolUtil.getInstance().submit(() -> {
-                    RedisServer.RedisSession redisSession = redisServer.tryLock(prefixName + testName + i, ttlSecond);
+                    RedisLockService.RedisSession redisSession = redisLockService.tryLock(prefixName + testName + i, ttlSecond);
                     if (redisSession.getLockStatus()) {
                         try {
                             TimeUnit.MILLISECONDS.sleep(200);
@@ -137,7 +138,7 @@ public class RedisLockTest {
                             e.printStackTrace();
                         }
                         result.getAndIncrement();
-                        redisServer.releaseLock(redisSession);
+                        redisLockService.releaseLock(redisSession);
                     }
                     latch.countDown();
                 });

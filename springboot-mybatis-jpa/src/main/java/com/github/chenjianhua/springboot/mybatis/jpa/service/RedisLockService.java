@@ -1,6 +1,6 @@
-package com.github.spring.boot.idleaf.service.idleaf;
+package com.github.chenjianhua.springboot.mybatis.jpa.service;
 
-import com.github.id.util.UUIDUtil;
+import com.github.chenjianhua.common.id.util.UUIDUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-public class RedisServer {
+public class RedisLockService {
 
     private final static int DefaultRetryCount = 5;
     private final static int DefaultRetryTimeout = 300;
@@ -38,7 +38,7 @@ public class RedisServer {
     private SetOperations<String, String> setOperations;
 
     @Autowired
-    public RedisServer(RedisTemplate<String, String> redisTemplate) {
+    public RedisLockService(RedisTemplate<String, String> redisTemplate) {
         this.stringOperations = redisTemplate.opsForValue();
         this.setOperations = redisTemplate.opsForSet();
         this.redisTemplate = redisTemplate;
