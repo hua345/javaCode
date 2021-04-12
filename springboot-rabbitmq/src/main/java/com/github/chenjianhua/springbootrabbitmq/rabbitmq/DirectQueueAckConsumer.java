@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class QueueAckConsumer {
+public class DirectQueueAckConsumer {
 
     /**
      * 需要手动ack

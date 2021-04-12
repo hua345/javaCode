@@ -2,7 +2,6 @@ package com.github.chenjianhua.springbootrabbitmq.rabbitmq;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class QueueNoExistConsumer {
+public class DirectQueueCodeAutoDeleteConsumer {
 
     /**
      * queue 不存在
@@ -25,10 +24,10 @@ public class QueueNoExistConsumer {
      * key: 在 topic 方式下，这个就是我们熟知的 routingKey
      */
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "fangDirectQueCodeCreated", durable = "false", autoDelete = "true"),
+            value = @Queue(value = "fangDirectQueCodeAutoDelete", durable = "false", autoDelete = "true"),
             exchange = @Exchange(value = "fangDirect", type = ExchangeTypes.DIRECT),
             key = "love"))
     public void process(String message) {
-        log.info("收到消息:{}", message);
+        log.info("fangDirectQueCodeAutoDelete收到消息:{}", message);
     }
 }

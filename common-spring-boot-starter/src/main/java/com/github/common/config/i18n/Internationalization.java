@@ -16,12 +16,12 @@ import java.util.Locale;
  */
 @Configuration
 public class Internationalization implements WebMvcConfigurer {
-    @Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
-        return sessionLocaleResolver;
-    }
+//    @Bean
+//    public LocaleResolver localeResolver() {
+//        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+//        sessionLocaleResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
+//        return sessionLocaleResolver;
+//    }
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
