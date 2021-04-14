@@ -1,7 +1,8 @@
-package com.github.chenjianhua.springbootrabbitmq.rabbitmq;
+package com.github.chenjianhua.springbootrabbitmq.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -27,7 +28,13 @@ public class DirectQueueCodeConsumer {
             value = @Queue(value = "fangDirectQueCodeCreate", durable = "true", autoDelete = "false"),
             exchange = @Exchange(value = "fangDirect", type = ExchangeTypes.DIRECT),
             key = "love"))
-    public void process(String message) {
-        log.info("fangDirectQueCodeCreate收到消息:{}", message);
+    public void process(Message message) {
+        log.info("fangDirectQueCodeCreate收到消息:{}", message.getMessageProperties().getConsumerQueue());
+        try {
+            String originalMsg = new String(message.getBody());
+            // 处理消息
+        }catch (Exception e){
+            // 记录失败日志
+        }
     }
 }

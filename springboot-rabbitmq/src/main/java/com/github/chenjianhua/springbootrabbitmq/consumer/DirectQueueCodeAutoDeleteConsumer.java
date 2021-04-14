@@ -1,4 +1,4 @@
-package com.github.chenjianhua.springbootrabbitmq.rabbitmq;
+package com.github.chenjianhua.springbootrabbitmq.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;

@@ -1,9 +1,8 @@
-package com.github.chenjianhua.springbootrabbitmq.rabbitmq;
+package com.github.chenjianhua.springbootrabbitmq.consumer;
 
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -27,7 +26,7 @@ public class DirectQueueAckConsumer {
      * 相当于消息的唯一标识，用于 mq 辨别是哪个消息被 ack/nak 了
      * mq 和 consumer 之间的管道，通过它来 ack/nak
      */
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "fangDirectQueCodeAck", durable = "false", autoDelete = "true"),
+    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "fangDirectQueCodeAck", durable = "true", autoDelete = "false"),
             exchange = @Exchange(value = "fangDirect", type = ExchangeTypes.DIRECT), key = "love"), ackMode = "MANUAL")
     public void process(String message, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws IOException {
         log.info("收到消息:{}", message);
@@ -42,6 +41,8 @@ public class DirectQueueAckConsumer {
             channel.basicNack(deliveryTag, false, true);
             // 拒绝消息，与basicNack区别在于不能进行批量操作，其他用法很相似。
             // channel.basicReject(deliveryTag, true);
+        } else {
+            channel.basicAck(deliveryTag, false);
         }
     }
 }
