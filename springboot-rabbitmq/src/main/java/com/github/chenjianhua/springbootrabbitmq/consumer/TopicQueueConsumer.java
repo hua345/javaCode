@@ -13,7 +13,7 @@ public class TopicQueueConsumer {
      * exchange, queue 已存在,直接指定注解中的queues参数即可
      * 当发送的消息，Properties属性中content_type类型为text时可以直接用String接收
      */
-    @RabbitListener(queues = {"fangTopicQue"})
+    @RabbitListener(queues = {"fangTopicQue", "loveTopicQue"})
     public void process(String message) {
         log.info("fangTopicQue收到消息:{}", message);
     }

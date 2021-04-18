@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class DirectQueueNoPrefetchCountConsumer {
     /**
      * https://www.rabbitmq.com/consumer-prefetch.html
-     * @param message
+     * prefetchCount配置和basicQos(int prefetchCount, boolean global)中是一样的
      */
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "fangDirectQuePrefetchCount", durable = "true", autoDelete = "false"),

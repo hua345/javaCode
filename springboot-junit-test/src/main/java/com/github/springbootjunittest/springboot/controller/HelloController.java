@@ -19,7 +19,7 @@ public class HelloController {
 
     @PostMapping("/helloController")
     public String postHelloController(@RequestBody HelloParam param) {
-        log.info("postHelloController param:{}", JsonUtil.toJSONString(param));
+        log.info("postHelloController param:{}", JsonUtil.toJsonString(param));
         return "hello " + param.getName();
     }
 }

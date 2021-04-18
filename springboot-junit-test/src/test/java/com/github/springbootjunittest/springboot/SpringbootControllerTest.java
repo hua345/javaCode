@@ -48,7 +48,7 @@ class SpringbootControllerTest {
         MvcResult mvcResult = mockMvc.perform(
                 post("/helloController")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.toJSONString(helloParam))
+                        .content(JsonUtil.toJsonString(helloParam))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
