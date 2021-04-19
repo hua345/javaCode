@@ -30,6 +30,10 @@ public class ResponseVO<T> implements Serializable {
      */
     private T data;
 
+    public ResponseVO() {
+
+    }
+
     public ResponseVO(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
