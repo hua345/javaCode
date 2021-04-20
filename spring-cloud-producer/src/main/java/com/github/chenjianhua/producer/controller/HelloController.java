@@ -23,11 +23,11 @@ public class HelloController {
         return ResponseUtil.ok(sb.toString());
     }
 
-    @PostMapping("/hello")
+    @PostMapping("/postHello")
     public ResponseVO<String> postHello(@RequestBody HelloParam param) {
-        log.info("post hello param:{}", JsonUtil.toJsonString(param));
+        log.info("postHello param:{}", JsonUtil.toJsonString(param));
         StringBuilder sb = new StringBuilder();
-        sb.append("hello ").append(param.getName());
+        sb.append("hello ").append(param.getName()).append(" from post");
         return ResponseUtil.ok(sb.toString());
     }
 }

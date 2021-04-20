@@ -93,9 +93,6 @@
                     <include>*.properties</include>
                     <include>i18n/*</include>
                 </includes>
-                <excludes>
-                    <exclude>mybatis/*</exclude>
-                </excludes>
                 <filtering>false</filtering>
             </resource>
         </resources>

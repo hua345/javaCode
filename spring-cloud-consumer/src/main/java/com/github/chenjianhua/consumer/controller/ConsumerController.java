@@ -5,7 +5,9 @@ import com.github.chenjianhua.consumer.feign.ProducerService;
 import com.github.chenjianhua.consumer.service.RestTemplateService;
 import com.github.chenjianhua.consumer.vo.HelloParam;
 import com.github.common.resp.ResponseVO;
+import com.github.common.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +34,8 @@ public class ConsumerController {
     public ResponseVO<String> helloByServerName(@PathVariable("name") String name) {
         HelloParam helloParam = new HelloParam();
         helloParam.setName(name);
-        restTemplateService.postJsonByServerName("spring-cloud-producer", "/hello", JsonUtil.toJsonString(helloParam));
-        return producerService.hello(name);
+        ResponseEntity<String> resp = restTemplateService.postJsonByServerName("spring-cloud-producer", "/postHello", JsonUtil.toJsonString(helloParam));
+        ResponseVO responseVO = JsonUtil.toBean(resp.getBody(), ResponseVO.class);
+        return ResponseUtil.ok(responseVO.getData());
     }
 }
