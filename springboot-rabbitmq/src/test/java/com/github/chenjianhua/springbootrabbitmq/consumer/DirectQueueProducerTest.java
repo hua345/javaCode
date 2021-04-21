@@ -15,15 +15,15 @@ import java.util.UUID;
  */
 @Slf4j
 @SpringBootTest
-class TopicQueueProducerTest {
-    private static final String EXCHANGE_NAME = "fangTopic";
-    private static final String ROUTING_KEY = "fang.fang";
+class DirectQueueProducerTest {
+    private static final String EXCHANGE_NAME = "fangDirect";
+    private static final String ROUTING_KEY = "love";
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @Test
-    void testTopicQueueProducer() {
+    void testDirectQueueProducer() {
         for (int i = 1; i <= 10; i++) {
             // 每个发送的消息都需要配备一个 CorrelationData 相关数据对象，用来表示当前消息唯一性
             CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());

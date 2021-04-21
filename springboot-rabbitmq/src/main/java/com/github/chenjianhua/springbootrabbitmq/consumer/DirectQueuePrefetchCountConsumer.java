@@ -20,6 +20,10 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class DirectQueuePrefetchCountConsumer {
+    private static final String EXCHANGE_NAME = "fangDirect";
+    private static final String QUEUE_NAME = "fangDirectQuePrefetchCount";
+    private static final String BINDING_KEY = "prefetchCount";
+
     /**
      * https://www.rabbitmq.com/consumer-prefetch.html
      * prefetchCount配置和basicQos(int prefetchCount, boolean global)中是一样的
@@ -28,16 +32,16 @@ public class DirectQueuePrefetchCountConsumer {
      * 而Rabbit投递的顺序是，先为consumer1投递满10个message，再往consumer2投递10个message。
      * 如果这时有新message需要投递，先判断channel的unacked数是否等于20，如果是则不会将消息投递到consumer中，message继续呆在queue中。
      * 之后其中consumer对一条消息进行ack，unacked此时等于19，Rabbit就判断哪个consumer的unacked少于10，就投递到哪个consumer中。
-     *
+     * <p>
      * prefetch_count参数仅仅在 basic.consume的 autoAck参数设置为 false的前提下才生效，也就是不能使用自动确认，自动确认的消息没有办法限流。
      * 我们经过压测,来判断consumer的消费能力，如果单位时间内，consumer到达的消息太多，也可能把消费者压垮。
      * 得到压测数据后，可以在@RabbitListener中配置prefetch count
      * 只需要在@RabbitListener中，用containerFactory指定一个监听器工厂类就行
      */
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "fangDirectQuePrefetchCount", durable = "true", autoDelete = "false"),
-            exchange = @Exchange(value = "fangDirect", type = ExchangeTypes.DIRECT),
-            key = "prefetchCount"), containerFactory = "mqConsumerListenerContainer", ackMode = "MANUAL")
+            value = @Queue(value = EXCHANGE_NAME, durable = "true", autoDelete = "false"),
+            exchange = @Exchange(value = QUEUE_NAME, type = ExchangeTypes.DIRECT),
+            key = BINDING_KEY), containerFactory = "mqConsumerListenerContainer", ackMode = "MANUAL")
     public void process(String message, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws IOException, InterruptedException {
         log.info("fangDirectQuePrefetchCount {} 收到消息:{}", deliveryTag, message);
         Thread.sleep(100);

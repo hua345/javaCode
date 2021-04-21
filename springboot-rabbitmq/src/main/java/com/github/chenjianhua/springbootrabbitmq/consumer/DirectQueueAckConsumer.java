@@ -20,16 +20,19 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class DirectQueueAckConsumer {
+    private static final String EXCHANGE_NAME = "fangDirect";
+    private static final String QUEUE_NAME = "fangDirectQueCodeAck";
+    private static final String BINDING_KEY = "love";
 
     /**
      * 需要手动ack
      * 相当于消息的唯一标识，用于 mq 辨别是哪个消息被 ack/nak 了
      * mq 和 consumer 之间的管道，通过它来 ack/nak
      */
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "fangDirectQueCodeAck", durable = "true", autoDelete = "false"),
-            exchange = @Exchange(value = "fangDirect", type = ExchangeTypes.DIRECT), key = "love"), ackMode = "MANUAL")
+    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = QUEUE_NAME, durable = "true", autoDelete = "false"),
+            exchange = @Exchange(value = EXCHANGE_NAME, type = ExchangeTypes.DIRECT), key = BINDING_KEY), ackMode = "MANUAL")
     public void process(String message, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) throws IOException {
-        log.info("收到消息:{}", message);
+        log.info("{}收到消息:{}", QUEUE_NAME, message);
         if (message.contains("success")) {
             // deliveryTag：表示消息投递序号，每次消费消息或者消息重新投递后，deliveryTag都会增加。手动消息确认模式下，我们可以对指定deliveryTag的消息进行ack、nack、reject等操作。
             // multiple：是否批量确认，值为 true 则会一次性 ack所有小于当前消息 deliveryTag 的消息。

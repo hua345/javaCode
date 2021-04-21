@@ -15,16 +15,20 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class DirectQueueNoPrefetchCountConsumer {
+    private static final String EXCHANGE_NAME = "fangDirect";
+    private static final String QUEUE_NAME = "fangDirectQuePrefetchCount";
+    private static final String BINDING_KEY = "prefetchCount";
+
     /**
      * https://www.rabbitmq.com/consumer-prefetch.html
      * prefetchCount配置和basicQos(int prefetchCount, boolean global)中是一样的
      */
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "fangDirectQuePrefetchCount", durable = "true", autoDelete = "false"),
-            exchange = @Exchange(value = "fangDirect", type = ExchangeTypes.DIRECT),
-            key = "prefetchCount"))
+            value = @Queue(value = QUEUE_NAME, durable = "true", autoDelete = "false"),
+            exchange = @Exchange(value = EXCHANGE_NAME, type = ExchangeTypes.DIRECT),
+            key = BINDING_KEY))
     public void process2(String message) {
-        log.info("fangDirectQuePrefetchCount 没有prefetchCount 收到消息:{}", message);
+        log.info("{} 没有prefetchCount 收到消息:{}", QUEUE_NAME, message);
     }
 }
 

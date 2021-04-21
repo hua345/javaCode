@@ -16,6 +16,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class DirectQueueCodeConsumer {
+    private static final String EXCHANGE_NAME = "fangDirect";
+
+    private static final String QUEUE_NAME = "fangDirectQueCodeCreate";
+    private static final String BINDING_KEY = "love";
 
     /**
      * queue 不存在
@@ -25,15 +29,15 @@ public class DirectQueueCodeConsumer {
      * key: 在 topic 方式下，这个就是我们熟知的 routingKey
      */
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "fangDirectQueCodeCreate", durable = "true", autoDelete = "false"),
-            exchange = @Exchange(value = "fangDirect", type = ExchangeTypes.DIRECT),
-            key = "love"))
+            value = @Queue(value = QUEUE_NAME, durable = "true", autoDelete = "false"),
+            exchange = @Exchange(value = EXCHANGE_NAME, type = ExchangeTypes.DIRECT),
+            key = BINDING_KEY))
     public void process(Message message) {
-        log.info("fangDirectQueCodeCreate收到消息:{}", message.getMessageProperties().getConsumerQueue());
         try {
             String originalMsg = new String(message.getBody());
+            log.info("{}收到消息:{}", QUEUE_NAME, originalMsg);
             // 处理消息
-        }catch (Exception e){
+        } catch (Exception e) {
             // 记录失败日志
         }
     }

@@ -39,10 +39,11 @@ public class RestTemplateService {
     /**
      * RestTemplate post请求类
      */
-    public static ResponseEntity<String> postJson(String url, String jsonStr, String authToken) {
+    public static ResponseEntity<String> postJson(String url, String jsonStr) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
         HttpEntity<String> request = new HttpEntity<>(jsonStr, headers);
         return restTemplate.postForEntity(url, request, String.class);
     }
@@ -58,6 +59,7 @@ public class RestTemplateService {
         sb.append("http://").append(serverName).append("/").append(uri);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
         HttpEntity<String> request = new HttpEntity<>(jsonStr, headers);
         return restTemplate.postForEntity(sb.toString(), request, String.class);
     }
