@@ -54,7 +54,7 @@ public class SnowFlakeUtil implements ApplicationRunner {
 
     public static void main(String[] args) {
         Date startDate = new Date(SnowFlake.START_TIME_STAMP);
-        log.info(JsonUtil.toJSONString(startDate));
+        log.info(JsonUtil.toJsonString(startDate));
         LocalDateTime d2 = LocalDateTime.of(2020, 8, 15, 0, 0, 0);
         log.info("2020-08-15时间戳:{}", d2.toInstant(ZoneOffset.of("+8")).toEpochMilli());
 

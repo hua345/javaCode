@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.github.chenjianhua.common.redis.config.RedisConfig,\
+  com.github.chenjianhua.common.redis.support.RedisStringTemplate,\
+  com.github.chenjianhua.common.redis.support.RedisLockService

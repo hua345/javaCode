@@ -1,10 +1,12 @@
 package com.github.chenjianhua.common.id.leaf;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+/**
+ * @author chenjianhua
+ * @date 2020-09-01 16:46:26
+ */
+@Data
 public class LeafAlloc {
 
     private String bizTag;
