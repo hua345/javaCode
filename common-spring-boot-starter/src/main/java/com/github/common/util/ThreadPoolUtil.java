@@ -57,6 +57,8 @@ public class ThreadPoolUtil {
                             new ArrayBlockingQueue<>(512),
                             namedThreadFactory,
                             new MyDiscardPolicy());
+                    log.info("默认线程池初始化完成");
+
                 }
             }
         }

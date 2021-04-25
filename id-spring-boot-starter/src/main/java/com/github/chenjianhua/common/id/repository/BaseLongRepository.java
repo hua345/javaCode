@@ -9,6 +9,6 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @date 2020/9/7
  */
 @NoRepositoryBean
-public interface BaseLongRepository<M> extends JpaRepository<M, Long>, JpaSpecificationExecutor<M> {
+public interface BaseLongRepository<M> extends JpaRepository<M, Long> {
 
 }

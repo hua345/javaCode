@@ -37,6 +37,7 @@ public class RedisConfig {
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(genericJackson2JsonRedisSerializer);
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
+        log.info("redis初始化成功");
         return redisTemplate;
     }
 
