@@ -16,4 +16,5 @@ import javax.persistence.Table;
 public class Book extends AbstractLeafVersionModel {
 
     private String bookName;
+
 }

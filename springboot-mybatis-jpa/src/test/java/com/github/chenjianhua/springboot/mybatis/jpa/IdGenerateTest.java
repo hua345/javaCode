@@ -6,15 +6,15 @@ import com.github.chenjianhua.common.id.util.SnowFlakeUtil;
 import com.github.common.util.DateFormatEnum;
 import com.github.common.util.DateUtil;
 import com.github.common.util.ThreadPoolUtil;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
  * @author chenjianhua
  * @date 2020-09-07 15:41:49
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("dev")
 public class IdGenerateTest {
@@ -57,7 +57,7 @@ public class IdGenerateTest {
                 Long id = beginId;
                 for (int j = 0; j < num; j++) {
                     Long currentId = redisLeaf.getIdByBizTag("leaf-segment-test");
-                    Assert.assertTrue(currentId > id);
+                    Assertions.assertTrue(currentId > id);
                     id = currentId;
                 }
                 latch.countDown();
@@ -66,6 +66,6 @@ public class IdGenerateTest {
         latch.await();
         Long endId = redisLeaf.getIdByBizTag("leaf-segment-test");
         Long expectedId = beginId + num * threadNum + 1;
-        Assert.assertEquals(expectedId, endId);
+        Assertions.assertEquals(expectedId, endId);
     }
 }

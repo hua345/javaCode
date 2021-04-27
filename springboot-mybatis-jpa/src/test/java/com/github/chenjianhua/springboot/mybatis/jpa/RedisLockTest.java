@@ -1,19 +1,19 @@
 package com.github.chenjianhua.springboot.mybatis.jpa;
 
-import com.github.chenjianhua.springboot.mybatis.jpa.service.RedisLockService;
+import com.github.chenjianhua.common.redis.support.RedisLockService;
+import com.github.chenjianhua.common.redis.support.RedisStringTemplate;
 import com.github.common.util.ThreadPoolUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.Serializable;
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -24,17 +24,16 @@ import java.util.stream.IntStream;
  * @author chenjianhua
  * @date 2020/9/24
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @Slf4j
 @SpringBootTest
+@ActiveProfiles("dev")
 public class RedisLockTest {
-    @Autowired
+    @Resource
     private RedisLockService redisLockService;
 
     @Autowired
-    private RedisTemplate<String, Serializable> redisCacheTemplate;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisStringTemplate redisStringTemplate;
 
     private final static String luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
     private final static String prefixName = "lock:";
@@ -50,22 +49,20 @@ public class RedisLockTest {
         redisScript.setScriptText("return 'Hello Redis'");
         // 定义返回类型。注意：如果没有这个定义，spring 不会返回结果
         redisScript.setResultType(String.class);
-        RedisSerializer<String> stringRedisSerializer = redisCacheTemplate.getStringSerializer();
-        String luaResult = redisCacheTemplate.execute(redisScript, stringRedisSerializer, stringRedisSerializer, null);
-        Assert.assertEquals("Hello Redis", luaResult);
+        String luaResult = redisStringTemplate.scriptExecute(redisScript, null);
+        Assertions.assertEquals("Hello Redis", luaResult);
     }
 
     @Test
     public void testLua2() {
-        redisTemplate.opsForValue().set(testName, testNameValue);
+        redisStringTemplate.set(testName, testNameValue, 100);
 
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
         redisScript.setScriptText(luaScript);
         redisScript.setResultType(Long.class);
-        RedisSerializer<String> stringRedisSerializer = redisTemplate.getStringSerializer();
-        Long luaResult = redisTemplate.execute(redisScript, Collections.singletonList(testName), testNameValue);
+        Long luaResult = redisStringTemplate.scriptExecute(redisScript, Collections.singletonList(testName), testNameValue);
         Long expected = 1L;
-        Assert.assertEquals(expected, luaResult);
+        Assertions.assertEquals(expected, luaResult);
     }
 
     /**
@@ -91,7 +88,7 @@ public class RedisLockTest {
                 })
         );
         latch.await();
-        Assert.assertEquals(threadNum.intValue(), result.intValue());
+        Assertions.assertEquals(threadNum.intValue(), result.intValue());
     }
 
     /**
@@ -117,7 +114,7 @@ public class RedisLockTest {
                 })
         );
         latch.await();
-        Assert.assertEquals(threadNum.intValue(), result.intValue());
+        Assertions.assertEquals(threadNum.intValue(), result.intValue());
     }
 
     /**
@@ -145,6 +142,6 @@ public class RedisLockTest {
             });
         });
         latch.await();
-        Assert.assertEquals(threadNum.intValue() * 2, result.intValue());
+        Assertions.assertEquals(threadNum.intValue() * 2, result.intValue());
     }
 }
