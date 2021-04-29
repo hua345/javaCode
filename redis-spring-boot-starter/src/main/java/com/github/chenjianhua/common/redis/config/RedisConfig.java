@@ -1,9 +1,6 @@
 package com.github.chenjianhua.common.redis.config;
 
-import com.github.chenjianhua.common.redis.support.RedisLockService;
-import com.github.chenjianhua.common.redis.support.RedisStringTemplate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

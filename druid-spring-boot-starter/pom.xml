@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.chenjianhua.common</groupId>
-    <artifactId>durid-spring-boot-starter</artifactId>
+    <artifactId>druid-spring-boot-starter</artifactId>
     <version>1.2.6</version>
     <name>durid-spring-boot-starter</name>
     <description>Demo project for Spring Boot</description>

@@ -35,7 +35,6 @@ public class ConsumerController {
         HelloParam helloParam = new HelloParam();
         helloParam.setName(name);
         ResponseEntity<String> resp = restTemplateService.postJsonByServerName("spring-cloud-producer", "/postHello", JsonUtil.toJsonString(helloParam));
-        ResponseVO responseVO = JsonUtil.toBean(resp.getBody(), ResponseVO.class);
-        return ResponseUtil.ok(responseVO.getData());
+        return ResponseUtil.ok(resp.getBody());
     }
 }

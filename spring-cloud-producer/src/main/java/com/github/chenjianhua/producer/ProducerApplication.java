@@ -8,6 +8,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 /**
+ * https://spring.io/guides/gs/service-registration-and-discovery/
+ * https://spring.io/guides/gs/consuming-rest/
+ * https://spring.io/guides/gs/client-side-load-balancing/
  * @EnableCircuitBreaker 不需要
  * 在配置中添加spring.cloud.circuit.breaker.enabled就可以开启
  */

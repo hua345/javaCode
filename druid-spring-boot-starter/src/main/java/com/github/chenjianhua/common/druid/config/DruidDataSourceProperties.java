@@ -1,4 +1,4 @@
-package com.github.chenjianhua.common.durid.config;
+package com.github.chenjianhua.common.druid.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,15 +11,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "spring.datasource.druid")
 public class DruidDataSourceProperties {
-
-    /**
-     * 这一项可配可不配，如果不配置druid会根据url自动识别dbType，然后选择相应的driverClassName
-     */
-    private String driverClassName;
-    private String url;
-    private String username;
-    private String password;
-
     /**
      * 初始化时建立物理连接的个数。默认0
      */

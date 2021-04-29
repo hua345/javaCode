@@ -1,4 +1,4 @@
-package com.github.chenjianhua.common.durid.config;
+package com.github.chenjianhua.common.druid.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.github.chenjianhua.common.durid.config.DruidConfiguration
+  com.github.chenjianhua.common.druid.config.DruidConfiguration

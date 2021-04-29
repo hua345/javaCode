@@ -1,5 +1,9 @@
 package com.github.chenjianhua.consumer.service;
 
+import com.github.chenjianhua.common.json.util.JsonUtil;
+import com.github.common.resp.ResponseVO;
+import com.github.common.util.ResponseUtil;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -51,6 +55,7 @@ public class RestTemplateService {
     /**
      * 通过服务名进行post请求
      */
+    @HystrixCommand(fallbackMethod = "getErrorInfo")
     public ResponseEntity<String> postJsonByServerName(String serverName, String uri, String jsonStr) {
         if (!StringUtils.hasText(serverName)) {
             throw new RuntimeException("导出服务名没有配置");
@@ -62,5 +67,10 @@ public class RestTemplateService {
         headers.add("Accept", MediaType.APPLICATION_JSON.toString());
         HttpEntity<String> request = new HttpEntity<>(jsonStr, headers);
         return restTemplate.postForEntity(sb.toString(), request, String.class);
+    }
+
+    public ResponseEntity<String> getErrorInfo(String serverName, String uri, String jsonStr) {
+        log.info("生产者服务:{} {}请求失败", serverName, uri);
+        return ResponseEntity.ok("生产者服务请求失败!");
     }
 }

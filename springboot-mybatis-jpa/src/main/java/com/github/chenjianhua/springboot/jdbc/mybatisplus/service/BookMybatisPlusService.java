@@ -1,5 +1,6 @@
 package com.github.chenjianhua.springboot.jdbc.mybatisplus.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.chenjianhua.common.mybatisplus.support.AbstractService;
 import com.github.chenjianhua.common.mybatisplus.vo.PageVo;
 import com.github.chenjianhua.springboot.jdbc.mybatisplus.model.Book;
@@ -15,5 +16,9 @@ import org.springframework.stereotype.Service;
 public class BookMybatisPlusService extends AbstractService<BookMybatisPlusMapper, Book> {
     public PageVo<Book> mybatisPlusPage(BookMybatisPlusParam param) {
         return convertPage(baseMapper.mybatisPlusPage(param.getPageable(), param.getBookName()));
+    }
+
+    public IPage<Book> mybatisPlusIPage(BookMybatisPlusParam param) {
+        return baseMapper.mybatisPlusPage(param.getPageable(), param.getBookName());
     }
 }

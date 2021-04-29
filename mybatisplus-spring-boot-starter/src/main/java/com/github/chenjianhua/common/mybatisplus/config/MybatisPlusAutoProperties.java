@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "mybatis-plus")
 public class MybatisPlusAutoProperties {
 
-	private PageConfig pageConfig;
+	private PageConfig pageConfig = new PageConfig();
 
 	/**
 	 * 数据库类型,默认 mysql

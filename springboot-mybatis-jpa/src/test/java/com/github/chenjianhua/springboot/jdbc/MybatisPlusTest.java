@@ -1,5 +1,6 @@
 package com.github.chenjianhua.springboot.jdbc;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.chenjianhua.common.id.leaf.IdLeafRedisService;
 import com.github.chenjianhua.common.json.util.JsonUtil;
 import com.github.chenjianhua.common.mybatisplus.vo.Direction;
@@ -8,7 +9,6 @@ import com.github.chenjianhua.common.mybatisplus.vo.SortOrder;
 import com.github.chenjianhua.springboot.jdbc.mybatisplus.model.Book;
 import com.github.chenjianhua.springboot.jdbc.mybatisplus.service.BookMybatisPlusService;
 import com.github.chenjianhua.springboot.jdbc.param.BookMybatisPlusParam;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,9 +47,7 @@ public class MybatisPlusTest {
     }
 
     @Test
-    public void MybatisPageTest() {
-        //排序字段 空格 排序方式,排序字段 空格 排序方式
-        String orderBy = "id desc";
+    public void MybatisPlusPageTest() {
         BookMybatisPlusParam bookMybatisPlusParam = new BookMybatisPlusParam();
         bookMybatisPlusParam.setBookName("刻意练习");
         bookMybatisPlusParam.setPage(2);
@@ -59,9 +57,12 @@ public class MybatisPlusTest {
         sortOrder.setSortName("id");
         bookMybatisPlusParam.setOrders(Collections.singletonList(sortOrder));
         PageVo<Book> bookPage = bookMybatisPlusService.mybatisPlusPage(bookMybatisPlusParam);
-        log.info("mybatis 分页信息:{}", JsonUtil.toJsonString(bookPage));
+        log.info("mybatisPlus 分页信息:{}", JsonUtil.toJsonString(bookPage));
         bookMybatisPlusParam.setBookName("");
         bookPage = bookMybatisPlusService.mybatisPlusPage(bookMybatisPlusParam);
-        log.info("mybatis 分页信息:{}", JsonUtil.toJsonString(bookPage));
+        log.info("mybatisPlus 分页信息:{}", JsonUtil.toJsonString(bookPage));
+        bookMybatisPlusParam.setBookName("");
+        IPage<Book> bookIPage = bookMybatisPlusService.mybatisPlusIPage(bookMybatisPlusParam);
+        log.info("mybatisPlus iPage 分页信息:{}", JsonUtil.toJsonString(bookIPage));
     }
 }

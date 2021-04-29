@@ -29,14 +29,8 @@ public class MybatisPlusConfig implements MetaObjectHandler {
         log.info(ktMybatisPlusAutoProperties.toString());
         // 分页插件
         PaginationInnerInterceptor innerInterceptor = new PaginationInnerInterceptor(ktMybatisPlusAutoProperties.getDbType());
-        if (null != ktMybatisPlusAutoProperties.getPageConfig()) {
-            innerInterceptor.setOverflow(ktMybatisPlusAutoProperties.getPageConfig().isOverflow());
-            innerInterceptor.setMaxLimit(ktMybatisPlusAutoProperties.getPageConfig().getLimit());
-        } else {
-            innerInterceptor.setOverflow(false);
-            innerInterceptor.setMaxLimit(500L);
-        }
-
+        innerInterceptor.setOverflow(ktMybatisPlusAutoProperties.getPageConfig().isOverflow());
+        innerInterceptor.setMaxLimit(ktMybatisPlusAutoProperties.getPageConfig().getLimit());
         interceptor.addInnerInterceptor(innerInterceptor);
 
         return interceptor;

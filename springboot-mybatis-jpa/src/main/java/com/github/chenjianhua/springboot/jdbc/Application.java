@@ -14,7 +14,6 @@ import java.util.TimeZone;
  */
 @EnableSwagger2
 @SpringBootApplication
-@MapperScan({"com.github.chenjianhua.springboot.jdbc.mybatis.mapper", "com.github.chenjianhua.springboot.jdbc.mybatisplus.mapper"})
 public class Application {
     @PostConstruct
     void started() {
