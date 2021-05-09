@@ -22,11 +22,11 @@ public class PageParam<T> {
     /**
      * 页码
      */
-    private int page = 10;
+    private int page = 1;
     /**
      * 每页大小
      */
-    private int size = 1;
+    private int size = 10;
     /**
      * 多个字段排序 排序规则 -> 字段名:排序方式,字段名:排序方式 如：createAt:DESC,vmTime:ASC
      */

@@ -1,11 +1,8 @@
 package com.github.chenjianhua.springcloudsentinel.controller;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.github.chenjianhua.springcloudsentinel.feign.ProducerService;
 import com.github.chenjianhua.springcloudsentinel.service.TestService;
 import com.github.common.resp.ResponseVO;
-import com.github.common.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
