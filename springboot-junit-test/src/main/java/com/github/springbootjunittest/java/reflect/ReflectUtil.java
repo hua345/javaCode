@@ -36,7 +36,7 @@ public class ReflectUtil {
                 rowData.add(field.get(obj));
             }
         } catch (Exception e) {
-            log.error("获取类字段信息失败:{}", JsonUtil.toJSONString(e));
+            log.error("获取类字段信息失败:{}", JsonUtil.toJsonString(e));
         }
         return rowData;
     }
@@ -46,7 +46,7 @@ public class ReflectUtil {
         tableFieldInfoBo.setFieldCode("name");
         tableFieldInfoBo.setFieldName("芳");
         tableFieldInfoBo.setName("芳芳");
-        log.info(JsonUtil.toJSONString(ReflectUtil.getObjectValue(tableFieldInfoBo, tableFieldInfoBo)));
-        log.info(JsonUtil.toJSONString(ReflectUtil.getClassFieldValue(tableFieldInfoBo)));
+        log.info(JsonUtil.toJsonString(ReflectUtil.getObjectValue(tableFieldInfoBo, tableFieldInfoBo)));
+        log.info(JsonUtil.toJsonString(ReflectUtil.getClassFieldValue(tableFieldInfoBo)));
     }
 }

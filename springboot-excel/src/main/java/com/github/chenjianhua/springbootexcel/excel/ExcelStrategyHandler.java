@@ -84,7 +84,7 @@ public class ExcelStrategyHandler {
         // 查询导出任务
         ExcelExportHis excelExportHis = excelExportHisService.findByTaskNumber(task.getTaskNumber());
         excelExportHis.setExportStatus(ExcelExportStatusEnum.DOING.getType());
-        excelExportHis.setRemark("正在获取导出数据");
+        excelExportHis.setResultMsg("正在获取导出数据");
         excelExportHisService.save(excelExportHis);
         File tempFile = createTempFile(task);
         ExcelWriter excelWriter = createExcelWriter(task, tempFile);
@@ -118,8 +118,8 @@ public class ExcelStrategyHandler {
 
     private void uploadFile(ExcelExportHis excelExportHis, File file, ExportCallback callback) {
         excelExportHis.setExportStatus(ExcelExportStatusEnum.DOING.getType());
-        excelExportHis.setProgress(90);
-        excelExportHis.setRemark("正在获取导出数据");
+        excelExportHis.setExportProgress(90);
+        excelExportHis.setResultMsg("正在获取导出数据");
         excelExportHisService.save(excelExportHis);
         TestFileUtil.testUploadFile(file);
         log.info("上传文件:{}", file.getName());

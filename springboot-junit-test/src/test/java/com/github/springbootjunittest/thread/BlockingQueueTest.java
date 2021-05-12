@@ -1,4 +1,4 @@
-package com.github.springbootjunittest;
+package com.github.springbootjunittest.thread;
 
 import com.github.springbootjunittest.mythread.ThreadPoolUtil;
 import com.github.springbootjunittest.util.DateUtil;

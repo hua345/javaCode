@@ -1,4 +1,4 @@
-package com.github.springbootjunittest;
+package com.github.springbootjunittest.thread;
 
 import com.github.springbootjunittest.mythread.CyclicBarrierTask;
 import com.github.springbootjunittest.mythread.SemaphoreTask;

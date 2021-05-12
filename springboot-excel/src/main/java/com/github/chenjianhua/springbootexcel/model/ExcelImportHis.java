@@ -1,12 +1,12 @@
 package com.github.chenjianhua.springbootexcel.model;
 
-import com.github.chenjianhua.springbootexcel.enums.ExcelExportStatusEnum;
 import com.github.id.model.AbstractLongModel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author chenjianhua
@@ -26,14 +26,25 @@ public class ExcelImportHis extends AbstractLongModel {
      */
     private String taskNumber;
     /**
+     * 导入来源
+     */
+    private String taskOrigin;
+    /**
      * 文件名
      */
     private String fileName;
     /**
-     * 导入总记录数
+     * 导出总记录数
      */
-    private Integer total;
-
+    private String totalRecord;
+    /**
+     * 状态;处理状态
+     */
+    private Integer importStatus;
+    /**
+     * 结果信息
+     */
+    private String resultMsg;
     /**
      * 导入文件地址
      */
@@ -45,22 +56,27 @@ public class ExcelImportHis extends AbstractLongModel {
     /**
      * 成功记录数
      */
-    private int successRecords;
+    private int successRecord;
     /**
      * 失败记录数
      */
-    private int failedRecords;
+    private int failedRecord;
+    /**
+     * 开始时间
+     */
+    private Date startTime;
+    /**
+     * 结束时间
+     */
+    private Date endTime;
     /**
      * 导入参数
      */
     private String importParam;
     /**
-     * 错误信息
+     * 是否为同步任务(0:异步任务,1:同步任务)
      */
-    private String failedMsg;
-    /**
-     * 状态;处理状态
-     */
-    private Integer importStatus;
+    private boolean syncTask;
+
 }
 

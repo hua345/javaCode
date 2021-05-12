@@ -4,6 +4,7 @@ import com.github.chenjianhua.springbootexcel.enums.ExcelExportStatusEnum;
 import com.github.chenjianhua.springbootexcel.model.ExcelExportHis;
 import com.github.chenjianhua.springbootexcel.service.ExcelExportHisService;
 import com.github.common.config.exception.MyRuntimeException;
+import com.github.common.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.*;
 
 /**
@@ -45,8 +47,10 @@ public class ExcelServer implements ApplicationRunner {
         ExcelExportHis param = new ExcelExportHis();
         param.setTaskNumber(task.getTaskNumber());
         param.setExportType(task.getExcelExportType().getType());
-        param.setProgress(0);
+        param.setExportProgress(0);
         param.setExportStatus(ExcelExportStatusEnum.DEFAULT.getType());
+        param.setExportParam(JsonUtil.toJSONString(task.getExportArg()));
+        param.setStartTime(new Date());
         excelExportHisService.save(param);
 
         try {
@@ -100,12 +104,12 @@ public class ExcelServer implements ApplicationRunner {
         if (StringUtils.hasText(callback.getFilePath())) {
             excelExportHis.setFilePath(callback.getFilePath());
             excelExportHis.setFileName(callback.getFileName());
-            excelExportHis.setProgress(100);
-            excelExportHis.setRemark(ExcelExportStatusEnum.SUCCESS.getDescription());
+            excelExportHis.setExportProgress(100);
+            excelExportHis.setResultMsg(ExcelExportStatusEnum.SUCCESS.getDescription());
             excelExportHis.setExportStatus(ExcelExportStatusEnum.SUCCESS.getType());
         } else {
-            excelExportHis.setProgress(100);
-            excelExportHis.setRemark(callback.getMsg());
+            excelExportHis.setExportProgress(100);
+            excelExportHis.setResultMsg(callback.getMsg());
             excelExportHis.setExportStatus(ExcelExportStatusEnum.FAIL.getType());
         }
         excelExportHisService.save(excelExportHis);

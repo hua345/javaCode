@@ -10,5 +10,4 @@ public class SpringbootJunitTestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJunitTestApplication.class, args);
 	}
-
 }

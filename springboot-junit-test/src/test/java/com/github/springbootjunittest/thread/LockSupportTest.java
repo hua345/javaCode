@@ -1,4 +1,4 @@
-package com.github.springbootjunittest;
+package com.github.springbootjunittest.thread;
 
 import com.github.springbootjunittest.mythread.ThreadPoolUtil;
 import lombok.extern.slf4j.Slf4j;

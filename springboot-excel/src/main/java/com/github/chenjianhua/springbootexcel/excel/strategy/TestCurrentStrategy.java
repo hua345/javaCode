@@ -85,8 +85,8 @@ public class TestCurrentStrategy extends AbstractExcelStrategy {
         if (excelExportHis != null) {
             excelExportHis.setExportStatus(ExcelExportStatusEnum.DOING.getType());
             int currentProgress = ((index + 1) * 100) / beginAndEndTimeBos.size();
-            excelExportHis.setProgress((index + 1) / beginAndEndTimeBos.size());
-            excelExportHis.setRemark("正在写入excel文件");
+            excelExportHis.setExportProgress((index + 1) / beginAndEndTimeBos.size());
+            excelExportHis.setResultMsg("正在写入excel文件");
             excelExportHisService.save(excelExportHis);
             log.info("导出任务:[{}]当前进度:[{}]", excelExportHis.getTaskNumber(), currentProgress);
         }

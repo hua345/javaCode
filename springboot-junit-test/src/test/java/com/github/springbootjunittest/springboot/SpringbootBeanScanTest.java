@@ -5,10 +5,14 @@ import com.github.springbootjunittest.springboot.beanscan.MyScanAnnotation;
 import com.github.springbootjunittest.springboot.beanscan.MyScanTestBean;
 import com.github.springbootjunittest.springboot.event.DemoPublisher;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author chenjianhua
@@ -22,7 +26,17 @@ public class SpringbootBeanScanTest {
 
     @Test
     void contextLoads() {
-        log.info("{}", myScanTestBean.getClass());
+        Assertions.assertNotNull(myScanTestBean);
+        Assertions.assertEquals(MyScanTestBean.class, myScanTestBean.getClass());
+    }
+
+    @Test
+    void testAnnotationUtils() {
+        MyScanAnnotation myScanAnnotation = MyScanTestBean.class.getAnnotation(MyScanAnnotation.class);
+
+        // 注解交给这么一处理  相当于就会被Spring代理了  这就是优势
+        MyScanAnnotation myScanAnnotation1 = AnnotationUtils.getAnnotation(myScanAnnotation, MyScanAnnotation.class);
+        System.out.println(myScanAnnotation1);
     }
 
     @Test
