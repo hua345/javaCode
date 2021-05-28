@@ -15,6 +15,8 @@ public class LearnDesignPattern extends LearnTemplate {
 
     @Override
     public void howLearn() {
-        log.info("看一些设计模式的书，练习设计模式的使用");
+        log.info("看一些设计模式的书");
+        log.info("练习设计模式的使用");
+        log.info("多看看源码");
     }
 }

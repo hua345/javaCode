@@ -16,8 +16,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * @author xzx
- * @since 2020/6/12
+ * @author chenjianhua
+ * @date 2021/4/23
  */
 @Slf4j
 public abstract class AbstractService<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> {

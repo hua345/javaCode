@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -35,6 +36,7 @@ public class PageParam<T> {
     /**
      * 分页对象
      */
+    @JsonIgnore
     public IPage<T> getPageable() {
         Page<T> p = new Page<>(page, size);
         if (CollectionUtils.isNotEmpty(orders)) {

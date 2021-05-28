@@ -24,13 +24,10 @@ public class LockSupportTest {
     @Test
     public void parkAndUnparkTest() throws Exception {
         String a = "A";
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                log.info("睡觉");
-                LockSupport.park(a);
-                log.info("起床");
-            }
+        Thread t = new Thread(() -> {
+            log.info("睡觉");
+            LockSupport.park(a);
+            log.info("起床");
         }, "LockSupport-Thread");
         t.start();
         TimeUnit.MILLISECONDS.sleep(1000);
@@ -42,19 +39,16 @@ public class LockSupportTest {
     public void unpackAndPack() throws Exception {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         String a = "A";
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(1000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                log.info("睡觉");
-                LockSupport.park(a);
-                log.info("起床");
-                countDownLatch.countDown();
+        Thread t = new Thread(() -> {
+            try {
+                TimeUnit.MILLISECONDS.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            log.info("睡觉");
+            LockSupport.park(a);
+            log.info("起床");
+            countDownLatch.countDown();
         }, "LockSupport-Thread");
         t.start();
         log.info("约芳芳明天去玩");

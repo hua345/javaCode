@@ -16,7 +16,8 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
- * mybatis-plus分配配置
+ * @author chenjianhua
+ * @date 2021/4/23
  */
 @Slf4j
 @Configuration
