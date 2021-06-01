@@ -26,6 +26,16 @@ public class StringTest {
     }
 
     @Test
+    public void StringBuilderDeleteTest() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(testName).append(",");
+        if (sb.toString().endsWith(",")) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        assertEquals(testName, sb.toString());
+    }
+
+    @Test
     public void StringSplit() {
         String[] splitNames = testName.split(",");
         assertNotNull(splitNames);

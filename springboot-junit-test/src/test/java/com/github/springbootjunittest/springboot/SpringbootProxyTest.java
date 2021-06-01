@@ -50,7 +50,7 @@ public class SpringbootProxyTest {
         assertTrue(AopUtils.isCglibProxy(helloProxyService));
 
         // 拿到目标对象
-        System.out.println(AopUtils.getTargetClass(helloProxyService)); //class com.fsx.service.HelloServiceImpl
+        System.out.println(AopUtils.getTargetClass(helloProxyService));
         Method method = ClassUtils.getMethod(HelloProxyServiceImpl.class, "helloWorld");
         System.out.println(AopUtils.selectInvocableMethod(method, HelloProxyServiceImpl.class));
         // 它是对ClassUtils.getMostSpecificMethod,增加了对代理对象的特殊处理。。。

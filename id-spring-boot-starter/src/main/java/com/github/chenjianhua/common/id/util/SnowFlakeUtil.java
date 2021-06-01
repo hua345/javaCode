@@ -23,6 +23,15 @@ public class SnowFlakeUtil implements ApplicationRunner {
 
     private static final String snowFlakeId = "snowFlakeId";
 
+    private static volatile Long machineId = 1L;
+
+    /**
+     * 6Bit,0~64
+     */
+    public static Long getMachineId() {
+        return machineId;
+    }
+
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -31,11 +40,11 @@ public class SnowFlakeUtil implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Long machineId = redisTemplate.opsForValue().increment(snowFlakeId);
-        if (machineId <= 0) {
-            machineId = redisTemplate.opsForValue().increment(snowFlakeId);
+        Long redisMachineId = redisTemplate.opsForValue().increment(snowFlakeId);
+        if (redisMachineId <= 0) {
+            redisMachineId = redisTemplate.opsForValue().increment(snowFlakeId);
         }
-        machineId = machineId % SnowFlake.MAX_MACHINE_NUM;
+        machineId = redisMachineId % SnowFlake.MAX_MACHINE_NUM;
         log.info("雪花算法机器ID：{}", machineId);
         snowFlakeInstance = new SnowFlake(1, machineId);
     }
@@ -44,8 +53,8 @@ public class SnowFlakeUtil implements ApplicationRunner {
         if (null == snowFlakeInstance) {
             synchronized (SnowFlakeUtil.class) {
                 if (null == snowFlakeInstance) {
-                    log.info("雪花算法默认初始化");
-                    snowFlakeInstance = new SnowFlake(2, 3);
+                    log.info("雪花算法默认初始化,机器ID:{}", machineId);
+                    snowFlakeInstance = new SnowFlake(1, machineId);
                 }
             }
         }

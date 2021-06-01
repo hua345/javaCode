@@ -1,11 +1,6 @@
 package com.github.chenjianhua.common.id.util;
 
-import com.github.chenjianhua.common.json.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
 
 /**
  * @author chenjianhua
@@ -37,9 +32,9 @@ public class SnowFlake {
     // 序列号占用的位数
     private final static long SEQUENCE_BIT = 12;
     // 机器标识占用的位数
-    private final static long MACHINE_BIT = 5;
+    private final static long MACHINE_BIT = 6;
     // 数据中心占用的位数
-    private final static long DATACENTER_BIT = 5;
+    private final static long DATACENTER_BIT = 4;
 
     /**
      * 每一部分的最大值

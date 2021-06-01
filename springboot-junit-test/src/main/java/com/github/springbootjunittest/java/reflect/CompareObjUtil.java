@@ -3,6 +3,7 @@ package com.github.springbootjunittest.java.reflect;
 import com.github.chenjianhua.common.json.util.JsonUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -53,8 +54,12 @@ public class CompareObjUtil {
             }
             // 将忽略的字段转换为set
             Set<String> ignoreFieldsSet = new HashSet<>();
-            ignoreFieldsSet.addAll(Arrays.asList(ignoreFields1));
-            ignoreFieldsSet.addAll(Arrays.asList(ignoreFields2));
+            if (null != ignoreFields1) {
+                ignoreFieldsSet.addAll(Arrays.asList(ignoreFields1));
+            }
+            if (null != ignoreFields2) {
+                ignoreFieldsSet.addAll(Arrays.asList(ignoreFields2));
+            }
 
             // 只有两个对象都是同一类型的才有可比性
             if (dbData.getClass() == updateData.getClass()) {

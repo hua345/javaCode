@@ -20,7 +20,7 @@ public class TestStrategyContext {
      */
     public static void registerStrategy(AbstractTestStrategy executeStrategy) {
         TestStrategyEnum excelExportType = executeStrategy.getTestStrategyEnum();
-        log.info("注册策略:{}, ", excelExportType);
+        log.info("注册策略:{} {}, ", excelExportType, excelExportType.getDescription());
         if (excelExportType != null) {
             testStrategyMap.put(excelExportType, executeStrategy);
         }

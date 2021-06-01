@@ -24,9 +24,11 @@ public class IdLeafRedisService implements IdLeafService {
 
     private ExecutorService service = new ThreadPoolExecutor(3, 10, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), new IdLeafThreadFactory());
 
-    private final static String ID_LEAF_PREFIX = "idLeaf:";
+    private final static String ID_LEAF_PREFIX = ":idLeaf:";
 
     private Integer DEFAULT_STEP = 1000;
+
+    private String serverName;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -46,8 +48,9 @@ public class IdLeafRedisService implements IdLeafService {
     }
 
     @Autowired
-    public IdLeafRedisService(IdLeafAutoProperties idLeafAutoProperties) {
+    public IdLeafRedisService(IdLeafAutoProperties idLeafAutoProperties, String serverName) {
         this.DEFAULT_STEP = idLeafAutoProperties.getStep();
+        this.serverName = serverName;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class IdLeafRedisService implements IdLeafService {
         if (!leafMap.containsKey(bizTag)) {
             synchronized (leafMap) {
                 if (!leafMap.containsKey(bizTag)) {
-                    initLeafFromDb(bizTag);
+                    initLeafFromRedis(bizTag);
                 }
             }
         }
@@ -65,7 +68,7 @@ public class IdLeafRedisService implements IdLeafService {
     /**
      * 初始化IdLeaf
      */
-    public void initLeafFromDb(String bizTag) {
+    public void initLeafFromRedis(String bizTag) {
         SegmentBuffer buffer = new SegmentBuffer();
         Segment segment = buffer.getCurrent();
         LeafAlloc leafAlloc = updateMaxIdAndGetLeafAlloc(bizTag);
@@ -81,7 +84,7 @@ public class IdLeafRedisService implements IdLeafService {
     /**
      * 更新idLeaf
      */
-    public void updateLeafFromDb(String bizTag, Segment segment) {
+    public void updateLeafFromRedis(String bizTag, Segment segment) {
         SegmentBuffer buffer = segment.getBuffer();
         LeafAlloc leafAlloc = updateMaxIdAndGetLeafAlloc(bizTag);
         buffer.setStep(leafAlloc.getStep());
@@ -91,13 +94,20 @@ public class IdLeafRedisService implements IdLeafService {
         segment.setStep(buffer.getStep());
     }
 
+    private String getRedisKey(String bizTag) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(serverName).append(ID_LEAF_PREFIX).append(bizTag);
+        return sb.toString();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public LeafAlloc updateMaxIdAndGetLeafAlloc(String bizTag) {
 //        RedisAtomicLong entityIdCounter = new RedisAtomicLong(bizTag, stringRedisTemplate.getConnectionFactory());
 //        Long increment = entityIdCounter.getAndIncrement();
-        Long increment = stringRedisTemplate.opsForValue().increment(ID_LEAF_PREFIX + bizTag);
+
+        Long increment = stringRedisTemplate.opsForValue().increment(getRedisKey(bizTag));
         if (increment <= 0) {
-            increment = stringRedisTemplate.opsForValue().increment(ID_LEAF_PREFIX + bizTag);
+            increment = stringRedisTemplate.opsForValue().increment(getRedisKey(bizTag));
         }
         LeafAlloc leafAlloc = new LeafAlloc();
         leafAlloc.setBizTag(bizTag);
@@ -149,11 +159,11 @@ public class IdLeafRedisService implements IdLeafService {
                 Segment next = buffer.getSegments()[buffer.nextPos()];
                 boolean updateOk = false;
                 try {
-                    updateLeafFromDb(buffer.getKey(), next);
+                    updateLeafFromRedis(buffer.getKey(), next);
                     updateOk = true;
-                    logger.info("update segment {} from db {}", buffer.getKey(), next);
+                    logger.info("update segment {} from redis {}", buffer.getKey(), next);
                 } catch (Exception e) {
-                    logger.warn(buffer.getKey() + " updateSegmentFromDb exception", e);
+                    logger.warn(buffer.getKey() + " updateSegmentFromRedis exception", e);
                 } finally {
                     if (updateOk) {
                         buffer.wLock().lock();

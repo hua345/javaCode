@@ -14,6 +14,4 @@ public class LeafAlloc {
     private Long maxId;
 
     private Integer step;
-
-    private String description;
 }
