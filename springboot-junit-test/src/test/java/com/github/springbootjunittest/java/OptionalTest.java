@@ -23,9 +23,20 @@ public class OptionalTest {
     @Test
     public void testOptional() {
         Map<String, String> map = new HashMap<>();
+        Optional.ofNullable(map.get(NO_EXIST_KEY)).ifPresent(name -> {
+            Assertions.assertNotNull(name);
+        });
         Optional<String> nameOpt = Optional.ofNullable(map.get(NO_EXIST_KEY));
         nameOpt.ifPresent(name -> {
-            log.info(name);
+            Assertions.assertNotNull(name);
+        });
+        map.put(NO_EXIST_KEY, HELLO_WORLD);
+        Optional.ofNullable(map.get(NO_EXIST_KEY)).ifPresent(name -> {
+            Assertions.assertEquals(name, HELLO_WORLD);
+        });
+        nameOpt = Optional.ofNullable(map.get(NO_EXIST_KEY));
+        nameOpt.ifPresent(name -> {
+            Assertions.assertEquals(name, HELLO_WORLD);
         });
     }
 

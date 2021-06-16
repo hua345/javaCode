@@ -1,5 +1,6 @@
 package com.github.springbootjunittest.springboot.beanscan;
 
+import lombok.Setter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
@@ -17,18 +18,15 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 
-import java.lang.annotation.Annotation;
-
 /**
  * @author chenjianhua
  * @date 2021/5/30
  */
+@Setter
 public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {
     private String basePackage;
     private String beanName;
     private ApplicationContext applicationContext;
-
-    private Class<? extends Annotation> annotationClass;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -40,10 +38,6 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
         this.beanName = beanName;
     }
 
-    public void setAnnotationClass(Class<? extends Annotation> annotationClass) {
-        this.annotationClass = annotationClass;
-    }
-
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
         BeanDefinition mapperScannerBean = ((ConfigurableApplicationContext) this.applicationContext).getBeanFactory().getBeanDefinition(this.beanName);
@@ -53,7 +47,7 @@ public class MapperScannerConfigurer implements BeanDefinitionRegistryPostProces
         PropertyValues values = mapperScannerBean.getPropertyValues();
         this.basePackage = this.getPropertyValue("basePackage", values);
 
-        MyClassPathDefinitionScanner scanner = new MyClassPathDefinitionScanner(beanDefinitionRegistry, this.annotationClass);
+        MyClassPathDefinitionScanner scanner = new MyClassPathDefinitionScanner(beanDefinitionRegistry, MyScanAnnotation.class);
         scanner.registerTypeFilter();
         scanner.doScan(this.basePackage);
     }
