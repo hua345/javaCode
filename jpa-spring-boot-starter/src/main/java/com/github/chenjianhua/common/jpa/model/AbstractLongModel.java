@@ -47,7 +47,7 @@ public class AbstractLongModel implements Serializable {
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    protected LocalDateTime createAt;
+    protected LocalDateTime createTime;
 
     /**
      * 更新时间
@@ -55,5 +55,5 @@ public class AbstractLongModel implements Serializable {
     @UpdateTimestamp
     @Column(nullable = false)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    protected LocalDateTime updateAt;
+    protected LocalDateTime updateTime;
 }
