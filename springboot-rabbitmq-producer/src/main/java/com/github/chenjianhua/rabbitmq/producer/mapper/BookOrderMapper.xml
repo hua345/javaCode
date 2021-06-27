@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.chenjianhua.rabbitmq.producer.mapper.BookOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.github.chenjianhua.rabbitmq.producer.model.BookOrder">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="orderNumber" column="order_number" jdbcType="VARCHAR"/>
+            <result property="bookName" column="book_name" jdbcType="VARCHAR"/>
+            <result property="tradeNum" column="trade_num" jdbcType="INTEGER"/>
+            <result property="creator" column="creator" jdbcType="VARCHAR"/>
+            <result property="updator" column="updator" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_number,book_name,
+        trade_num,creator,updator,
+        create_time,update_time
+    </sql>
+</mapper>

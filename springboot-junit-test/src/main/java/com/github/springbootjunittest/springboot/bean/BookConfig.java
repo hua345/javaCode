@@ -29,6 +29,14 @@ public class BookConfig {
     }
 
     /**
+     * 实现InitializingBean/DisposableBean接口
+     */
+    @Bean(name = "BookImplementMethod2")
+    public BookImplementMethod bookImplementMethod2() {
+        return new BookImplementMethod("刻意学习2");
+    }
+
+    /**
      * 通过@PostConstruct和@PreDestroy注解
      */
     @Bean
