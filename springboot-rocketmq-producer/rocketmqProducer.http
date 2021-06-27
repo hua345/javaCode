@@ -1,0 +1,8 @@
+POST http://localhost:8090/createBookOrder
+Content-Type: application/json
+
+{
+  "bookName":"rocketmq可靠发送",
+  "tradeNum":1
+}
+###
